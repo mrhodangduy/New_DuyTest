@@ -80,33 +80,68 @@ struct ExamRecord
         
     }
     
-    static func getAllRecord(page: Int, completion: @escaping ([NSDictionary]?, _ totalPage: Int?) -> ())
+    static func getAllRecord(page: Int, completion: @escaping ([NSDictionary]?, _ totalPage: Int?, NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.getAllrecordURL + "\(page)")
+        let header: HTTPHeaders = ["Retry-After": "3600"]
         
-        Alamofire.request(url!).responseJSON { (response) in
+        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
+            
+            let json = response.result.value as? NSDictionary
             
             if response.result.isSuccess
             {
-                let json = response.result.value as? NSDictionary
-                if let data = json?["data"] as? Array<NSDictionary>
+                
+                if let data = json?["data"] as? [NSDictionary]
                 {
                     guard let meta = json?["meta"] as? NSDictionary, let pagination = meta["pagination"] as? NSDictionary, let total_pages = pagination["total_pages"] as? Int else {return}
                     
-                    completion(data, total_pages)
+                    completion(data, total_pages,json)
                     
                 }
                 else
                 {
-                    completion(nil, nil)
+                    if let error = json?["error"] as? String
+                    {
+                        
+                        print(error, json?["code"] as! Int)
+                        completion(nil, nil,json)
+                    }
+                    
+                    
                 }
             }
             else
             {
-                completion(nil, nil)
+                completion(nil, nil,json)
             }
-            
+
         }
+        
+//        Alamofire.request(url!).responseJSON { (response) in
+//            
+//            if response.result.isSuccess
+//            {
+//                let json = response.result.value as? NSDictionary
+//                if let data = json?["data"] as? [NSDictionary]
+//                {
+//                    print("DATA:\n------>",data)
+//                    guard let meta = json?["meta"] as? NSDictionary, let pagination = meta["pagination"] as? NSDictionary, let total_pages = pagination["total_pages"] as? Int else {return}
+//                    
+//                    completion(data, total_pages)
+//                    
+//                }
+//                else
+//                {
+//                    completion(nil, nil)
+//                }
+//            }
+//            else
+//            {
+//                completion(nil, nil)
+//            }
+//            
+//        }
     }
     
     static func postGrade(withToken token: String, identifier:Int, grade: Int,comment:String, completion: @escaping (Bool?, Int?, NSDictionary?) -> ())

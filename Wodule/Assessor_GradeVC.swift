@@ -9,7 +9,7 @@
 import UIKit
 
 
-class Assessor_Part1VC: UIViewController {
+class Assessor_GradeVC: UIViewController {
     
     @IBOutlet weak var tv_Content: UITextView!
     @IBOutlet weak var tv_Comment: RoundTextView!
@@ -128,6 +128,7 @@ class Assessor_Part1VC: UIViewController {
                 if code == 200 && status!
                 {
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post grade"), object: self)
+                    AudioPlayerManager.shared.stop()
                     self.navigationController?.popViewController(animated: true)
                     
                     print(result!)
@@ -147,6 +148,16 @@ class Assessor_Part1VC: UIViewController {
     @IBAction func playAudioTap(_ sender: UIButton) {
         
         play_pauseAudio(button: sender, isPlay: isPlaying)
+        
+        if !isPlaying
+        {
+            AudioPlayerManager.shared.play(path: Exam["audio"] as! String)
+        }
+        else
+        {
+            AudioPlayerManager.shared.pause()
+        }
+        
         isPlaying = !isPlaying
         
     }
@@ -197,7 +208,7 @@ class Assessor_Part1VC: UIViewController {
     
 }
 
-extension Assessor_Part1VC:UITableViewDataSource, UITableViewDelegate
+extension Assessor_GradeVC:UITableViewDataSource, UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 100

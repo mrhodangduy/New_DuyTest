@@ -1,5 +1,5 @@
 //
-//  Assessor_HistoryVC.swift
+//  Assessor_AssessmentVC.swift
 //  Wodule
 //
 //  Created by QTS Coder on 10/4/17.
@@ -8,12 +8,11 @@
 
 import UIKit
 
-class Assessor_HistoryVC: UIViewController {
+class Assessor_AssessmentVC: UIViewController {
     
     @IBOutlet weak var lbl_NoFound: UILabel!
     @IBOutlet weak var dataTableView: UITableView!
     
-    var History = [AssesmentHistory]()
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
     var userID:Int!
     var currentpage :Int!
@@ -22,45 +21,13 @@ class Assessor_HistoryVC: UIViewController {
     var AllRecord = [NSDictionary]()
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
-        currentpage = 1
-        
         lbl_NoFound.isHidden = true
-        
         dataTableView.dataSource = self
         dataTableView.delegate = self
         
-        loadingShow()
-        DispatchQueue.global(qos: .default).async {
-            
-            ExamRecord.getAllRecord(page: self.currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?) in
-                
-                if result != nil
-                {
-                    self.AllRecord = result!
-                    self.totalPage = totalPage
-                    DispatchQueue.main.async(execute: {
-                        self.AllRecord = self.AllRecord.filter { $0["score"] as! Int == 0 }
-                        self.dataTableView.reloadData()
-                        self.loadingHide()
-                    })
-                    
-                }
-                else
-                {
-                    self.lbl_NoFound.text = "No Record Found"
-                    self.lbl_NoFound.isHidden = false
-                    DispatchQueue.main.async(execute: {
-                        self.dataTableView.reloadData()
-                        self.loadingHide()
-                    })
-                }
-                
-                
-            })
-        }
+        loadNewData()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.loadNewData), name: NSNotification.Name(rawValue: "post grade"), object: nil)
         
@@ -72,7 +39,7 @@ class Assessor_HistoryVC: UIViewController {
         loadingShow()
         DispatchQueue.global(qos: .default).async {
             
-            ExamRecord.getAllRecord(page: self.currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?) in
+            ExamRecord.getAllRecord(page: self.currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?, json:NSDictionary?) in
                 
                 if result != nil
                 {
@@ -85,6 +52,15 @@ class Assessor_HistoryVC: UIViewController {
                     })
                     
                 }
+                else if json?["code"] as! Int == 429
+                {
+                    
+                    guard let errorMess = json?["error"] as? String else {return}
+                    DispatchQueue.main.async(execute: {
+                        self.loadingHide()
+                        self.alertMissingText(mess: "\(errorMess)\n(ErrorCode:\(json?["code"] as! Int))", textField: nil)
+                    })
+                }
                 else
                 {
                     self.lbl_NoFound.text = "No Record Found"
@@ -94,7 +70,6 @@ class Assessor_HistoryVC: UIViewController {
                         self.loadingHide()
                     })
                 }
-                
                 
             })
         }
@@ -109,7 +84,7 @@ class Assessor_HistoryVC: UIViewController {
     
 }
 
-extension Assessor_HistoryVC: UITableViewDataSource,UITableViewDelegate
+extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return AllRecord.count
@@ -120,14 +95,9 @@ extension Assessor_HistoryVC: UITableViewDataSource,UITableViewDelegate
         let item = AllRecord[indexPath.row]
         
         cell.lbl_ExamID.text = item["exam"] as? String
-//        cell.lbl_Score.text = "\(item["score"] as! Int)"
         cell.lbl_Score.text = "-"
         cell.lbl_Date.text = convertDay(DateString: item["creationDate"] as! String)
         cell.lbl_examinerrID.text = "\(item["examinee"] as! Int)"
-        
-        
-        
-        
         return cell
     }
     
@@ -138,7 +108,7 @@ extension Assessor_HistoryVC: UITableViewDataSource,UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let part1VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part1VC") as! Assessor_Part1VC
+        let part1VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "gradeVC") as! Assessor_GradeVC
         part1VC.Exam = AllRecord[indexPath.row]
         
         self.navigationController?.pushViewController(part1VC, animated: true)
@@ -160,7 +130,7 @@ extension Assessor_HistoryVC: UITableViewDataSource,UITableViewDelegate
     
     func loadMore(currentpage: Int)
     {
-        ExamRecord.getAllRecord(page: currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?) in
+        ExamRecord.getAllRecord(page: currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?, json: NSDictionary?) in
             
             if result != nil
             {
@@ -175,6 +145,19 @@ extension Assessor_HistoryVC: UITableViewDataSource,UITableViewDelegate
                     }
                     
                 }
+            }
+            else if json?["code"] as! Int == 429
+            {
+                
+                let errorMess = json?["error"] as? String
+                DispatchQueue.main.async(execute: {
+                    self.loadingHide()
+                    self.alertMissingText(mess: "\(errorMess!)\n(Code:-\(json?["code"] as! Int)-)", textField: nil)
+                })
+            }
+            else
+            {
+                print("ERROR:\n--->",json!)
             }
         })
         

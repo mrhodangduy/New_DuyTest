@@ -67,6 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("\n\nSimulator path",FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0])
         AudioRecorderManager.shared.setup()
         
+        
         return true
     }
     

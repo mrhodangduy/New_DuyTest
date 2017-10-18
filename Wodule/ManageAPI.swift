@@ -240,40 +240,6 @@ struct LoginWithSocial
     }
     
     
-    static func ResetPassword(email: String, completion: @escaping (Bool?, NSDictionary?)->())
-    {
-        let url = URL(string: "http://wodule.io/api/password/email")
-        
-        let para:Parameters = ["email": email]
-        let header: HTTPHeaders = ["Accept": "application/json"]
-        
-        Alamofire.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
-            
-            let json = response.result.value as? NSDictionary
-            let code = response.response?.statusCode
-            
-            if response.result.isSuccess
-            {
-                if code == 200
-                {
-                    guard let data = json?["data"] as? NSDictionary, let token = data["token"] as? String else {return}
-                    
-                    userDefault.set(token, forKey: TOKENRESET_STRING)
-                    userDefault.synchronize()
-                    
-                    completion(true, json)
-                }
-                else
-                {
-                    completion(false, json)
-                }
-            }
-            else
-            {
-                completion(false, json)
-            }
-        }
-    }
     
 }
 
@@ -464,35 +430,46 @@ struct UserInfoAPI
                 
                 upload.responseJSON(completionHandler: { (response) in
                     
-                    let json = response.result.value as? [String:AnyObject]
-                    print("\nJSON DATA:\n---->", json!)
-                    
-                    
-                    if let token = json?["token"] as? String
+                    if response.result.isSuccess
                     {
+                        let json = response.result.value as? [String:AnyObject]
+                        print("\nJSON DATA:\n---->", json!)
                         
-                        userDefault.set(token, forKey: TOKEN_STRING)
-                        userDefault.synchronize()
-                        completion(true)
                         
-                    }
-                    else if let error = json?["error"] as? String
-                    {
-                        print("\nERROR MESSAGE:------>" ,error)
-                        userDefault.set(error, forKey: NOTIFI_ERROR)
-                        userDefault.synchronize()
-                        completion(false)
-                    }
-                    else
-                    {
-                        if response.description.contains("Invalid code")
+                        if let token = json?["token"] as? String
                         {
-                            userDefault.set("Invalid code", forKey: NOTIFI_ERROR)
+                            
+                            userDefault.set(token, forKey: TOKEN_STRING)
+                            userDefault.synchronize()
+                            completion(true)
+                            
+                        }
+                        else if let error = json?["error"] as? String
+                        {
+                            print("\nERROR MESSAGE:------>" ,error)
+                            userDefault.set(error, forKey: NOTIFI_ERROR)
                             userDefault.synchronize()
                             completion(false)
                         }
-                        
+                        else
+                        {
+                            if response.description.contains("Invalid code")
+                            {
+                                userDefault.set("Invalid code", forKey: NOTIFI_ERROR)
+                                userDefault.synchronize()
+                                completion(false)
+                            }
+                            
+                        }
                     }
+                    else
+                    {
+                        completion(false)
+                        let errorString = "Failure while requesting your infomation. Please try again."
+                        userDefault.set(errorString, forKey: NOTIFI_ERROR)
+                        userDefault.synchronize()
+                    }
+                    
                     
                 })
                 
@@ -579,6 +556,36 @@ struct UserInfoAPI
             }
             
             
+        }
+    }
+    
+    static func ResetPassword(email: String, completion: @escaping (Bool?, NSDictionary?)->())
+    {
+        let url = URL(string: "http://wodule.io/api/password/email")
+        
+        let para:Parameters = ["email": email]
+        let header: HTTPHeaders = ["Accept": "application/json"]
+        
+        Alamofire.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
+            
+            let json = response.result.value as? NSDictionary
+            let code = response.response?.statusCode
+            
+            if response.result.isSuccess
+            {
+                if code == 200
+                {
+                    completion(true, json)
+                }
+                else
+                {
+                    completion(false, json)
+                }
+            }
+            else
+            {
+                completion(false, json)
+            }
         }
     }
 }

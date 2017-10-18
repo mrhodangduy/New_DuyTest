@@ -54,6 +54,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>IQKeyboardManagerSwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>JWGCircleCounter.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -82,12 +87,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>107A9565F9DF88517DFD3E28C05B2B96</key>
+		<key>009107BDB6E3CF9525C974E82FE2D87E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2757DBC02FC92D1FAC83A6B4DABD9B13</key>
+		<key>107A9565F9DF88517DFD3E28C05B2B96</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -122,7 +127,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>894429357ECFB0E5A214791C04F4CAB7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>B1C4AAFAF49036C7007633DAA3C806AD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C235F77E101E742652CCF98FFDFA5182</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -132,17 +147,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D62BEFC9C044812032DD731C40C52809</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D8832AF443A317257C9D0DFA1D39FCDD</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>DDBCFDE490CDFDABF6F16A26F346932D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DF0E988A0F674B5F745D9E0CF0CB96E3</key>
 		<dict>
 			<key>primary</key>
 			<true/>

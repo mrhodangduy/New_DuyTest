@@ -25,9 +25,6 @@ class Assessor_CalendarVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        calendarView.backgroundColor = .clear
-        calendarView.layer.borderWidth = 0
-        calendarView.layer.borderColor = UIColor.clear.cgColor
         // Do any additional setup after loading the view.
     }
 

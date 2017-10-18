@@ -9,6 +9,7 @@
 import UIKit
 import GoogleSignIn
 import FBSDKCoreKit
+import IQKeyboardManagerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -67,6 +68,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("\n\nSimulator path",FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0])
         AudioRecorderManager.shared.setup()
         
+        
+        // Active IQKeyboardManager
+        
+        IQKeyboardManager.sharedManager().enable = true
         
         return true
     }

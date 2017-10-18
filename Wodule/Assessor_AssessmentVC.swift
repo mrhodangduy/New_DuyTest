@@ -117,7 +117,7 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        let lastItem = AllRecord.count - 2
+        let lastItem = AllRecord.count-1
         if indexPath.row == lastItem && currentpage < totalPage + 1
         {
             currentpage = currentpage + 1

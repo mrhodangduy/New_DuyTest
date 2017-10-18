@@ -58,7 +58,6 @@
 		63F1459D1F8721E500CD03BF /* Examinee_CategoriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F1459C1F8721E500CD03BF /* Examinee_CategoriesCell.swift */; };
 		63F1459F1F8721FA00CD03BF /* Examinee_CategoriesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F1459E1F8721FA00CD03BF /* Examinee_CategoriesVC.swift */; };
 		63F145A31F87330600CD03BF /* Part4VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F145A21F87330600CD03BF /* Part4VC.swift */; };
-		DA1620751F8D0B720056D7D3 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1620741F8D0B720056D7D3 /* AudioToolbox.framework */; };
 		DA1620771F8D16200056D7D3 /* AudioRecorderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1620761F8D16200056D7D3 /* AudioRecorderManager.swift */; };
 		DA7517BA1F8275A200E96E56 /* NewUser3_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7517B91F8275A200E96E56 /* NewUser3_TableViewCell.swift */; };
 		DA7517BC1F82923B00E96E56 /* ManageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7517BB1F82923B00E96E56 /* ManageAPI.swift */; };
@@ -133,7 +132,6 @@
 		63F145A41F8772E900CD03BF /* Wodule-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Wodule-Bridging-Header.h"; sourceTree = "<group>"; };
 		A0A11A97D58C2A42E8F6CAAA /* Pods-Wodule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wodule.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wodule/Pods-Wodule.release.xcconfig"; sourceTree = "<group>"; };
 		DA1620711F8D0B5E0056D7D3 /* Wodule.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wodule.entitlements; sourceTree = "<group>"; };
-		DA1620741F8D0B720056D7D3 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DA1620761F8D16200056D7D3 /* AudioRecorderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecorderManager.swift; sourceTree = "<group>"; };
 		DA7517B91F8275A200E96E56 /* NewUser3_TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewUser3_TableViewCell.swift; sourceTree = "<group>"; };
 		DA7517BB1F82923B00E96E56 /* ManageAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageAPI.swift; sourceTree = "<group>"; };
@@ -158,7 +156,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB3BF60C07214104201DE436 /* Pods_Wodule.framework in Frameworks */,
-				DA1620751F8D0B720056D7D3 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,7 +371,6 @@
 		FB22EA460FDEEE17FA7DA537 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DA1620741F8D0B720056D7D3 /* AudioToolbox.framework */,
 				DE267463118FE2EB33379522 /* Pods_Wodule.framework */,
 			);
 			name = Frameworks;
@@ -415,12 +411,12 @@
 				TargetAttributes = {
 					630BD87A1F81D72100B24CA5 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = NC5GA6MATT;
+						DevelopmentTeam = LHVP2U4FAG;
 						LastSwiftMigration = 0830;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.InterAppAudio = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -515,6 +511,7 @@
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/JWGCircleCounter/JWGCircleCounter.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
@@ -531,6 +528,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JWGCircleCounter.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
@@ -730,15 +728,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Wodule/Wodule.entitlements;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				DEVELOPMENT_TEAM = NC5GA6MATT;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Wayne QTS (SJM24HW4QR)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wayne QTS (SJM24HW4QR)";
+				DEVELOPMENT_TEAM = LHVP2U4FAG;
 				INFOPLIST_FILE = Wodule/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.qtsvn.Wodule;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wodule;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "61fc0f87-ba0d-405e-9bb4-b620a7ee3a8d";
+				PROVISIONING_PROFILE_SPECIFIER = Wodule_DEV_17Oct;
 				SWIFT_OBJC_BRIDGING_HEADER = "Wodule/Wodule-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -752,15 +751,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Wodule/Wodule.entitlements;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				DEVELOPMENT_TEAM = NC5GA6MATT;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Wayne QTS (SJM24HW4QR)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wayne QTS (SJM24HW4QR)";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Wodule/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.qtsvn.Wodule;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wodule;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "61fc0f87-ba0d-405e-9bb4-b620a7ee3a8d";
+				PROVISIONING_PROFILE_SPECIFIER = Wodule_DEV_17Oct;
 				SWIFT_OBJC_BRIDGING_HEADER = "Wodule/Wodule-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};

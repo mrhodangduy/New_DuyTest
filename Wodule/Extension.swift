@@ -13,6 +13,10 @@ import SVProgressHUD
 extension UIViewController
 {
     
+    func endEditingView()
+    {
+        self.view.endEditing(true)
+    }
     
     func listFilesFromDocumentsFolder() -> [String]?
     {

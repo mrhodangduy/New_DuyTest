@@ -233,7 +233,7 @@ struct LoginWithSocial
             default:
                 
                 completion(false, response.response?.statusCode, json)
-
+                
             }
             
         }
@@ -403,14 +403,6 @@ struct UserInfoAPI
             let dateformat = DateFormatter()
             dateformat.dateFormat = "MM_dd_YY_hh:mm:ss"
             
-            if let imageData = picture
-            {
-                data.append(imageData, withName: "picture", fileName: dateformat.string(from: Date()) + ".jpg", mimeType: "image/jpg")
-            }
-                
-            else{
-                print("\nPICTURE DATA:------>", picture as Any)
-            }
             
             for (key, value) in para {
                 data.append((value as! String).data(using: String.Encoding.utf8)!, withName: key)
@@ -492,28 +484,19 @@ struct UserInfoAPI
         
         Alamofire.upload(multipartFormData: { (data) in
             
-                        
+            
             let dateformat = DateFormatter()
             dateformat.dateFormat = "MM_DD_YY_hh_mm_ss"
             
-            let fileURL = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(dateformat.string(from: Date())).appendingPathExtension("jpg")
-            
-            if FileManager.default.fileExists(atPath: "\(fileURL!)")
+            if let imageData = picture
             {
-                do {
-                    try picture?.write(to: fileURL!, options: .atomic)
-                    
-                } catch {
-                    
-                }
-                
-                data.append(fileURL!, withName: "picture")
-                
+                data.append(imageData, withName: "picture", fileName: dateformat.string(from: Date()) + ".jpg", mimeType: "image/jpg")
             }
-            else
-            {
+                
+            else{
+                print("\nPICTURE DATA:------>", picture as Any)
             }
-            
+
             for (key, value) in para {
                 
                 data.append((value as! String).data(using: String.Encoding.utf8)!, withName: key)
@@ -546,7 +529,7 @@ struct UserInfoAPI
                     {
                         completion(false, response.response?.statusCode, json)
                     }
-
+                    
                 })
                 
                 

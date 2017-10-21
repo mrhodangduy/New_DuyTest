@@ -15,6 +15,6 @@ target 'Wodule' do
     pod 'Google/SignIn'
     pod 'FacebookCore'
     pod 'FacebookLogin'
-	pod 'IQKeyboardManagerSwift'
+    pod 'IQKeyboardManagerSwift'
     
-end	
+end

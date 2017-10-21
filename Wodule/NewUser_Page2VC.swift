@@ -35,12 +35,20 @@ class NewUser_Page2VC: UIViewController {
         
         tf_Country.tintColor = .clear
         tf_Ethnicity.tintColor = .clear
-        tf_Nationality.tintColor = .clear       
+        tf_Nationality.tintColor = .clear
+        
+        tf_ResidenceAdd.delegate = self
+        tf_OptionalAdd1.delegate = self
+        tf_OptionalAdd2.delegate = self
+        tf_City.delegate = self
+        tf_Telephone.delegate = self
+        tf_Email.delegate = self
         
     }
     
     @IBAction func CountryTap(_ sender: Any) {
-        
+        self.endEditingView()
+
         currentSelected = 0
         
         if (CGFloat(CountryList.count) * 44) > (self.view.frame.height - 100)
@@ -58,7 +66,8 @@ class NewUser_Page2VC: UIViewController {
     }
     
     @IBAction func natinalityBtnTap(_ sender: Any) {
-        
+        self.endEditingView()
+
         currentSelected = 1
         if (CGFloat(Nationality.count) * 44) > (self.view.frame.height - 100)
         {
@@ -76,7 +85,8 @@ class NewUser_Page2VC: UIViewController {
     }
     
     @IBAction func ethnicityBtnTap(_ sender: Any) {
-        
+        self.endEditingView()
+
         currentSelected = 2
         
         if (CGFloat(Ethnicity.count) * 44) > (self.view.frame.height - 100)
@@ -169,7 +179,9 @@ class NewUser_Page2VC: UIViewController {
         self.backgroundView.removeFromSuperview()
         self.dataTableView.removeFromSuperview()
     }
-    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
 }
 
@@ -230,6 +242,31 @@ extension NewUser_Page2VC: UITableViewDelegate, UITableViewDataSource
     }
     
     
+}
+
+extension NewUser_Page2VC: UITextFieldDelegate
+{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        switch textField {
+        case tf_ResidenceAdd:
+            tf_OptionalAdd1.becomeFirstResponder()
+        case tf_OptionalAdd1:
+            tf_OptionalAdd2.becomeFirstResponder()
+        case tf_OptionalAdd2:
+            tf_City.becomeFirstResponder()
+        case tf_City:
+            textField.resignFirstResponder()
+        case tf_Telephone:
+            tf_Email.resignFirstResponder()
+        case tf_Email:
+            textField.resignFirstResponder()
+        default:
+            textField.resignFirstResponder()
+        }
+        
+        return true
+
+    }
 }
 
 

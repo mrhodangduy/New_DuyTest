@@ -13,6 +13,10 @@ import SVProgressHUD
 extension UIViewController
 {
     
+    func endEditingView()
+    {
+        self.view.endEditing(true)
+    }
     
     func listFilesFromDocumentsFolder() -> [String]?
     {
@@ -243,10 +247,10 @@ extension UIViewController
     func convertDay(DateString: String) -> String
     {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
-        let date = dateFormatter.date(from: DateString)!
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let date = dateFormatter.date(from: DateString)
         dateFormatter.dateFormat = "yy.MM.dd"
-        return dateFormatter.string(from: date)
+        return dateFormatter.string(from: date!)
     }
 
 

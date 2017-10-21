@@ -63,9 +63,26 @@ class EditProfileVC: UIViewController {
         dataTableView.delegate = self
         dataTableView.dataSource = self
         
+        setupTextField()
         showDatePicker()
         setDataOnView()
         checkEmailAvailable()
+        
+    }
+    
+    func setupTextField()
+    {
+        tf_Firstname.delegate = self
+        tf_Middlename.delegate = self
+        tf_Lastname.delegate = self
+        tf_Nativename.delegate = self
+        tf_Residence.delegate = self
+        tf_City.delegate = self
+        tf_Email.delegate = self
+        tf_Telephone.delegate = self
+        tf_Religion.delegate = self
+        
+
     }
     
     func checkEmailAvailable()
@@ -134,10 +151,11 @@ class EditProfileVC: UIViewController {
         img_Avatar.addGestureRecognizer(tapGesture)
         
         tf_UserName.text = userInfo["user_name"] as? String ?? ""
-        tf_Password.text = "123456"
+        tf_Password.text = "*************"
         tf_Firstname.text = userInfo["first_name"] as? String ?? ""
         tf_Middlename.text = userInfo["middle_name"] as? String ?? ""
         tf_Lastname.text = userInfo["last_name"] as? String ?? ""
+        tf_Nativename.text = userInfo["native_name"] as? String ?? ""
         tf_Suffix.text = userInfo["suffix"] as? String ?? ""
         tf_DateOfBirth.text = userInfo["date_of_birth"] as? String ?? ""
         tf_CountryOfBirth.text = userInfo["country_of_birth"] as? String ?? ""
@@ -233,7 +251,7 @@ class EditProfileVC: UIViewController {
     }
     
     @IBAction func suffixTap(_ sender: Any) {
-        
+        self.endEditingView()
         currentSelected = SUFFIX_STRING
         countNumberOfRow(number: Suffix.count)
         asignData(data: Suffix)
@@ -258,6 +276,7 @@ class EditProfileVC: UIViewController {
     
     
     @IBAction func countryOfBirthTap(_ sender: Any) {
+        self.endEditingView()
         currentSelected = COUNTRYOFBIRTH_STRING
         countNumberOfRow(number: CountryList.count)
         asignData(data: CountryList)
@@ -267,6 +286,7 @@ class EditProfileVC: UIViewController {
     
     
     @IBAction func countryTap(_ sender: Any) {
+        self.endEditingView()
         currentSelected = COUNTRY_STRING
         countNumberOfRow(number: CountryList.count)
         asignData(data: CountryList)
@@ -277,6 +297,7 @@ class EditProfileVC: UIViewController {
     
     
     @IBAction func nationalityTap(_ sender: Any) {
+        self.endEditingView()
         currentSelected = NATIONALITY_STRING
         countNumberOfRow(number: Nationality.count)
         asignData(data: Nationality)
@@ -286,7 +307,7 @@ class EditProfileVC: UIViewController {
     }
     
     @IBAction func ethnicityTap(_ sender: Any) {
-        
+        self.endEditingView()
         currentSelected = ETHNIC_STRING
         countNumberOfRow(number: Ethnicity.count)
         asignData(data: Ethnicity)
@@ -295,6 +316,7 @@ class EditProfileVC: UIViewController {
     }
     
     @IBAction func statusTap(_ sender: Any) {
+        self.endEditingView()
         currentSelected = STATUS_STRING
         countNumberOfRow(number: Status.count)
         asignData(data: Status)
@@ -305,6 +327,7 @@ class EditProfileVC: UIViewController {
     }
     
     @IBAction func genderTap(_ sender: Any) {
+        self.endEditingView()
         currentSelected = GENDER_STRING
         countNumberOfRow(number: Gender.count)
         asignData(data: Gender)
@@ -632,6 +655,13 @@ extension EditProfileVC: UIImagePickerControllerDelegate, UINavigationController
     }
 }
 
+extension EditProfileVC: UITextFieldDelegate
+{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
 
 
 

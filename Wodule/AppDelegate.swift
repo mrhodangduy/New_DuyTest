@@ -54,9 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        UIApplication.shared.statusBarStyle = .lightContent        
+        UIApplication.shared.statusBarStyle = .lightContent
         
-        IQKeyboardManager.sharedManager().enable = true
         
         // Initialize sign-in G+
         var configureError: NSError?
@@ -68,6 +67,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print("\n\nSimulator path",FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0])
         AudioRecorderManager.shared.setup()
+        
+        
+        // Active IQKeyboardManager
+        
+        IQKeyboardManager.sharedManager().enable = true
         
         return true
     }

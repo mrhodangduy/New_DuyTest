@@ -35,13 +35,7 @@ class Assessor_HomeVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        ExamRecord.getAllRecord(page: 1) { (result:[NSDictionary]?, totalPage) in
-            
-            
-        }
-        
-        
+                
         if userDefault.object(forKey: SOCIALKEY) as? String != nil
         {
             socialIdentifier = userDefault.object(forKey: SOCIALKEY) as! String
@@ -189,7 +183,7 @@ class Assessor_HomeVC: UIViewController {
     }
     @IBAction func startAssessmentTap(_ sender: Any) {
         
-        let allReocrdVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "allrecordVC") as! Assessor_HistoryVC
+        let allReocrdVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "allrecordVC") as! Assessor_AssessmentVC
         
         self.navigationController?.pushViewController(allReocrdVC, animated: true)
 

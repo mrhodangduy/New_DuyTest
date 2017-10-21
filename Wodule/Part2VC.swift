@@ -47,7 +47,7 @@ class Part2VC: UIViewController {
         nextBtn.isHidden = true
         
         guard let index = Exam.index(where: { $0.number == 2 }) else { return }
-        print("\n\n",Exam[index])
+        print("\n------>",Exam[index])
         examID = Exam[index].identifier
         
         img_Photo.isHidden = true
@@ -101,7 +101,7 @@ class Part2VC: UIViewController {
     }
     
     @IBAction func nextBtnTap(_ sender: Any) {
-        let part3_tempVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part3_tempVC") as! Part3_TempVC
+        let part3_tempVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part3_tempVC") as! Part3VC
         
         part3_tempVC.Exam = self.Exam
                 

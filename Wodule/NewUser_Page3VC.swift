@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Alamofire
+import SVProgressHUD
 
 class NewUser_Page3VC: UIViewController {
     
@@ -16,7 +18,6 @@ class NewUser_Page3VC: UIViewController {
     @IBOutlet weak var tf_Username: UITextField!
     @IBOutlet weak var tf_Password: UITextField!
     @IBOutlet weak var tf_Code: UITextField!
-    @IBOutlet weak var img_Avatar: UIImageViewX!
     
     @IBOutlet var dataTableView: UITableView!
     
@@ -24,6 +25,33 @@ class NewUser_Page3VC: UIViewController {
     var currentIndex: Int!
     
     var imgData:Data!
+    
+    var firstname:String!
+    var lastname:String!
+    var middlename:String!
+    var birthday:String!
+    var countryofBirth:String!
+    var city:String!
+    var country:String!
+    var telephone:String!
+    var nationality:String!
+    var email:String!
+    var status:String!
+    var gender:String!
+    var username:String!
+    var password:String!
+    var code:String!
+    var native_name:String?
+    var suffix: String?
+    var address:String?
+    var address1:String?
+    var address2:String?
+    var address3:String?
+    var ethnicity:String?
+    var religion:String?
+    var ln_first:Bool?
+    
+    var para:Parameters!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,10 +61,17 @@ class NewUser_Page3VC: UIViewController {
         
         tf_Gender.tintColor = .clear
         tf_Status.tintColor = .clear
+        
+        tf_Religion.delegate = self
+        tf_Username.delegate = self
+        tf_Password.delegate = self
+        tf_Code.delegate = self
+        
     }
     
     @IBAction func statusBtnTap(_ sender: Any) {
-        
+        self.endEditingView()
+
         currentIndex = 1
         setupViewData(subView: dataTableView, height: CGFloat(Status.count) * 44)
         createAnimatePopup(from: dataTableView, with: backgroundView)
@@ -46,6 +81,7 @@ class NewUser_Page3VC: UIViewController {
     
     @IBAction func genderBtnTap(_ sender: Any) {
         
+        self.endEditingView()
         currentIndex = 2
         setupViewData(subView: dataTableView, height: CGFloat(Gender.count) * 44)
         createAnimatePopup(from: dataTableView, with: backgroundView)
@@ -53,10 +89,6 @@ class NewUser_Page3VC: UIViewController {
         
     }
     
-    @IBAction func imgAvatarTap(_ sender: UITapGestureRecognizer) {
-        
-        handleGetImage(title: nil, mess: nil, type: .actionSheet)
-    }
     
     @IBAction func backPageTap(_ sender: Any) {
         
@@ -70,17 +102,126 @@ class NewUser_Page3VC: UIViewController {
         
     }
     
-    func saveData()
+    
+    func getData()
     {
-        userDefault.set(tf_Status.text!, forKey: STATUS_STRING)
-        userDefault.set(tf_Gender.text!, forKey: GENDER_STRING)
-        userDefault.set(tf_Username.text!, forKey: USERNAME_STRING)
-        userDefault.set(tf_Password.text!, forKey: PASSWORD_STRING)
-        userDefault.set(tf_Code.text!, forKey: CODE_STRING)
-        userDefault.set(tf_Religion.text!, forKey: RELIGION_STRING)
-        userDefault.synchronize()
-
+        firstname = userDefault.object(forKey: FIRSTNAME_STRING) as! String
+        lastname = userDefault.object(forKey: LASTNAME_STRING) as! String
+        middlename = userDefault.object(forKey: MIDDLENAME_STRING) as! String
+        birthday = userDefault.object(forKey: BIRTHDAY_STRING) as! String
+        countryofBirth = userDefault.object(forKey: COUNTRYOFBIRTH_STRING) as! String
+        city = userDefault.object(forKey: CITY_STRING) as! String
+        country = userDefault.object(forKey: COUNTRY_STRING) as! String
+        telephone = userDefault.object(forKey: PHONE_STRING) as! String
+        nationality = userDefault.object(forKey: NATIONALITY_STRING) as! String
+        email = userDefault.object(forKey: EMAIL_STRING) as! String
+        status = tf_Status.text
+        gender = tf_Gender.text
+        username = tf_Username.text
+        password = tf_Password.text
+        code = tf_Code.text
+        native_name = userDefault.object(forKey: NATIVE_STRING) as? String ?? nil
+        suffix = userDefault.object(forKey: SUFFIX_STRING) as? String ?? nil
+        address1 = userDefault.object(forKey: ADDRESS1_STRING) as? String ?? nil
+        address2 = userDefault.object(forKey: ADDRESS2_STRING) as? String ?? nil
+        address3 = userDefault.object(forKey: ADDRESS3_STRING) as? String ?? nil
+        ethnicity = userDefault.object(forKey: ETHNIC_STRING) as? String ?? nil
+        ln_first = userDefault.bool(forKey: LASTNAMEFIRST_STRING)
+        if tf_Religion.text?.characters.count == 0
+        {
+            religion = nil
+        }
+        else
+        {
+            religion = tf_Religion.text
+        }
     }
+    
+    func createPara()
+    {
+        para = ["first_name":           firstname,
+                "middle_name":          middlename,
+                "last_name":            lastname,
+                "date_of_birth":        birthday,
+                "country_of_birth":     countryofBirth,
+                "city":                 city,
+                "country":              country,
+                "telephone":            telephone,
+                "nationality":          nationality,
+                "status":               status,
+                "gender":               gender,
+                "email":                email,
+                "user_name":            username,
+                "password":             password,
+                "code":                 code]
+        
+        if ln_first!
+        {
+            para.updateValue("Yes", forKey: "ln_first")
+        }
+        
+        if (native_name?.trimmingCharacters(in: .whitespacesAndNewlines).characters.count)! > 0
+        {
+            para.updateValue(native_name!, forKey: "native_name")
+        }
+        if (suffix?.trimmingCharacters(in: .whitespacesAndNewlines).characters.count)! > 0
+        {
+            para.updateValue(suffix!, forKey: "suffix")
+        }
+        
+        if (address1?.trimmingCharacters(in: .whitespacesAndNewlines).characters.count)! > 0
+        {
+            
+            address = address1!
+            
+        }
+        
+        if (address2?.trimmingCharacters(in: .whitespacesAndNewlines).characters.count)! > 0
+        {
+            if address != nil
+            {
+                address = address! + ", " + address2!
+                
+            }
+            else
+            {
+                address = address2!
+                
+            }
+        }
+        
+        if (address3?.trimmingCharacters(in: .whitespacesAndNewlines).characters.count)! > 0
+        {
+            if address != nil
+            {
+                address = address! + ", " + address3!
+                
+            }
+            else
+            {
+                address = address3!
+                
+            }
+        }
+        
+        if address != nil
+        {
+            para.updateValue(address!, forKey: "address")
+        }
+        
+        if (ethnicity?.trimmingCharacters(in: .whitespacesAndNewlines).characters.count)! > 0
+        {
+            para.updateValue(ethnicity!, forKey: "ethnicity")
+        }
+        
+        if (tf_Religion.text?.characters.count)! > 0
+        {
+            para.updateValue(religion!, forKey: "religion")
+        }
+        
+        print("\nPARA:----->",para)
+    }
+
     
     @IBAction func submitBtnTap(_ sender: Any) {
         
@@ -98,54 +239,58 @@ class NewUser_Page3VC: UIViewController {
         case 5:
             self.alertMissingText(mess: "Code is required", textField: tf_Code)
         default:
+            getData()
+            createPara()
             
-            saveData()
-            
-            let newuser = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "selfieVC") as! NewUser_Page4VC
-            newuser.imageData = imgData
-            self.navigationController?.pushViewController(newuser, animated: true)
-            
-        }
-        
-    }
-    
-    // MARK: - Handle ActionAlert
-    
-    func handleGetImage(title: String?, mess: String?, type: UIAlertControllerStyle)
-    {
-        let alert = UIAlertController(title: title, message: mess, preferredStyle: type)
-        let btnPhoto  = UIAlertAction(title: "Take a Picture", style: .default) { (action) in
-            if UIImagePickerController.isSourceTypeAvailable(.camera)
-            {
-                self.getPhotoFrom(type: .camera)
+            self.loadingShow()
+            DispatchQueue.global().async {
+                UserInfoAPI.RegisterUser(para: self.para, completion: { (status) in
+                    
+                    if status
+                    {
+                        self.removeValueObject()
+                        let token = userDefault.object(forKey: TOKEN_STRING) as? String
+                        
+                        UserInfoAPI.getUserInfo(withToken: token!, completion: { (userInfo) in
+                            
+                            if userInfo?["type"] as? String == UserType.assessor.rawValue
+                            {
+                                let assessor_homeVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessor_homeVC") as! Assessor_HomeVC
+                                
+                                assessor_homeVC.userInfomation = userInfo
+                                
+                                self.navigationController?.pushViewController(assessor_homeVC, animated: true)
+                            }
+                            else
+                            {
+                                let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
+                                
+                                examiner_homeVC.userInfomation = userInfo
+                                
+                                self.navigationController?.pushViewController(examiner_homeVC, animated: true)
+                            }
+                            
+                            DispatchQueue.main.async(execute: {
+                                self.loadingHide()
+                                print("REGISTER AND LOGIN SUCCESSFUL, REDIRECT TO:-->", (userInfo?["type"] as? String)?.uppercased() as Any)
+                            })
+                            
+                        })
+                    }
+                    else
+                    {
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            self.alertMissingText(mess: userDefault.object(forKey: NOTIFI_ERROR) as! String, textField: nil)
+                        })
+                    }
+                    
+                })
             }
-            else
-            {
-                print("Camera isnot available")
-            }
+
             
         }
-        let btnLib  = UIAlertAction(title: "Select from Library", style: .default) { (action) in
-            
-            self.getPhotoFrom(type: .photoLibrary)
-        }
         
-        let btnCan = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addAction(btnPhoto)
-        alert.addAction(btnLib)
-        alert.addAction(btnCan)
-        
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func getPhotoFrom(type: UIImagePickerControllerSourceType)
-        
-    {
-        let imagePicker = UIImagePickerController()
-        imagePicker.sourceType = type
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = false
-        self.present(imagePicker, animated: true, completion: nil)
     }
     
     func setupViewData(subView: UIView, height: CGFloat)
@@ -181,7 +326,41 @@ class NewUser_Page3VC: UIViewController {
         self.dataTableView.removeFromSuperview()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
+    func removeValueObject()
+    {
+        userDefault.removeObject(forKey: FIRSTNAME_STRING)
+        userDefault.removeObject(forKey: MIDDLENAME_STRING)
+        userDefault.removeObject(forKey: LASTNAME_STRING)
+        userDefault.removeObject(forKey: NATIVE_STRING)
+        userDefault.removeObject(forKey: SUFFIX_STRING)
+        userDefault.removeObject(forKey: LASTNAMEFIRST_STRING)
+        userDefault.removeObject(forKey: BIRTHDAY_STRING)
+        userDefault.removeObject(forKey: COUNTRYOFBIRTH_STRING)
+        userDefault.removeObject(forKey: ADDRESS1_STRING)
+        userDefault.removeObject(forKey: ADDRESS2_STRING)
+        userDefault.removeObject(forKey: ADDRESS3_STRING)
+        userDefault.removeObject(forKey: CITY_STRING)
+        userDefault.removeObject(forKey: COUNTRY_STRING)
+        userDefault.removeObject(forKey: EMAIL_STRING)
+        userDefault.removeObject(forKey: PHONE_STRING)
+        userDefault.removeObject(forKey: NATIONALITY_STRING)
+        userDefault.removeObject(forKey: ETHNIC_STRING)
+        userDefault.removeObject(forKey: STATUS_STRING)
+        userDefault.removeObject(forKey: RELIGION_STRING)
+        userDefault.removeObject(forKey: GENDER_STRING)
+        userDefault.removeObject(forKey: USERNAME_STRING)
+        userDefault.removeObject(forKey: PASSWORD_STRING)
+        userDefault.removeObject(forKey: CODE_STRING)
+        userDefault.removeObject(forKey: NOTIFI_ERROR)
+        userDefault.synchronize()
+        
+        
+    }
+
 }
 
 extension NewUser_Page3VC: UITableViewDataSource, UITableViewDelegate
@@ -223,35 +402,22 @@ extension NewUser_Page3VC: UITableViewDataSource, UITableViewDelegate
     
 }
 
-extension NewUser_Page3VC: UIImagePickerControllerDelegate, UINavigationControllerDelegate
+extension NewUser_Page3VC: UITextFieldDelegate
 {
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
-    }
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let chooseImg = info[UIImagePickerControllerOriginalImage] as! UIImage
-        let imgValue = max(chooseImg.size.width, chooseImg.size.height)
-        
-        if imgValue > 3000
-        {
-            self.imgData = UIImageJPEGRepresentation(chooseImg, 0.1)
-            
-        }
-        else if imgValue > 2000
-        {
-            self.imgData = UIImageJPEGRepresentation(chooseImg, 0.3)
-        }
-        else
-        {
-            self.imgData = UIImageJPEGRepresentation(chooseImg, 0.5)
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        switch textField {
+        case tf_Username:
+            tf_Password.becomeFirstResponder()
+        case tf_Password:
+            tf_Code.becomeFirstResponder()
+        default:
+            textField.resignFirstResponder()
         }
         
-        print(self.imgData!)
-        self.img_Avatar.image = UIImage(data: imgData!)
-        picker.dismiss(animated: true, completion: nil)
+        return true
+        
     }
 }
-
 
 
 

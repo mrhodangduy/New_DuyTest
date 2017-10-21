@@ -23,8 +23,7 @@ class LoginVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tf_Username.delegate = self
-        tf_Password.delegate = self
+        
         
     }
     
@@ -497,7 +496,7 @@ class LoginVC: UIViewController {
         
         switch checkey {
         case 1:
-            self.alertMissingText(mess: "Username is required", textField: tf_Username)
+            self.alertMissingText(mess: "Email is required", textField: tf_Username)
         case 2:
             self.alertMissingText(mess: "Password is required", textField: tf_Password)
             
@@ -587,22 +586,6 @@ class LoginVC: UIViewController {
         let licenseVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "licenseVC") as! LicenseVC
         self.navigationController?.pushViewController(licenseVC, animated: true)
         
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
-}
-
-extension LoginVC: UITextFieldDelegate
-{
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == tf_Username {
-            tf_Password.becomeFirstResponder()
-        }
-        textField.resignFirstResponder()
-        return true
-
     }
 }
 

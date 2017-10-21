@@ -33,17 +33,10 @@ class NewUser_Page3VC: UIViewController {
         
         tf_Gender.tintColor = .clear
         tf_Status.tintColor = .clear
-        
-        tf_Religion.delegate = self
-        tf_Username.delegate = self
-        tf_Password.delegate = self
-        tf_Code.delegate = self
-        
     }
     
     @IBAction func statusBtnTap(_ sender: Any) {
-        self.endEditingView()
-
+        
         currentIndex = 1
         setupViewData(subView: dataTableView, height: CGFloat(Status.count) * 44)
         createAnimatePopup(from: dataTableView, with: backgroundView)
@@ -53,7 +46,6 @@ class NewUser_Page3VC: UIViewController {
     
     @IBAction func genderBtnTap(_ sender: Any) {
         
-        self.endEditingView()
         currentIndex = 2
         setupViewData(subView: dataTableView, height: CGFloat(Gender.count) * 44)
         createAnimatePopup(from: dataTableView, with: backgroundView)
@@ -87,7 +79,7 @@ class NewUser_Page3VC: UIViewController {
         userDefault.set(tf_Code.text!, forKey: CODE_STRING)
         userDefault.set(tf_Religion.text!, forKey: RELIGION_STRING)
         userDefault.synchronize()
-        
+
     }
     
     @IBAction func submitBtnTap(_ sender: Any) {
@@ -189,9 +181,7 @@ class NewUser_Page3VC: UIViewController {
         self.dataTableView.removeFromSuperview()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
+    
 }
 
 extension NewUser_Page3VC: UITableViewDataSource, UITableViewDelegate
@@ -262,22 +252,6 @@ extension NewUser_Page3VC: UIImagePickerControllerDelegate, UINavigationControll
     }
 }
 
-extension NewUser_Page3VC: UITextFieldDelegate
-{
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        switch textField {
-        case tf_Username:
-            tf_Password.becomeFirstResponder()
-        case tf_Password:
-            tf_Code.becomeFirstResponder()
-        default:
-            textField.resignFirstResponder()
-        }
-        
-        return true
-        
-    }
-}
 
 
 

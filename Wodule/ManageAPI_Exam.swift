@@ -17,131 +17,103 @@ struct ExamRecord
         let url = URL(string: "http://wodule.io/api/exams/\(idExam)/records")
         
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
+
+       Alamofire.upload(multipartFormData: { (data) in
         
-        Alamofire.upload(multipartFormData: { (data) in
+        let dateformat = DateFormatter()
+        dateformat.dateFormat = "MM_dd_YY_hh_mm_ss"
+        
+//        let uploadPath = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(dateformat.string(from: Date())).appendingPathExtension("m4a")
+        
+        
+        if let audioURL = audiofile
+        {
+//            try? audioURL.write(to: uploadPath!, options: Data.WritingOptions.atomic)
+//            data.append(uploadPath!, withName: "audio")
+            print("\n\nAUDIODATA-->",audioURL)
+            data.append(audioURL, withName: "audio", fileName: "upload.m4a", mimeType: "audio/m4a")
+            print(data.boundary)
+        }
+        else
+        {
+            completion(false, nil)
+        }
+        
+        
+       }, usingThreshold: 1, to: url!, method: .post, headers: httpHeader) { (results) in
+        
+        switch results
+        {
+        case .failure(let error):
+            print(error.localizedDescription)
+            let errorString = "Failure while requesting your infomation. Please try again."
+            userDefault.set(errorString, forKey: NOTIFI_ERROR)
+            userDefault.synchronize()
+            completion(false, nil)
             
+        case .success(request: let upload, streamingFromDisk: _, streamFileURL: _):
             
-            if let audioURL = audiofile
-            {
-                print("\n\nAUDIODATA-->",audioURL)
-                data.append(audioURL, withName: "audio", fileName: "upload.m4a", mimeType: "audio/m4a")
-                print(data.boundary)
-            }
-            else
-            {
-                completion(false, nil)
-            }
-            
-            
-        }, usingThreshold: 1, to: url!, method: .post, headers: httpHeader) { (results) in
-            
-            switch results
-            {
-            case .failure(let error):
-                print(error.localizedDescription)
-                let errorString = "Failure while requesting your infomation. Please try again."
-                userDefault.set(errorString, forKey: NOTIFI_ERROR)
-                userDefault.synchronize()
-                completion(false, nil)
+            upload.uploadProgress(closure: { (progress) in
+                print("PROGRESS UPLOAD:--->", (progress.fractionCompleted * 100))
                 
-            case .success(request: let upload, streamingFromDisk: _, streamFileURL: _):
+            })
+            
+            upload.responseJSON(completionHandler: { (response) in
                 
-                upload.uploadProgress(closure: { (progress) in
-                    print("PROGRESS UPLOAD:--->", (progress.fractionCompleted * 100))
-                    
-                })
+                guard let json = response.result.value as? NSDictionary else {return}
+                print(json)
                 
-                upload.responseJSON(completionHandler: { (response) in
-                    
-                    guard let json = response.result.value as? NSDictionary else {return}
-                    print(json)
-                    
-                    if response.result.isSuccess
+                if response.result.isSuccess
+                {
+                    if response.response?.statusCode == 200
                     {
-                        if response.response?.statusCode == 200
-                        {
-                            completion(true, json)
-                        }
-                        else
-                        {
-                            completion(false, json)
-                        }
+                        completion(true, json)
                     }
                     else
                     {
                         completion(false, json)
                     }
-                    
-                })
-            }
-            
-            
+                }
+                else
+                {
+                    completion(false, json)
+                }
+                                
+            })
         }
         
+        
+        }
+            
     }
     
-    static func getAllRecord(page: Int, completion: @escaping ([NSDictionary]?, _ totalPage: Int?, NSDictionary?) -> ())
+    static func getAllRecord(page: Int, completion: @escaping ([NSDictionary]?, _ totalPage: Int?) -> ())
     {
         let url = URL(string: APIURL.getAllrecordURL + "\(page)")
-        let header: HTTPHeaders = ["Retry-After": "3600"]
         
-        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
-            
-            let json = response.result.value as? NSDictionary
+        Alamofire.request(url!).responseJSON { (response) in
             
             if response.result.isSuccess
             {
-                
-                if let data = json?["data"] as? [NSDictionary]
+                let json = response.result.value as? NSDictionary
+                if let data = json?["data"] as? Array<NSDictionary>
                 {
                     guard let meta = json?["meta"] as? NSDictionary, let pagination = meta["pagination"] as? NSDictionary, let total_pages = pagination["total_pages"] as? Int else {return}
                     
-                    completion(data, total_pages,json)
+                    completion(data, total_pages)
                     
                 }
                 else
                 {
-                    if let error = json?["error"] as? String
-                    {
-                        
-                        print(error, json?["code"] as! Int)
-                        completion(nil, nil,json)
-                    }
-                    
-                    
+                    completion(nil, nil)
                 }
             }
             else
             {
-                completion(nil, nil,json)
+                completion(nil, nil)
             }
-
+            
         }
-        
-//        Alamofire.request(url!).responseJSON { (response) in
-//            
-//            if response.result.isSuccess
-//            {
-//                let json = response.result.value as? NSDictionary
-//                if let data = json?["data"] as? [NSDictionary]
-//                {
-//                    print("DATA:\n------>",data)
-//                    guard let meta = json?["meta"] as? NSDictionary, let pagination = meta["pagination"] as? NSDictionary, let total_pages = pagination["total_pages"] as? Int else {return}
-//                    
-//                    completion(data, total_pages)
-//                    
-//                }
-//                else
-//                {
-//                    completion(nil, nil)
-//                }
-//            }
-//            else
-//            {
-//                completion(nil, nil)
-//            }
-//            
-//        }
     }
     
     static func postGrade(withToken token: String, identifier:Int, grade: Int,comment:String, completion: @escaping (Bool?, Int?, NSDictionary?) -> ())
@@ -149,7 +121,7 @@ struct ExamRecord
         let url = URL(string: APIURL.baseURL + "/records/" + "\(identifier)" + "/grades")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
         let para: Parameters = ["grade": "\(grade)",
-            "comment": comment]
+                                "comment": comment]
         
         Alamofire.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
@@ -163,7 +135,7 @@ struct ExamRecord
                     completion(true, code, json)
                 }
                 else
-                    
+                
                 {
                     completion(false, code, json)
                 }
@@ -177,4 +149,16 @@ struct ExamRecord
         
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
 }

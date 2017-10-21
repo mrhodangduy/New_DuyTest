@@ -233,13 +233,47 @@ struct LoginWithSocial
             default:
                 
                 completion(false, response.response?.statusCode, json)
-                
+
             }
             
         }
     }
     
     
+    static func ResetPassword(email: String, completion: @escaping (Bool?, NSDictionary?)->())
+    {
+        let url = URL(string: "http://wodule.io/api/password/email")
+        
+        let para:Parameters = ["email": email]
+        let header: HTTPHeaders = ["Accept": "application/json"]
+        
+        Alamofire.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
+            
+            let json = response.result.value as? NSDictionary
+            let code = response.response?.statusCode
+            
+            if response.result.isSuccess
+            {
+                if code == 200
+                {
+                    guard let data = json?["data"] as? NSDictionary, let token = data["token"] as? String else {return}
+                    
+                    userDefault.set(token, forKey: TOKENRESET_STRING)
+                    userDefault.synchronize()
+                    
+                    completion(true, json)
+                }
+                else
+                {
+                    completion(false, json)
+                }
+            }
+            else
+            {
+                completion(false, json)
+            }
+        }
+    }
     
 }
 
@@ -403,6 +437,14 @@ struct UserInfoAPI
             let dateformat = DateFormatter()
             dateformat.dateFormat = "MM_dd_YY_hh:mm:ss"
             
+            if let imageData = picture
+            {
+                data.append(imageData, withName: "picture", fileName: dateformat.string(from: Date()) + ".jpg", mimeType: "image/jpg")
+            }
+                
+            else{
+                print("\nPICTURE DATA:------>", picture as Any)
+            }
             
             for (key, value) in para {
                 data.append((value as! String).data(using: String.Encoding.utf8)!, withName: key)
@@ -422,8 +464,12 @@ struct UserInfoAPI
                 
                 upload.responseJSON(completionHandler: { (response) in
                     
+                    
+                    
                     if response.result.isSuccess
                     {
+                        print(response.result.value)
+                        
                         let json = response.result.value as? [String:AnyObject]
                         print("\nJSON DATA:\n---->", json!)
                         
@@ -453,15 +499,12 @@ struct UserInfoAPI
                             }
                             
                         }
+
                     }
                     else
                     {
-                        completion(false)
-                        let errorString = "Failure while requesting your infomation. Please try again."
-                        userDefault.set(errorString, forKey: NOTIFI_ERROR)
-                        userDefault.synchronize()
+                        print(response)
                     }
-                    
                     
                 })
                 
@@ -484,19 +527,28 @@ struct UserInfoAPI
         
         Alamofire.upload(multipartFormData: { (data) in
             
-            
+                        
             let dateformat = DateFormatter()
             dateformat.dateFormat = "MM_DD_YY_hh_mm_ss"
             
-            if let imageData = picture
+            let fileURL = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(dateformat.string(from: Date())).appendingPathExtension("jpg")
+            
+            if FileManager.default.fileExists(atPath: "\(fileURL!)")
             {
-                data.append(imageData, withName: "picture", fileName: dateformat.string(from: Date()) + ".jpg", mimeType: "image/jpg")
-            }
+                do {
+                    try picture?.write(to: fileURL!, options: .atomic)
+                    
+                } catch {
+                    
+                }
                 
-            else{
-                print("\nPICTURE DATA:------>", picture as Any)
+                data.append(fileURL!, withName: "picture")
+                
             }
-
+            else
+            {
+            }
+            
             for (key, value) in para {
                 
                 data.append((value as! String).data(using: String.Encoding.utf8)!, withName: key)
@@ -529,7 +581,7 @@ struct UserInfoAPI
                     {
                         completion(false, response.response?.statusCode, json)
                     }
-                    
+
                 })
                 
                 
@@ -539,36 +591,6 @@ struct UserInfoAPI
             }
             
             
-        }
-    }
-    
-    static func ResetPassword(email: String, completion: @escaping (Bool?, NSDictionary?)->())
-    {
-        let url = URL(string: "http://wodule.io/api/password/email")
-        
-        let para:Parameters = ["email": email]
-        let header: HTTPHeaders = ["Accept": "application/json"]
-        
-        Alamofire.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
-            
-            let json = response.result.value as? NSDictionary
-            let code = response.response?.statusCode
-            
-            if response.result.isSuccess
-            {
-                if code == 200
-                {
-                    completion(true, json)
-                }
-                else
-                {
-                    completion(false, json)
-                }
-            }
-            else
-            {
-                completion(false, json)
-            }
         }
     }
 }

@@ -43,7 +43,7 @@ class Part1VC: UIViewController {
         tv_Data.font = UIFont.systemFont(ofSize: fontSizeDefaultTV)
         
         guard let index = Exam.index(where: { $0.number == 1 }) else { return }
-        print("\n------>",Exam[index])
+        print("\n\n",Exam[index])
         examID = Exam[index].identifier
         
         circleTime.circleTimerWidth = 2
@@ -109,10 +109,6 @@ class Part1VC: UIViewController {
         
         
         self.navigationController?.pushViewController(part2VC, animated: true)
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
     }
     
         

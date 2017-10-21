@@ -40,12 +40,6 @@ class NewUser_Page1VC: UIViewController {
         
         tf_Suffix.tintColor = .clear
         tf_CountryofBirth.tintColor = .clear
-        
-        tf_Firstname.delegate = self
-        tf_Middlename.delegate = self
-        tf_Lastname.delegate = self
-        tf_Nativename.delegate = self
-
     }
     
     @IBAction func tickBtnTap(_ sender: UIButton) {
@@ -64,8 +58,6 @@ class NewUser_Page1VC: UIViewController {
     
     @IBAction func suffixTap(_ sender: Any) {
         
-        self.endEditingView()
-        
         currentIndex = 1
         tableHeight = CGFloat(Suffix.count) * 44
         setupViewData(subView: dataTableview, height: tableHeight)
@@ -75,8 +67,6 @@ class NewUser_Page1VC: UIViewController {
     }
     
     @IBAction func countryTap(_ sender: Any) {
-        
-        self.endEditingView()
         
         currentIndex = 2
         
@@ -181,8 +171,6 @@ class NewUser_Page1VC: UIViewController {
     
     @IBAction func nextPageTap(_ sender: Any) {
         
-        self.endEditingView()
-        
         let checkey = checkValidateTextField(tf1: tf_Firstname, tf2: tf_Middlename, tf3: tf_Lastname, tf4: tf_DateofBirthday, tf5: tf_CountryofBirth, tf6: nil)
         
         switch checkey {
@@ -204,10 +192,6 @@ class NewUser_Page1VC: UIViewController {
             self.navigationController?.pushViewController(newuser, animated: true)
         }
         
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
     }
     
 }
@@ -258,31 +242,4 @@ extension NewUser_Page1VC: UITableViewDelegate, UITableViewDataSource
         
     }
 }
-extension NewUser_Page1VC: UITextFieldDelegate
-{
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
-        switch textField {
-        case tf_Firstname:
-            tf_Middlename.becomeFirstResponder()
-        case tf_Middlename:
-            tf_Lastname.becomeFirstResponder()
-        case tf_Lastname:
-            tf_Nativename.becomeFirstResponder()
-        case tf_Nativename:
-            textField.resignFirstResponder()
-        default:
-            textField.resignFirstResponder()
-        }
-        
-        return true
-
-    }
-}
-
-
-
-
-
-
 

@@ -1,5 +1,5 @@
 //
-//  Assessor_AssessmentVC.swift
+//  Assessor_HistoryVC.swift
 //  Wodule
 //
 //  Created by QTS Coder on 10/4/17.
@@ -8,11 +8,12 @@
 
 import UIKit
 
-class Assessor_AssessmentVC: UIViewController {
+class Assessor_HistoryVC: UIViewController {
     
     @IBOutlet weak var lbl_NoFound: UILabel!
     @IBOutlet weak var dataTableView: UITableView!
     
+    var History = [AssesmentHistory]()
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
     var userID:Int!
     var currentpage :Int!
@@ -21,25 +22,20 @@ class Assessor_AssessmentVC: UIViewController {
     var AllRecord = [NSDictionary]()
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
+        currentpage = 1
+        
         lbl_NoFound.isHidden = true
+        
         dataTableView.dataSource = self
         dataTableView.delegate = self
         
-        loadNewData()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.loadNewData), name: NSNotification.Name(rawValue: "post grade"), object: nil)
-        
-    }
-    
-    func loadNewData()
-    {
-        currentpage = 1
         loadingShow()
         DispatchQueue.global(qos: .default).async {
             
-            ExamRecord.getAllRecord(page: self.currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?, json:NSDictionary?) in
+            ExamRecord.getAllRecord(page: self.currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?) in
                 
                 if result != nil
                 {
@@ -52,14 +48,42 @@ class Assessor_AssessmentVC: UIViewController {
                     })
                     
                 }
-                else if json?["code"] as! Int == 429
+                else
                 {
-                    
-                    guard let errorMess = json?["error"] as? String else {return}
+                    self.lbl_NoFound.text = "No Record Found"
+                    self.lbl_NoFound.isHidden = false
                     DispatchQueue.main.async(execute: {
+                        self.dataTableView.reloadData()
                         self.loadingHide()
-                        self.alertMissingText(mess: "\(errorMess)\n(ErrorCode:\(json?["code"] as! Int))", textField: nil)
                     })
+                }
+                
+                
+            })
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.loadNewData), name: NSNotification.Name(rawValue: "post grade"), object: nil)
+        
+    }
+    
+    func loadNewData()
+    {
+        currentpage = 1
+        loadingShow()
+        DispatchQueue.global(qos: .default).async {
+            
+            ExamRecord.getAllRecord(page: self.currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?) in
+                
+                if result != nil
+                {
+                    self.AllRecord = result!
+                    self.totalPage = totalPage
+                    DispatchQueue.main.async(execute: {
+                        self.AllRecord = self.AllRecord.filter { $0["score"] as! Int == 0 }
+                        self.dataTableView.reloadData()
+                        self.loadingHide()
+                    })
+                    
                 }
                 else
                 {
@@ -70,6 +94,7 @@ class Assessor_AssessmentVC: UIViewController {
                         self.loadingHide()
                     })
                 }
+                
                 
             })
         }
@@ -84,7 +109,7 @@ class Assessor_AssessmentVC: UIViewController {
     
 }
 
-extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
+extension Assessor_HistoryVC: UITableViewDataSource,UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return AllRecord.count
@@ -95,9 +120,14 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
         let item = AllRecord[indexPath.row]
         
         cell.lbl_ExamID.text = item["exam"] as? String
+//        cell.lbl_Score.text = "\(item["score"] as! Int)"
         cell.lbl_Score.text = "-"
         cell.lbl_Date.text = convertDay(DateString: item["creationDate"] as! String)
         cell.lbl_examinerrID.text = "\(item["examinee"] as! Int)"
+        
+        
+        
+        
         return cell
     }
     
@@ -108,7 +138,7 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let part1VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "gradeVC") as! Assessor_GradeVC
+        let part1VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part1VC") as! Assessor_Part1VC
         part1VC.Exam = AllRecord[indexPath.row]
         
         self.navigationController?.pushViewController(part1VC, animated: true)
@@ -117,7 +147,7 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        let lastItem = AllRecord.count-1
+        let lastItem = AllRecord.count - 2
         if indexPath.row == lastItem && currentpage < totalPage + 1
         {
             currentpage = currentpage + 1
@@ -130,7 +160,7 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
     
     func loadMore(currentpage: Int)
     {
-        ExamRecord.getAllRecord(page: currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?, json: NSDictionary?) in
+        ExamRecord.getAllRecord(page: currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?) in
             
             if result != nil
             {
@@ -145,19 +175,6 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
                     }
                     
                 }
-            }
-            else if json?["code"] as! Int == 429
-            {
-                
-                let errorMess = json?["error"] as? String
-                DispatchQueue.main.async(execute: {
-                    self.loadingHide()
-                    self.alertMissingText(mess: "\(errorMess!)\n(Code:-\(json?["code"] as! Int)-)", textField: nil)
-                })
-            }
-            else
-            {
-                print("ERROR:\n--->",json!)
             }
         })
         

@@ -1,15 +1,15 @@
 //
-//  Part1VC.swift
+//  Part3_TempVC.swift
 //  Wodule
 //
-//  Created by QTS Coder on 10/3/17.
+//  Created by QTS Coder on 10/6/17.
 //  Copyright © 2017 QTS. All rights reserved.
 //
 
 import UIKit
 import JWGCircleCounter
 
-class Part2VC: UIViewController {
+class Part3_TempVC: UIViewController {
     
     @IBOutlet weak var circleTime: JWGCircleCounter!
     @IBOutlet weak var containerView: UIView!
@@ -36,9 +36,8 @@ class Part2VC: UIViewController {
         
         AudioRecorderManager.shared.recorder?.prepareToRecord()
 
-        
         tv_Data.font = UIFont.systemFont(ofSize: fontSizeDefaultTV)
-        
+
         circleTime.circleBackgroundColor = .clear
         circleTime.circleColor = .white
         circleTime.circleTimerWidth = 2
@@ -46,7 +45,7 @@ class Part2VC: UIViewController {
         recordingMess.isHidden = true
         nextBtn.isHidden = true
         
-        guard let index = Exam.index(where: { $0.number == 2 }) else { return }
+        guard let index = Exam.index(where: { $0.number == 3 }) else { return }
         print("\n\n",Exam[index])
         examID = Exam[index].identifier
         
@@ -78,12 +77,15 @@ class Part2VC: UIViewController {
             circleTime.start(withSeconds: timeInitial)
             
         }
+        
+        
+        
 
-        
-        
-        
+
+
+        // Do any additional setup after loading the view.
     }
-    
+
     @IBAction func decreaseSizeTap(_ sender: Any) {
         
         if Int((tv_Data.font?.pointSize)!) > 10
@@ -97,20 +99,20 @@ class Part2VC: UIViewController {
     @IBAction func increaseSizeTap(_ sender: Any) {
         
         tv_Data.font = UIFont.systemFont(ofSize: (tv_Data.font?.pointSize)! + 1)
-
+        
     }
     
     @IBAction func nextBtnTap(_ sender: Any) {
-        let part3_tempVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part3_tempVC") as! Part3_TempVC
+        let part4_tempVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part4_tempVC") as! Part4_TempVC
         
-        part3_tempVC.Exam = self.Exam
-                
-        self.navigationController?.pushViewController(part3_tempVC, animated: true)
+        part4_tempVC.Exam = self.Exam
+        
+        self.navigationController?.pushViewController(part4_tempVC, animated: true)
     }
     
 }
 
-extension Part2VC: JWGCircleCounterDelegate
+extension Part3_TempVC: JWGCircleCounterDelegate
 {
     func circleCounterTimeDidExpire(_ circleCounter: JWGCircleCounter!) {
         
@@ -118,7 +120,7 @@ extension Part2VC: JWGCircleCounterDelegate
         self.StarRecording(userID: userID!, examID: examID) { (audioURLs:NSURL?) in
             audioURL = audioURLs
         }
-
+        
         self.recordingMess.isHidden = false
         UIView.animate(withDuration: expectTime, animations: {
             self.viewBackground.frame.size.width = self.containerView.frame.size.width
@@ -133,14 +135,3 @@ extension Part2VC: JWGCircleCounterDelegate
         
     }
 }
-
-
-
-
-
-
-
-
-
-
-

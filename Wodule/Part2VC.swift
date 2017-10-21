@@ -34,11 +34,7 @@ class Part2VC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        AudioRecorderManager.shared.recorder?.prepareToRecord()
-
-        
-        tv_Data.font = UIFont.systemFont(ofSize: fontSizeDefaultTV)
-        
+        AudioRecorderManager.shared.recorder?.prepareToRecord()        
         circleTime.circleBackgroundColor = .clear
         circleTime.circleColor = .white
         circleTime.circleTimerWidth = 2

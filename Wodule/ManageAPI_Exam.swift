@@ -83,9 +83,8 @@ struct ExamRecord
     static func getAllRecord(page: Int, completion: @escaping ([NSDictionary]?, _ totalPage: Int?, NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.getAllrecordURL + "\(page)")
-        let header: HTTPHeaders = ["Retry-After": "3600"]
         
-        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
+        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
             
             let json = response.result.value as? NSDictionary
             
@@ -115,7 +114,7 @@ struct ExamRecord
             {
                 completion(nil, nil,json)
             }
-
+            
         }
         
     }
@@ -123,43 +122,46 @@ struct ExamRecord
     static func postGrade(withToken token: String, identifier:Int, grade: Int,comment:String, completion: @escaping (Bool?, Int?, NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.baseURL + "/records/" + "\(identifier)" + "/grades")
-        let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
-        let para: Parameters = ["grade": "\(grade)",
-            "comment": comment]
+        let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)", "Content-Type": "application/x-www-form-urlencoded"]
+        let para: Parameters = ["grade": "\(grade)","comment": comment]
         
-        Alamofire.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: httpHeader).response { (response) in
+        Alamofire.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
+            let json = response.result.value as? NSDictionary
             print(response.response?.statusCode)
+            let code = response.response!.statusCode
             
+            if response.result.isSuccess
+            {
+                if response.response?.statusCode == 200
+                {
+                    completion(true, code, json)
+                }
+                else
+                    
+                {
+                    completion(false, code, json)
+                }
+            }
+            else
+            {
+                if code == 500
+                {
+                    completion(true, code, nil)
+                }
+                else
+                {
+                    completion(false, code, json)
+                    
+                }
+                print(response.result.error?.localizedDescription)
+                
+                
+            }
             
-        }
-        
-        
-//        Alamofire.request(url!, method: .post, parameters: para, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON { (response) in
-//            
-//            let json = response.result.value as? Any
-//            print(response.response?.statusCode)
-//            let code = response.response!.statusCode
-//            
-//            if response.result.isSuccess
-//            {
-//                if response.response?.statusCode == 200
-//                {
-//                    completion(true, code, json as! NSDictionary)
-//                }
-//                else
-//                    
-//                {
-//                    completion(false, code, json as! NSDictionary)
-//                }
-//            }
-//            else
-//            {
-//                completion(false, code, json as! NSDictionary)
-//            }
-        
         }
         
     }
     
+}
 

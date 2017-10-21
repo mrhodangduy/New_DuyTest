@@ -35,8 +35,6 @@ class Part4VC: UIViewController {
         
         AudioRecorderManager.shared.recorder?.prepareToRecord()
 
-        tv_Data.font = UIFont.systemFont(ofSize: fontSizeDefaultTV)
-        
         circleTime.circleBackgroundColor = .clear
         circleTime.circleColor = .white
         circleTime.circleTimerWidth = 2

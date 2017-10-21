@@ -38,9 +38,7 @@ class Part1VC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        AudioRecorderManager.shared.recorder?.prepareToRecord()
-        
-        tv_Data.font = UIFont.systemFont(ofSize: fontSizeDefaultTV)
+        AudioRecorderManager.shared.recorder?.prepareToRecord()        
         
         guard let index = Exam.index(where: { $0.number == 1 }) else { return }
         print("\n------>",Exam[index])

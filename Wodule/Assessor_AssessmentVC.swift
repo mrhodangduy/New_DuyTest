@@ -29,15 +29,21 @@ class Assessor_AssessmentVC: UIViewController {
         
         loadNewData()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.loadNewData), name: NSNotification.Name(rawValue: "post grade"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.loadNewData), name: NSNotification.Name(rawValue: "post grade"), object: nil)
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadNewData()
+
     }
     
     func loadNewData()
     {
         currentpage = 1
         loadingShow()
-        DispatchQueue.global(qos: .background).async { 
+        DispatchQueue.global(qos: .background).async {
             ExamRecord.getAllRecord(page: self.currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?, json:NSDictionary?) in
                 
                 if result != nil
@@ -58,7 +64,6 @@ class Assessor_AssessmentVC: UIViewController {
                         DispatchQueue.main.async(execute: {
                             
                             self.dataTableView.reloadData()
-                            self.loadingHide()
                             
                         })
                         
@@ -87,7 +92,7 @@ class Assessor_AssessmentVC: UIViewController {
                 }
                 
             })
-
+            
         }
         
     }
@@ -162,15 +167,16 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
                             self.dataTableView.reloadData()
                             self.loadingHide()
                             
+                            
                         })
                     }
                     
                 }
                 else
                 {
+                    
                     print("Current page",self.currentpage)
                 }
-                
                 
             }
             else if json?["code"] as! Int == 429

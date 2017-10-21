@@ -126,7 +126,7 @@ class Assessor_GradeVC: UIViewController {
         
         let button = sender as! UIButton
         
-        if button.tag == 1
+        if button == self.decreaseBtn
         {
             if Int((tv_Content.font?.pointSize)!) > 10
             {
@@ -135,7 +135,7 @@ class Assessor_GradeVC: UIViewController {
             }
             
         }
-        else if button.tag == 2
+        else if button == self.increaseBtn
         {
             tv_Content.font = UIFont.systemFont(ofSize: (tv_Content.font?.pointSize)! + 1)
             
@@ -161,6 +161,8 @@ class Assessor_GradeVC: UIViewController {
     @IBAction func onClickSubmit(_ sender: Any) {
         
         self.pause()
+        self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
+        self.isTapped = false
         
         if score == 0 || tv_Comment.text.trimmingCharacters(in: .whitespacesAndNewlines).characters.count == 0
         {
@@ -182,7 +184,7 @@ class Assessor_GradeVC: UIViewController {
                     self.loadingHide()
                     self.navigationController?.popViewController(animated: true)
                     
-                    print(result!)
+                    print(result)
                 }
                     
                 else if code == 409
@@ -339,6 +341,7 @@ extension Assessor_GradeVC: AVAudioPlayerDelegate
         print("DID PLAYED")
         self.stop()
         self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
+        self.isTapped = false
     }
 }
 

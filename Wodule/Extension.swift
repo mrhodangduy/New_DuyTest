@@ -113,11 +113,16 @@ extension UIViewController
     {
         SVProgressHUD.show()
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        SVProgressHUD.setDefaultAnimationType(SVProgressHUDAnimationType.flat)
+        SVProgressHUD.setBackgroundLayerColor(#colorLiteral(red: 0.05584111065, green: 0.3768753409, blue: 0.2193908095, alpha: 1).withAlphaComponent(0.4))
+        SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.custom)
     }
     func loadingHide()
     {
         SVProgressHUD.dismiss()
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.none)
+
     }
     
     func play_pauseAudio(button:UIButton, isPlay:Bool)

@@ -123,7 +123,10 @@ extension Part2VC: JWGCircleCounterDelegate
             self.recordingMess.text = "Time Out"
             self.nextBtn.isHidden = false
             self.stopRecord(audioURL: audioURL)
-            self.uploadRecord(token: self.token!, userID: self.userID!, examID: self.examID)
+            self.uploadRecord(token: self.token!, userID: self.userID!, examID: self.examID, completion: { (done) in
+                
+                                
+            })
             
         })
         

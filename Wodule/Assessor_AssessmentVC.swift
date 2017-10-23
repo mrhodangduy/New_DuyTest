@@ -27,51 +27,40 @@ class Assessor_AssessmentVC: UIViewController {
         dataTableView.dataSource = self
         dataTableView.delegate = self
         
-        loadNewData()
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.loadNewData), name: NSNotification.Name(rawValue: "post grade"), object: nil)
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadNewData()
+        getData()
 
     }
     
-    func loadNewData()
+    func getData()
     {
+        
+        AllRecord.removeAll()
         currentpage = 1
         loadingShow()
-        DispatchQueue.global(qos: .background).async {
-            ExamRecord.getAllRecord(page: self.currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?, json:NSDictionary?) in
+        DispatchQueue.global(qos: .default).async { 
+            
+            ExamRecord.getAllRecord(page: self.currentpage, completion: { (result:[NSDictionary]?, totalPage:Int?, json:NSDictionary?) in
                 
                 if result != nil
                 {
-                    self.AllRecord = result!
-                    self.totalPage = totalPage
-                    self.AllRecord = self.AllRecord.filter { $0["score"] as! Int == 0 }
                     
-                    repeat
+                    for item in result!
                     {
-                        if self.currentpage == totalPage!
+                        if item["score"] as! Int == 0
                         {
-                            break
+                            self.AllRecord.append(item)
                         }
-                        
-                        self.currentpage = self.currentpage + 1
-                        self.loadMore(currentpage: self.currentpage)
-                        DispatchQueue.main.async(execute: {
-                            
-                            self.dataTableView.reloadData()
-                            
-                        })
-                        
-                        
-                    } while self.AllRecord.count == 0
-                    
-                    
+                    }
+                    self.totalPage = totalPage
+                    DispatchQueue.main.async(execute: {
+                        self.dataTableView.reloadData()
+                    })
                 }
+                
                 else if json?["code"] as! Int == 429
                 {
                     
@@ -94,9 +83,7 @@ class Assessor_AssessmentVC: UIViewController {
             })
             
         }
-        
     }
-    
     
     @IBAction func backBtnTap(_ sender: Any) {
         
@@ -114,7 +101,6 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! Assessor_HistoryCell
         
         let item = AllRecord[indexPath.row]
-        print("\n", item)
         
         cell.lbl_ExamID.text = item["exam"] as? String
         cell.lbl_Score.text = "-"
@@ -132,6 +118,8 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
         
         let part1VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "gradeVC") as! Assessor_GradeVC
         part1VC.Exam = AllRecord[indexPath.row]
+        
+        print(AllRecord[indexPath.row])
         
         self.navigationController?.pushViewController(part1VC, animated: true)
         
@@ -163,19 +151,24 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
                     for item in data
                     {
                         self.AllRecord.append(item)
-                        DispatchQueue.main.async(execute: {
-                            self.dataTableView.reloadData()
-                            self.loadingHide()
-                            
-                            
-                        })
+                        
                     }
+                    DispatchQueue.main.async(execute: {
+                        self.dataTableView.reloadData()
+                        self.loadingHide()
+                        
+                    })
                     
                 }
                 else
                 {
                     
                     print("Current page",self.currentpage)
+                    DispatchQueue.main.async(execute: {
+                        self.dataTableView.reloadData()
+                        self.loadingHide()
+                        
+                    })
                 }
                 
             }

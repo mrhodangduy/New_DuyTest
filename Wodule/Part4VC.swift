@@ -95,8 +95,7 @@ class Part4VC: UIViewController {
     
     @IBAction func nextBtnTap(_ sender: Any) {
         
-        let endVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "endassessmentVC") as! EndVC
-                
+        let endVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "endassessmentVC") as! EndVC                
         self.navigationController?.pushViewController(endVC, animated: true)
     }
     
@@ -119,7 +118,17 @@ extension Part4VC: JWGCircleCounterDelegate
             self.recordingMess.text = "Time Out"
             self.nextBtn.isHidden = false
             self.stopRecord(audioURL: audioURL)
-            self.uploadRecord(token: self.token!, userID: self.userID!, examID: self.examID)
+            self.loadingShowwithStatus(status: "Uploading your Exam.")
+            self.uploadRecord(token: self.token!, userID: self.userID!, examID: self.examID, completion: { (done) in
+                
+                if done!
+                {
+                    DispatchQueue.main.async(execute: { 
+                        self.loadingHide()
+                    })
+                }
+                
+            })
             
         })
         

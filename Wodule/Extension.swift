@@ -33,7 +33,7 @@ extension UIViewController
         
     }
     
-    func uploadRecord(token: String,userID: Int, examID: Int)
+    func uploadRecord(token: String,userID: Int, examID: Int, completion: @escaping (Bool?) -> ())
     {
         let url  = AudioRecorderManager.shared.getUserDocumentsPath()
         print("File LOcation:", url.path)
@@ -56,11 +56,13 @@ extension UIViewController
                 
                 if status == true
                 {
-                    print("UPLOAD DONE\n",result!)
+                    print("UPLOAD DONE\n",result!)                    
+                    completion(true)
                 }
                 else
                 {
                     print(result as Any)
+                    completion(false)
                 }
             }            
         }
@@ -109,13 +111,20 @@ extension UIViewController
         
     }
     
+    func loadingShowwithStatus(status: String)
+    {
+        SVProgressHUD.show(withStatus: status)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        SVProgressHUD.setDefaultAnimationType(SVProgressHUDAnimationType.flat)
+        SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.clear)
+    }
+    
     func loadingShow()
     {
         SVProgressHUD.show()
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         SVProgressHUD.setDefaultAnimationType(SVProgressHUDAnimationType.flat)
-        SVProgressHUD.setBackgroundLayerColor(#colorLiteral(red: 0.05584111065, green: 0.3768753409, blue: 0.2193908095, alpha: 1).withAlphaComponent(0.4))
-        SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.custom)
+        SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.clear)
     }
     func loadingHide()
     {

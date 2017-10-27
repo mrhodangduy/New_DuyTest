@@ -190,6 +190,7 @@ class Assessor_Part2VC: UIViewController {
             {
                 let overviewVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "overviewVC") as! Assessor_OverviewVC
                 overviewVC.numberOfQuestion = 2
+                overviewVC.Exam = self.Exam
                 overviewVC.data1 = self.data1
                 overviewVC.data2 = self.data2
                 self.stop()

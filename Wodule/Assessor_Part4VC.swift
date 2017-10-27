@@ -186,6 +186,7 @@ class Assessor_Part4VC: UIViewController {
             userDefault.synchronize()
             let overviewVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "overviewVC") as! Assessor_OverviewVC
             overviewVC.numberOfQuestion = 4
+            overviewVC.Exam = self.Exam
             overviewVC.data1 = self.data1
             overviewVC.data2 = self.data2
             overviewVC.data3 = self.data3

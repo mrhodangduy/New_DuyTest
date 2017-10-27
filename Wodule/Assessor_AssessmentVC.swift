@@ -122,7 +122,6 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
         print(AllRecord[indexPath.row])
         let identifier = self.AllRecord[indexPath.row]["identifier"] as? Int
         let examID = self.AllRecord[indexPath.row]["exam"] as? String
-        userDefault.set(examID, forKey: EXAMID_STRING)
         userDefault.set(identifier, forKey: IDENTIFIER_KEY)
         userDefault.synchronize()
         

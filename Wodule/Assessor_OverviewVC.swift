@@ -7,14 +7,25 @@
 //
 
 import UIKit
+import SDWebImage
 
 class Assessor_OverviewVC: UIViewController {
     
     var isPlaying:Bool!
     @IBOutlet var dataTableView: UITableView!
+    @IBOutlet var contentTextView: UITextView!
+    @IBOutlet var contentImageView: UIImageView!
     var backgroundView:UIView!
     var currentIndex:Int!
     
+    @IBOutlet weak var part1_ViewData: UIButton!
+    @IBOutlet weak var part2_ViewData: UIButton!
+    @IBOutlet weak var part3_ViewData: UIButton!
+    @IBOutlet weak var part4_ViewData: UIButton!
+    @IBOutlet weak var part1TitleLabel: UILabel!
+    @IBOutlet weak var part2TitleLabel: UILabel!
+    @IBOutlet weak var part3TitleLabel: UILabel!
+    @IBOutlet weak var part4TitleLabel: UILabel!
     @IBOutlet weak var examIDLabel: UILabel!
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var part3ContainerView: UIView!
@@ -25,28 +36,94 @@ class Assessor_OverviewVC: UIViewController {
     var data2: Data?
     var data3: Data?
     var data4: Data?
+    
+    var part1Type:Int!
+    var part2Type:Int!
+    var part3Type:Int!
+    var part4Type:Int!
+
+    let VIEWPHOTO = "VIEW PHOTO"
+    let VIEWTEXT = "VIEW TEXT"
+    
+    var widthViewScore: CGFloat!
+    var widthViewPhoto: CGFloat!
+    var xFrame: CGFloat!
+
+    
+    var Exam: NSDictionary?
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        examIDLabel.text = userDefault.object(forKey: EXAMID_STRING) as? String
+        widthViewScore = view.frame.size.width * (4/6)
+        widthViewPhoto = view.frame.size.width
+        xFrame = view.frame.size.width * (1/6)
         
-        switch numberOfQuestion {
-        case 2:
-            mainContainerView.frame.size.height = 240
-            part3ContainerView.isHidden = true
-            part4ContainerView.isHidden = true
-        case 3:
-            mainContainerView.frame.size.height = 360
-            part4ContainerView.isHidden = true
-        default:
-            return
-        }
+        onHandleInitView()
         
         isPlaying = false
         
         dataTableView.dataSource = self
         dataTableView.delegate = self
+        
+    }
+    
+    func onHandleInitView()
+    {
+        examIDLabel.text = Exam?["exam"] as? String
+        
+        if ((Exam?["examQuestionaireOne"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        {
+            part1_ViewData.setTitle(VIEWPHOTO, for: .normal)
+            part1TitleLabel.text = TITLEPHOTO
+            part1Type = 1
+        }
+        else
+        {
+            part1_ViewData.setTitle(VIEWTEXT, for: .normal)
+            part1TitleLabel.text = TITLESTRING
+            part1Type = 0
+            
+        }
+        if ((Exam?["examQuestionaireTwo"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        {
+            part2_ViewData.setTitle(VIEWPHOTO, for: .normal)
+            part2TitleLabel.text = TITLEPHOTO
+            part2Type = 1
+        }
+        else
+        {
+            part2_ViewData.setTitle(VIEWTEXT, for: .normal)
+            part2TitleLabel.text = TITLESTRING
+            part2Type = 0
+            
+        }
+        if ((Exam?["examQuestionaireThree"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        {
+            part3_ViewData.setTitle(VIEWPHOTO, for: .normal)
+            part3TitleLabel.text = TITLEPHOTO
+            part3Type = 1
+        }
+        else
+        {
+            part3_ViewData.setTitle(VIEWTEXT, for: .normal)
+            part3TitleLabel.text = TITLESTRING
+            part3Type = 0
+            
+        }
+        if ((Exam?["examQuestionaireFour"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        {
+            part4_ViewData.setTitle(VIEWPHOTO, for: .normal)
+            part4TitleLabel.text = TITLEPHOTO
+            part4Type = 1
+        }
+        else
+        {
+            part4_ViewData.setTitle(VIEWTEXT, for: .normal)
+            part4TitleLabel.text = TITLESTRING
+            part4Type = 0
+        }
+        
         
         let score_Part1 = userDefault.object(forKey: SCORE_PART1) as? Int
         let score_Part2 = userDefault.object(forKey: SCORE_PART2) as? Int
@@ -55,27 +132,50 @@ class Assessor_OverviewVC: UIViewController {
         
         if score_Part1 != nil
         {
-            part1_ScoreBtn.setTitle("\(score_Part1!)", for: .normal)
+            part1ScoreLabel.text = "\(score_Part1!)"
         }
         if score_Part2 != nil
         {
-            part2_ScoreBtn.setTitle("\(score_Part2!)", for: .normal)
+            part2ScoreLabel.text = "\(score_Part2!)"
         }
         if score_Part3 != nil
         {
-            part3_ScoreBtn.setTitle("\(score_Part3!)", for: .normal)
+            part3ScoreLabel.text = "\(score_Part3!)"
         }
         if score_Part4 != nil
         {
-            part4_ScoreBtn.setTitle("\(score_Part4!)", for: .normal)
+            part4ScoreLabel.text = "\(score_Part4!)"
         }
         
+        if numberOfQuestion == 2
+        {
+            part3ContainerView.isHidden = true
+            part4ContainerView.isHidden = true
+        }
+        if numberOfQuestion  == 3
+        {
+            part4ContainerView.isHidden = true
+        }
+    }
+    
+    func onHandleDisplayView(type:Int, question: String)
+    {
+        if type == 1
+        {
+            onHandleViewData(subView: contentImageView, height: view.frame.height / 2, width: widthViewPhoto, xFrame: 0)
+            contentImageView.sd_setImage(with: URL(string: question), placeholderImage: nil, options: [], completed: nil)
+        }
+        else
+        {
+            onHandleViewData(subView: contentTextView, height: view.frame.height / 3, width: self.view.frame.width * (5/6), xFrame: self.view.frame.width * (1/12))
+            contentTextView.text =  question
+        }
     }
     
     //Part1
     @IBOutlet weak var background1: UIView!
     @IBOutlet weak var runningView1: UIView!
-    @IBOutlet weak var part1_ScoreBtn: UIButton!
+    @IBOutlet weak var part1ScoreLabel: UILabelX!
     
     @IBAction func part1_playAudioTap(_ sender: Any) {
         
@@ -94,7 +194,11 @@ class Assessor_OverviewVC: UIViewController {
     }
     
     @IBAction func part1_viewTextTap(_ sender: Any) {
+        
+        onHandleDisplayView(type: part1Type, question: (Exam?["examQuestionaireOne"] as? String)!)
+        
     }
+    
     @IBAction func part1_ScoreTap(_ sender: Any) {
         
         currentIndex = 1
@@ -105,7 +209,7 @@ class Assessor_OverviewVC: UIViewController {
     //Part2
     @IBOutlet weak var background2: UIView!
     @IBOutlet weak var runningView2: UIView!
-    @IBOutlet weak var part2_ScoreBtn: UIButton!
+    @IBOutlet weak var part2ScoreLabel: UILabelX!
     
     @IBAction func part2_PlayAudioTap(_ sender: Any) {
         let button = sender as! UIButton
@@ -122,6 +226,9 @@ class Assessor_OverviewVC: UIViewController {
         }
     }
     @IBAction func part2_ViewPhotoTap(_ sender: Any) {
+        
+        onHandleDisplayView(type: part2Type, question: (Exam?["examQuestionaireTwo"] as? String)!)
+
     }
     @IBAction func part2_ScoreTap(_ sender: Any) {
         
@@ -132,7 +239,7 @@ class Assessor_OverviewVC: UIViewController {
     //Part3
     @IBOutlet weak var background3: UIView!
     @IBOutlet weak var runningView3: UIView!
-    @IBOutlet weak var part3_ScoreBtn: UIButton!
+    @IBOutlet weak var part3ScoreLabel: UILabelX!
     
     @IBAction func part3_PlayAudioTap(_ sender: Any) {
         let button = sender as! UIButton
@@ -148,6 +255,14 @@ class Assessor_OverviewVC: UIViewController {
             })
         }
     }
+    
+    @IBAction func part3_ViewData(_ sender: Any) {
+        
+        onHandleDisplayView(type: part3Type, question: (Exam?["examQuestionaireThree"] as? String)!)
+
+    }
+    
+    
     @IBAction func part3_ScoreTap(_ sender: Any) {
         
         currentIndex = 3
@@ -158,7 +273,7 @@ class Assessor_OverviewVC: UIViewController {
     //Part4
     @IBOutlet weak var background4: UIView!
     @IBOutlet weak var runningView4: UIView!
-    @IBOutlet weak var part4_ScoreBtn: UIButton!
+    @IBOutlet weak var part4ScoreLabel: UILabelX!
     
     @IBAction func part4_PlayAudioTap(_ sender: Any) {
         let button = sender as! UIButton
@@ -178,6 +293,12 @@ class Assessor_OverviewVC: UIViewController {
         
         currentIndex = 4
         configView()
+    }
+    
+    @IBAction func part4_ViewData(_ sender: Any) {
+        
+        onHandleDisplayView(type: part4Type, question: (Exam?["examQuestionaireFour"] as? String)!)
+
     }
     
     @IBAction func submitTap(_ sender: Any) {
@@ -220,7 +341,6 @@ class Assessor_OverviewVC: UIViewController {
                 {
                     print("grade susscessful")
                     self.loadingHide()
-                    print(result)
                     let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
                     self.navigationController?.pushViewController(accountingVC, animated: true)
                     self.removeScoreObject()
@@ -242,22 +362,22 @@ class Assessor_OverviewVC: UIViewController {
     
     }
     
-    func setupViewData(subView: UIView, height: CGFloat)
+    func setupViewData(subView: UIView, height: CGFloat, width: CGFloat, x: CGFloat)
     {
         backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
         backgroundView.backgroundColor = UIColor.gray
         backgroundView.alpha = 0
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleCloseView))
-        tapGesture.numberOfTapsRequired = 2
+        tapGesture.numberOfTapsRequired = 1
         backgroundView.addGestureRecognizer(tapGesture)
         
         view.addSubview(backgroundView)
         view.addSubview(subView)
         subView.layer.cornerRadius = 10
         
-        let widthView = view.frame.size.width * (4/6)
+
         let heightView:CGFloat = height
-        subView.frame = CGRect(x: view.frame.size.width * (1/6), y: (view.frame.size.height - heightView) / 2 , width: widthView, height: heightView)
+        subView.frame = CGRect(x: x, y: (view.frame.size.height - heightView) / 2 , width: width, height: heightView)
         subView.alpha = 0
     }
     
@@ -272,18 +392,29 @@ class Assessor_OverviewVC: UIViewController {
         })
     }
     
+
+    
     func removeView()
     {
         self.backgroundView.removeFromSuperview()
         self.dataTableView.removeFromSuperview()
+        self.contentTextView.removeFromSuperview()
+        self.contentImageView.removeFromSuperview()
     }
     
     func configView()
     {
         let height:CGFloat = self.view.frame.height * (2/3)
-        setupViewData(subView: dataTableView, height: height)
+        setupViewData(subView: dataTableView, height: height, width: widthViewScore, x: xFrame)
         createAnimatePopup(from: dataTableView, with: backgroundView)
         dataTableView.reloadData()
+    }
+    
+    func onHandleViewData(subView: UIView, height: CGFloat,width:CGFloat, xFrame:CGFloat)
+    {
+        
+        setupViewData(subView: subView, height: height, width: width, x: xFrame)
+        createAnimatePopup(from: subView, with: backgroundView)
     }
     
     func removeScoreObject()
@@ -316,7 +447,7 @@ extension Assessor_OverviewVC:UITableViewDataSource, UITableViewDelegate
         
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
+        return 35
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -324,21 +455,20 @@ extension Assessor_OverviewVC:UITableViewDataSource, UITableViewDelegate
         
         switch currentIndex {
         case 1:
-            part1_ScoreBtn.setTitle("\(indexPath.row + 1)", for: .normal)
+            part1ScoreLabel.text = "\(indexPath.row + 1)"
             userDefault.set(indexPath.row + 1, forKey: SCORE_PART1)
         case 2:
-            part2_ScoreBtn.setTitle("\(indexPath.row + 1)", for: .normal)
+            part2ScoreLabel.text = "\(indexPath.row + 1)"
             userDefault.set(indexPath.row + 1, forKey: SCORE_PART2)
         case 3:
-            part3_ScoreBtn.setTitle("\(indexPath.row + 1)", for: .normal)
+            part3ScoreLabel.text = "\(indexPath.row + 1)"
             userDefault.set(indexPath.row + 1, forKey: SCORE_PART3)
         case 4:
-            part4_ScoreBtn.setTitle("\(indexPath.row + 1)", for: .normal)
+            part4ScoreLabel.text = "\(indexPath.row + 1)"
             userDefault.set(indexPath.row + 1, forKey: SCORE_PART4)
         default:
             return
-        }
-        
+        }        
         userDefault.synchronize()
         handleCloseView()
     }

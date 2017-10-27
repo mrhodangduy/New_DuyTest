@@ -11,6 +11,22 @@ import UIKit
 import SVProgressHUD
 
 
+extension UITextView {
+    func increaseFontSize () {
+        self.font =  UIFont(name: (self.font?.fontName)!, size: (self.font?.pointSize)!+1)!
+    }
+    func decreaseFontSize () {
+        
+        if (self.font?.pointSize)! < CGFloat(10)
+        {
+            return
+        }
+        
+        self.font =  UIFont(name: (self.font?.fontName)!, size: (self.font?.pointSize)!-1)!
+        
+    }
+}
+
 
 extension UIViewController
 {
@@ -33,52 +49,52 @@ extension UIViewController
         
     }
     
-    func uploadRecord(token: String,userID: Int, examID: Int, completion: @escaping (Bool?) -> ())
-    {
-        let url  = AudioRecorderManager.shared.getUserDocumentsPath()
-        print("File LOcation:", url.path)
-        
-        if FileManager.default.fileExists(atPath: url.path)
-        {
-            print("File found and ready to upload")
-            print(self.listFilesFromDocumentsFolder()!)
-            print(url.appendingPathComponent("Recordedby-\(userID)-forexam-\(examID)").appendingPathExtension("m4a"))
-            
-            let audioURL = url.appendingPathComponent("Recordedby-\(userID)-forexam-\(examID)").appendingPathExtension("m4a")
-            
-            let data: Data?
-            do
-            {
-                data = try? Data(contentsOf: audioURL)
-            }
-            
-            ExamRecord.uploadExam(withToken: token, idExam: examID, audiofile: data) { (status:Bool?, result:NSDictionary?) in
-                
-                if status == true
-                {
-                    print("UPLOAD DONE\n",result!)                    
-                    completion(true)
-                }
-                else
-                {
-                    print(result as Any)
-                    completion(false)
-                }
-            }            
-        }
-        else
-        {
-            print("No file")
-        }
-        
-    }
+//    func uploadRecord(token: String,userID: Int, examID: Int, completion: @escaping (Bool?) -> ())
+//    {
+//        let url  = AudioRecorderManager.shared.getUserDocumentsPath()
+//        print("File LOcation:", url.path)
+//        
+//        if FileManager.default.fileExists(atPath: url.path)
+//        {
+//            print("File found and ready to upload")
+//            print(self.listFilesFromDocumentsFolder()!)
+//            print(url.appendingPathComponent("Recordedby-\(userID)-forexam-\(examID)").appendingPathExtension("m4a"))
+//            
+//            let audioURL = url.appendingPathComponent("Recordedby-\(userID)-forexam-\(examID)").appendingPathExtension("m4a")
+//            
+//            let data: Data?
+//            do
+//            {
+//                data = try? Data(contentsOf: audioURL)
+//            }
+//            
+//            ExamRecord.uploadExam(withToken: token, idExam: examID, audiofile1: data, audiofile2: <#Data?#>, audiofile3: <#Data?#>, audiofile4: <#Data?#>) { (status:Bool?, result:NSDictionary?) in
+//                
+//                if status == true
+//                {
+//                    print("UPLOAD DONE\n",result!)                    
+//                    completion(true)
+//                }
+//                else
+//                {
+//                    print(result as Any)
+//                    completion(false)
+//                }
+//            }            
+//        }
+//        else
+//        {
+//            print("No file")
+//        }
+//        
+//    }
 
 
     
-    func StarRecording(userID: Int, examID: Int, result: (_ audioURL: NSURL?) -> Void)
+    func StarRecording(userID: Int, examID: Int,audio: Int, result: (_ audioURL: NSURL?) -> Void)
     {
         
-        AudioRecorderManager.shared.recored(fileName: "Recordedby-\(userID)-forexam-\(examID)") { (status:Bool, audioURL:NSURL?) in
+        AudioRecorderManager.shared.recored(fileName: "Recordedby-\(userID)-forexam-\(examID)-audio\(audio)") { (status:Bool, audioURL:NSURL?) in
             
             if status == true
             {
@@ -91,23 +107,20 @@ extension UIViewController
             }
             
             result(audioURL)
-
         }
-        
-        
-   
     }
     
-    func stopRecord(audioURL:NSURL?)
+    func stopRecord()
     {
         AudioRecorderManager.shared.finishRecording()
         
-        do
-        {
-            let data = try? Data(contentsOf: audioURL! as URL)
-            
-            print("DATA AUDIO SIZE:----->",data as Any)
-        }        
+        //        do
+//        {
+//            let data = try? Data(contentsOf: audioURL! as URL)
+//            
+//            print("DATA AUDIO SIZE:----->",data as Any)
+//        }    
+        
         
     }
     

@@ -21,6 +21,7 @@ class APIURL{
     static let getCodeInfoURL = "http://wodule.io/api/code"
     static let updateSocialInfoURL = "http://wodule.io/api/socialite"
     static let getAllrecordURL = "http://wodule.io/api/records?page="
+    static let accountingURL = "http://wodule.io/api/accounting"
 
     
 }
@@ -31,8 +32,8 @@ enum UserType: String
     case assessor = "examiner"
 }
 
-let timeCoutdown: TimeInterval = 15
-let timeInitial = 4
+let timeCoutdown: TimeInterval = 5
+let timeInitial = 2
 
 let SOCIALKEY = "socialKey"
 let GOOGLELOGIN = "u03"
@@ -80,6 +81,13 @@ let SCORE_PART1 = "score_part1"
 let SCORE_PART2 = "score_part2"
 let SCORE_PART3 = "score_part3"
 let SCORE_PART4 = "score_part4"
+let COMMENT_PART1 = "comment_part1"
+let COMMENT_PART2 = "comment_part2"
+let COMMENT_PART3 = "comment_part3"
+let COMMENT_PART4 = "comment_part4"
+
+let IDENTIFIER_KEY = "identifier"
+let EXAMID_STRING = "examid"
 
 let NOTIFI_ERROR = "notifcationError"
 let NOTIFI_UPDATED = "userUpdated"

@@ -14,11 +14,37 @@ class Assessor_OverviewVC: UIViewController {
     @IBOutlet var dataTableView: UITableView!
     var backgroundView:UIView!
     var currentIndex:Int!
+    
+    @IBOutlet weak var examIDLabel: UILabel!
+    @IBOutlet weak var mainContainerView: UIView!
+    @IBOutlet weak var part3ContainerView: UIView!
+    @IBOutlet weak var part4ContainerView: UIView!
+    var numberOfQuestion:Int!
+    
+    var data1: Data?
+    var data2: Data?
+    var data3: Data?
+    var data4: Data?
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        examIDLabel.text = userDefault.object(forKey: EXAMID_STRING) as? String
+        
+        switch numberOfQuestion {
+        case 2:
+            mainContainerView.frame.size.height = 240
+            part3ContainerView.isHidden = true
+            part4ContainerView.isHidden = true
+        case 3:
+            mainContainerView.frame.size.height = 360
+            part4ContainerView.isHidden = true
+        default:
+            return
+        }
+        
         isPlaying = false
+        
         dataTableView.dataSource = self
         dataTableView.delegate = self
         
@@ -160,6 +186,10 @@ class Assessor_OverviewVC: UIViewController {
         let score_Part2 = userDefault.object(forKey: SCORE_PART2) as? Int
         let score_Part3 = userDefault.object(forKey: SCORE_PART3) as? Int
         let score_Part4 = userDefault.object(forKey: SCORE_PART4) as? Int
+        let comment_Part1 = userDefault.object(forKey: COMMENT_PART1) as? String
+        let comment_Part2 = userDefault.object(forKey: COMMENT_PART2) as? String
+        let comment_Part3 = userDefault.object(forKey: COMMENT_PART3) as? String
+        let comment_Part4 = userDefault.object(forKey: COMMENT_PART4) as? String
         
         if score_Part1 == nil
         {
@@ -169,22 +199,47 @@ class Assessor_OverviewVC: UIViewController {
         {
             self.alertMissingText(mess: "Part 2 must be assigned a score.", textField: nil)
         }
-        else if score_Part3 == nil
+        else if score_Part3 == nil && numberOfQuestion > 2
         {
             self.alertMissingText(mess: "Part 3 must be assigned a score.", textField: nil)
         }
-        else if score_Part4 == nil
+        else if score_Part4 == nil && numberOfQuestion > 3
         {
             self.alertMissingText(mess: "Part 4 must be assigned a score.", textField: nil)
         }
         else
         {
+            self.loadingShow()
+            let token = userDefault.object(forKey: TOKEN_STRING) as? String
+            let identifier = userDefault.integer(forKey: IDENTIFIER_KEY)
             
-            let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
-            self.navigationController?.pushViewController(accountingVC, animated: true)
-            removeScoreObject()
+            ExamRecord.postGrade(withToken: token!, identifier: identifier, grade1: score_Part1!, comment1: comment_Part1!, grade2: score_Part2!, comment2: comment_Part2!, grade3: score_Part3, comment3: comment_Part3, grade4: score_Part4, comment4: comment_Part4, completion: { (status:Bool?, code:Int?, result:NSDictionary?) in
+                print(status, code , result)
+                
+                if status!
+                {
+                    print("grade susscessful")
+                    self.loadingHide()
+                    print(result)
+                    let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
+                    self.navigationController?.pushViewController(accountingVC, animated: true)
+                    self.removeScoreObject()
+                }
+                    
+                else if code == 409
+                {
+                    self.loadingHide()
+                    self.alertMissingText(mess: "The particular audio has already a grade.", textField: nil)
+                }
+                else
+                {
+                    self.loadingHide()
+                    self.alertMissingText(mess: "Failed to grade exam.", textField: nil)
+                }
+            })
+            
         }
-        
+    
     }
     
     func setupViewData(subView: UIView, height: CGFloat)
@@ -237,6 +292,11 @@ class Assessor_OverviewVC: UIViewController {
         userDefault.removeObject(forKey: SCORE_PART2)
         userDefault.removeObject(forKey: SCORE_PART3)
         userDefault.removeObject(forKey: SCORE_PART4)
+        userDefault.removeObject(forKey: COMMENT_PART1)
+        userDefault.removeObject(forKey: COMMENT_PART2)
+        userDefault.removeObject(forKey: COMMENT_PART3)
+        userDefault.removeObject(forKey: COMMENT_PART4)
+        userDefault.removeObject(forKey: IDENTIFIER_KEY)
         userDefault.synchronize()
     }
     

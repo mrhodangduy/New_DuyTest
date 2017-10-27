@@ -12,7 +12,7 @@ import Alamofire
 
 struct ExamRecord
 {
-    static func uploadExam(withToken token:String, idExam: Int, audiofile: Data?, completion: @escaping (Bool?, NSDictionary?) -> ())
+    static func uploadExam(withToken token:String, idExam: Int, audiofile1: Data?,audiofile2: Data?,audiofile3: Data?,audiofile4: Data?, completion: @escaping (Bool?, NSDictionary?) -> ())
     {
         let url = URL(string: "http://wodule.io/api/exams/\(idExam)/records")
         
@@ -21,12 +21,27 @@ struct ExamRecord
         Alamofire.upload(multipartFormData: { (data) in
             
             
-            if let audioURL = audiofile
+            if let audioURL1 = audiofile1
             {
-                print("\n\nAUDIODATA-->",audioURL)
-                data.append(audioURL, withName: "audio", fileName: "upload.m4a", mimeType: "audio/m4a")
-                print(data.boundary)
+                print("\n\nAUDIODATA1-->",audioURL1)
+                data.append(audioURL1, withName: "audio_1", fileName: "upload1.m4a", mimeType: "audio/m4a")
             }
+            if let audioURL2 = audiofile2
+            {
+                print("\n\nAUDIODATA2-->",audioURL2)
+                data.append(audioURL2, withName: "audio_2", fileName: "upload2.m4a", mimeType: "audio/m4a")
+            }
+            if let audioURL3 = audiofile3
+            {
+                print("\n\nAUDIODATA3-->",audioURL3)
+                data.append(audioURL3, withName: "audio_3", fileName: "upload3.m4a", mimeType: "audio/m4a")
+            }
+            if let audioURL4 = audiofile4
+            {
+                print("\n\nAUDIODATA4-->",audioURL4)
+                data.append(audioURL4, withName: "audio_4", fileName: "upload3.m4a", mimeType: "audio/m4a")
+            }
+                
             else
             {
                 completion(false, nil)
@@ -119,16 +134,27 @@ struct ExamRecord
         
     }
     
-    static func postGrade(withToken token: String, identifier:Int, grade: Int,comment:String, completion: @escaping (Bool?, Int?, NSDictionary?) -> ())
+    static func postGrade(withToken token: String, identifier:Int, grade1: Int,comment1:String, grade2: Int, comment2:String, grade3: Int?,comment3:String?,grade4: Int?,comment4:String?, completion: @escaping (Bool?, Int?, NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.baseURL + "/records/" + "\(identifier)" + "/grades")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)", "Content-Type": "application/x-www-form-urlencoded"]
-        let para: Parameters = ["grade": "\(grade)","comment": comment]
+        var para: Parameters = ["grade_1": "\(grade1)","comment_1": comment1,
+                                "grade_2": "\(grade2)","comment_2": comment2
+        ]
+        if let grade_3 = grade3
+        {
+            para.updateValue("\(grade_3)", forKey: "grade_3")
+            para.updateValue(comment3!, forKey: "comment_3")
+        }
+        if let grade_4 = grade4
+        {
+            para.updateValue("\(grade_4)", forKey: "grade_4")
+            para.updateValue(comment4!, forKey: "comment_4")
+        }
         
         Alamofire.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
             let json = response.result.value as? NSDictionary
-            print(response.response?.statusCode)
             let code = response.response!.statusCode
             
             if response.result.isSuccess
@@ -145,17 +171,8 @@ struct ExamRecord
             }
             else
             {
-                if code == 500
-                {
-                    completion(true, code, nil)
-                }
-                else
-                {
-                    completion(false, code, json)
-                    
-                }
+                completion(false, code, json)
                 print(response.result.error?.localizedDescription)
-                
                 
             }
             

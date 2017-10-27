@@ -19,6 +19,8 @@ class Assessor_GradeVC: UIViewController {
     @IBOutlet weak var decreaseBtn: UIButtonX!
     @IBOutlet weak var increaseBtn: UIButtonX!
     @IBOutlet weak var img_Question: UIImageViewX!
+    @IBOutlet weak var controlFontSizeView: UIView!
+    @IBOutlet weak var titleQuestion: UILabel!
     
     @IBOutlet weak var play_pauseBtn: UIButton!
     @IBOutlet var dataTableView: UITableView!
@@ -27,7 +29,6 @@ class Assessor_GradeVC: UIViewController {
     
     var isExpanding:Bool!
     var isPlaying:Bool!
-    var isStart:Bool!
     var originalHeight:CGFloat!
     var currentPlayer: AVAudioPlayer?
     var data: Data?
@@ -38,12 +39,10 @@ class Assessor_GradeVC: UIViewController {
     var score = 0
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    func onHandleSetupAudio()
+    {
         currentPlayer = AVAudioPlayer()
-        
-        let url = URL(string: Exam["audio"] as! String)
+        let url = URL(string: Exam["audio_1"] as! String)
         play_pauseBtn.isHidden = true
         self.loadingShow()
         DispatchQueue.global(qos: .background).async {
@@ -71,38 +70,42 @@ class Assessor_GradeVC: UIViewController {
                 print("Cannot get data")
             }
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        
+        onHandleSetupAudio()
         
         originalHeight = UIScreen.main.bounds.size.height * COMMENTVIEW_HEIGHT
         containerViewHeight.constant = 10
         isExpanding = false
         isPlaying = false
-        isStart = true
         isTapped = false
         
         dataTableView.dataSource = self
         dataTableView.delegate = self
         
+        
         img_Question.contentMode = .scaleAspectFit
         
         
-        if ((Exam?["examQuestionaire"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        if ((Exam?["examQuestionaireOne"] as? String)?.hasPrefix("http://wodule.io/user/"))!
         {
-            img_Question.isHidden = false
             
-            img_Question.sd_setImage(with: URL(string: Exam["examQuestionaire"] as! String), placeholderImage: nil, options: [], completed: nil)
-            increaseBtn.isHidden = true
-            decreaseBtn.isHidden = true
+            titleQuestion.text = TITLEPHOTO
+            img_Question.isHidden = false
+            img_Question.sd_setImage(with: URL(string: Exam["examQuestionaireOne"] as! String), placeholderImage: nil, options: [], completed: nil)
+            controlFontSizeView.isHidden = true
             tv_Content.isHidden = true
         }
         else
         {
+            titleQuestion.text = TITLESTRING
             img_Question.isHidden = true
-            increaseBtn.isHidden = false
-            decreaseBtn.isHidden = false
+            controlFontSizeView.isHidden = false
             tv_Content.isHidden = false
-            tv_Content.text = Exam["examQuestionaire"] as! String
+            tv_Content.text = Exam["examQuestionaireOne"] as! String
         }
         
     }
@@ -112,7 +115,6 @@ class Assessor_GradeVC: UIViewController {
         
         tv_Content.isScrollEnabled = false
         
-        //        self.alertMissingText(mess: Exam["audio"] as! String, textField: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -128,16 +130,11 @@ class Assessor_GradeVC: UIViewController {
         
         if button == self.decreaseBtn
         {
-            if Int((tv_Content.font?.pointSize)!) > 10
-            {
-                tv_Content.font = UIFont.systemFont(ofSize: (tv_Content.font?.pointSize)! - 1)
-                
-            }
-            
+            tv_Content.decreaseFontSize()
         }
         else if button == self.increaseBtn
         {
-            tv_Content.font = UIFont.systemFont(ofSize: (tv_Content.font?.pointSize)! + 1)
+            tv_Content.increaseFontSize()
             
         }
         else
@@ -146,7 +143,6 @@ class Assessor_GradeVC: UIViewController {
         }
         
     }
-    
     
     @IBAction func expandBtnTap(_ sender: Any) {
         
@@ -170,53 +166,17 @@ class Assessor_GradeVC: UIViewController {
         }
         else
         {
-            
-            self.loadingShow()
-            ExamRecord.postGrade(withToken: self.token!, identifier: self.Exam["identifier"] as! Int, grade: self.score, comment: self.tv_Comment.text, completion: { (status:Bool?, code:Int?, result:NSDictionary?) in
-                
-                print(status, code , result)
-                
-                if status!
-                {
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "post grade"), object: self)
-                    self.stop()
-                    print("grade susscessful")
-                    self.loadingHide()
-                    self.navigationController?.popViewController(animated: true)
-                    
-                    print(result)
-                }
-                    
-                else if code == 409
-                {
-                    self.loadingHide()
-                    self.alertMissingText(mess: "The particular audio has already a grade.", textField: nil)
-                }
-                else
-                {
-                    self.loadingHide()
-                    self.alertMissingText(mess: "Failed to grade exam.", textField: nil)
-                }
-            })
-            
+            userDefault.set(tv_Comment.text, forKey: COMMENT_PART1)
+            userDefault.synchronize()
+            let part2VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part2VC") as! Assessor_Part2VC
+            part2VC.Exam = self.Exam
+            part2VC.data1 = self.data
+            self.stop()
+            self.navigationController?.pushViewController(part2VC, animated: true)            
         }
         
     }
     
-    func play()
-    {
-        do {
-            currentPlayer = try AVAudioPlayer(data: data!)
-            currentPlayer?.delegate = self
-            currentPlayer?.play()
-            isPlaying = true
-            print("TOTAL TIME:",(currentPlayer?.duration)! )
-        }
-        catch
-        {
-            print("Cannot play")
-        }
-    }
     func pause()
     {
         currentPlayer?.pause()
@@ -236,7 +196,7 @@ class Assessor_GradeVC: UIViewController {
     {
         currentPlayer?.stop()
         isPlaying = false
-        isStart = true
+        print("DID STOP")
     }
     
     @IBAction func playAudioTap(_ sender: UIButton) {

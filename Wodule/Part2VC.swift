@@ -23,7 +23,9 @@ class Part2VC: UIViewController {
     @IBOutlet weak var lbl_Title: UILabel!
     
     var expectTime:TimeInterval = timeCoutdown
-    var Exam = [CategoriesExam]()
+    var Exam:NSDictionary?
+    var audio1_Path: NSURL?
+    var audio2_Path: NSURL?
     
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
 
@@ -42,14 +44,13 @@ class Part2VC: UIViewController {
         recordingMess.isHidden = true
         nextBtn.isHidden = true
         
-        guard let index = Exam.index(where: { $0.number == 2 }) else { return }
-        print("\n------>",Exam[index])
-        examID = Exam[index].identifier
         
+        
+               
         img_Photo.isHidden = true
         tv_Data.isHidden = true
         
-        if Exam[index].photo != nil
+        if Exam?["question_2"] as? String == nil
         {
             lbl_Title.text = TITLEPHOTO
             img_Photo.isHidden = false
@@ -59,7 +60,7 @@ class Part2VC: UIViewController {
             img_Photo.sd_setIndicatorStyle(.white)
             img_Photo.sd_showActivityIndicatorView()
             img_Photo.sd_setShowActivityIndicatorView(true)
-            img_Photo.sd_setImage(with: URL(string: Exam[index].photo!), placeholderImage: nil, options: [.continueInBackground]) { (iamge, error, type, url) in
+            img_Photo.sd_setImage(with: URL(string: Exam?["image_2"] as! String), placeholderImage: nil, options: [.continueInBackground]) { (iamge, error, type, url) in
                 
                 self.circleTime.start(withSeconds: timeInitial)
                 
@@ -70,7 +71,7 @@ class Part2VC: UIViewController {
         {
             lbl_Title.text = TITLESTRING
             tv_Data.isHidden = false
-            tv_Data.text = Exam[index].questioner!
+            tv_Data.text = Exam?["question_2"] as! String
             circleTime.start(withSeconds: timeInitial)
             
         }
@@ -82,26 +83,34 @@ class Part2VC: UIViewController {
     
     @IBAction func decreaseSizeTap(_ sender: Any) {
         
-        if Int((tv_Data.font?.pointSize)!) > 10
-        {
-            tv_Data.font = UIFont.systemFont(ofSize: (tv_Data.font?.pointSize)! - 1)
-            
-        }
-        
+        tv_Data.decreaseFontSize()
     }
     
     @IBAction func increaseSizeTap(_ sender: Any) {
         
-        tv_Data.font = UIFont.systemFont(ofSize: (tv_Data.font?.pointSize)! + 1)
-
+        tv_Data.increaseFontSize()
     }
     
     @IBAction func nextBtnTap(_ sender: Any) {
-        let part3_tempVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part3_tempVC") as! Part3VC
         
-        part3_tempVC.Exam = self.Exam
-                
-        self.navigationController?.pushViewController(part3_tempVC, animated: true)
+        if Exam?["question_3"] as? String == nil && Exam?["image_3"] as? String == nil
+        {
+            let endVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "endassessmentVC") as! EndVC
+            self.navigationController?.pushViewController(endVC, animated: true)
+        }
+        else
+        {
+            let part3_tempVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part3_tempVC") as! Part3VC
+            
+            part3_tempVC.Exam = self.Exam
+            part3_tempVC.examID = self.examID
+            part3_tempVC.audio1_Path = self.audio1_Path
+            part3_tempVC.audio2_Path = self.audio2_Path
+            
+            self.navigationController?.pushViewController(part3_tempVC, animated: true)
+        }
+        
+        
     }
     
 }
@@ -111,7 +120,7 @@ extension Part2VC: JWGCircleCounterDelegate
     func circleCounterTimeDidExpire(_ circleCounter: JWGCircleCounter!) {
         
         var audioURL:NSURL?
-        self.StarRecording(userID: userID!, examID: examID) { (audioURLs:NSURL?) in
+        self.StarRecording(userID: userID!, examID: examID, audio: 2) { (audioURLs:NSURL?) in
             audioURL = audioURLs
         }
 
@@ -121,12 +130,32 @@ extension Part2VC: JWGCircleCounterDelegate
             self.view.layoutIfNeeded()
         }, completion: { (done) in
             self.recordingMess.text = "Time Out"
-            self.nextBtn.isHidden = false
-            self.stopRecord(audioURL: audioURL)
-            self.uploadRecord(token: self.token!, userID: self.userID!, examID: self.examID, completion: { (done) in
+            self.stopRecord()
+            self.audio2_Path = audioURL
+
+            if self.Exam?["question_3"] as? String == nil && self.Exam?["image_3"] as? String == nil
+            {
+                self.loadingShowwithStatus(status: "Uploading your Exam.")                
+                do
+                {
+                    let data1 = try? Data(contentsOf: self.audio1_Path! as URL)
+                    let data2 = try? Data(contentsOf: self.audio2_Path! as URL)
+                    ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: data1, audiofile2: data2, audiofile3: nil, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
+                        if status!
+                        {
+                            DispatchQueue.main.async(execute: {
+                                self.loadingHide()
+                                self.nextBtn.isHidden = false
+                            })
+                        }
+                    })
+                }
                 
-                                
-            })
+            }
+            else
+            {
+                self.nextBtn.isHidden = false
+            }
             
         })
         

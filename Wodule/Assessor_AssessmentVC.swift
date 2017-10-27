@@ -50,7 +50,7 @@ class Assessor_AssessmentVC: UIViewController {
                     
                     for item in result!
                     {
-                        if item["score"] as! Int == 0
+                        if item["status"] as! String == "pending"
                         {
                             self.AllRecord.append(item)
                         }
@@ -117,9 +117,14 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
         tableView.deselectRow(at: indexPath, animated: true)
         
         let part1VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "gradeVC") as! Assessor_GradeVC
-        part1VC.Exam = AllRecord[indexPath.row]
         
+        part1VC.Exam = AllRecord[indexPath.row]
         print(AllRecord[indexPath.row])
+        let identifier = self.AllRecord[indexPath.row]["identifier"] as? Int
+        let examID = self.AllRecord[indexPath.row]["exam"] as? String
+        userDefault.set(examID, forKey: EXAMID_STRING)
+        userDefault.set(identifier, forKey: IDENTIFIER_KEY)
+        userDefault.synchronize()
         
         self.navigationController?.pushViewController(part1VC, animated: true)
         
@@ -144,7 +149,7 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
             
             if var data = result
             {
-                data = data.filter { $0["score"] as! Int == 0 }
+                data = data.filter { $0["status"] as! String == "pending" }
                 
                 if data.count > 0
                 {

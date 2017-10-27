@@ -9,17 +9,95 @@
 import UIKit
 
 class Assessor_AccountingVC: UIViewController {
-
-    @IBOutlet weak var dataTableView: UITableView!
+    
+    @IBOutlet weak var totalLabel: UILabel!
+    @IBOutlet weak var balanceLabel: UILabel!
+    @IBOutlet weak var availableLabel: UILabel!
+    
+    @IBOutlet weak var totalLBL: UILabel!
+    @IBOutlet weak var balanceLBL: UILabel!
+    @IBOutlet weak var availabelLBL: UILabel!
+    
+    var Accounting: NSDictionary?
+    let token = userDefault.object(forKey: TOKEN_STRING) as? String
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dataTableView.dataSource = self
-        dataTableView.delegate = self
-
+        totalLBL.isHidden = true
+        balanceLBL.isHidden = true
+        availabelLBL.isHidden = true
+        
+        self.loadingShow()
+        ManageAPI_Accounting.getAccounting(witkToken: token!) { (status: Bool, result:NSDictionary?) in
+            
+            if status
+            {
+                self.Accounting = result!
+                DispatchQueue.main.async(execute: {
+                    self.onHandleAssignData()
+                    self.loadingHide()
+                    
+                })
+            }
+                
+            else
+            {
+                
+                self.loadingHide()
+                self.alertMissingText(mess: "Something went wrong.", textField: nil)
+                print(result)
+                
+            }
+            
+            
+        }
+        
         // Do any additional setup after loading the view.
     }
-
+    
+    func onHandleAssignData()
+    {
+        
+        totalLBL.isHidden = false
+        balanceLBL.isHidden = false
+        availabelLBL.isHidden = false
+        
+        var totalCash = ""
+        var balanceCash = ""
+        var availabelCash = ""
+        
+        if Accounting?["totalCash"] as! String == ""
+        {
+            totalCash = "0"
+        }
+        else
+        {
+            totalCash = Accounting?["totalCash"] as! String
+        }
+        if Accounting?["balanceCash"] as! String == ""
+        {
+            balanceCash = "0"
+        }
+        else
+        {
+            balanceCash = Accounting?["balanceCash"] as! String
+        }
+        if Accounting?["availableCash"] as! String == ""
+        {
+            availabelCash = "0"
+        }
+        else
+        {
+            availabelCash = Accounting?["availableCash"] as! String
+        }
+        
+        totalLabel.text = "\(Accounting?["currency"] as! String)" + totalCash
+        balanceLabel.text = "\(Accounting?["currency"] as! String)" + balanceCash
+        availableLabel.text = "\(Accounting?["currency"] as! String)" + availabelCash
+        
+    }
+    
     @IBAction func backtoHomeTap(_ sender: Any) {
         
         let viewControllers: [UIViewController] = self.navigationController!.viewControllers
@@ -31,19 +109,4 @@ class Assessor_AccountingVC: UIViewController {
         
     }
     
-}
-
-extension Assessor_AccountingVC: UITableViewDataSource,UITableViewDelegate
-{
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
-    }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
-        return cell
-    }
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 30
-    }
 }

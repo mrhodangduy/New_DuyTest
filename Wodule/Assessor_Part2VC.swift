@@ -7,39 +7,154 @@
 //
 
 import UIKit
+import AVFoundation
 
 class Assessor_Part2VC: UIViewController {
-
+    
     @IBOutlet weak var tv_Comment: RoundTextView!
     @IBOutlet weak var containerViewHeight: NSLayoutConstraint!
     
+    @IBOutlet weak var titleQuestion: UILabel!
+    @IBOutlet weak var controlFontSizeView: UIView!
+    @IBOutlet weak var tv_Content: UITextView!
+    @IBOutlet weak var img_Question: UIImageViewX!
     @IBOutlet var dataTableView: UITableView!
     var backgroundView:UIView!
-
+    
+    @IBOutlet weak var play_pauseBtn: UIButton!
     @IBOutlet weak var scoreBtn: UIButton!
+    var score = 0
+    var Exam:NSDictionary?
     
     var isExpanding:Bool!
     var originalHeight:CGFloat!
     var isPlaying:Bool!
+    var isTapped:Bool!
+
+    var currentPlayer: AVAudioPlayer?
+    
+    var data1: Data?
+    var data2: Data?
+    
+    func onHandleSetupAudio()
+    {
+        currentPlayer = AVAudioPlayer()
+        let url = URL(string: Exam?["audio_2"] as! String)
+        play_pauseBtn.isHidden = true
+        self.loadingShow()
+        DispatchQueue.global(qos: .background).async {
+            do
+            {
+                let data = try Data(contentsOf: url!)
+                do {
+                    self.currentPlayer = try AVAudioPlayer(data: data)
+                    DispatchQueue.main.async(execute: {
+                        self.currentPlayer?.play()
+                        self.currentPlayer?.pause()
+                        self.currentPlayer?.delegate = self
+                        self.loadingHide()
+                        self.play_pauseBtn.isHidden = false
+                        print("TOTAL TIME:",self.currentPlayer?.duration as Any)
+                    })
+                }
+                catch
+                {
+                    print("cannot play")
+                }
+            }
+            catch
+            {
+                print("Cannot get data")
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        onHandleSetupAudio()
+        
         originalHeight = UIScreen.main.bounds.size.height * COMMENTVIEW_HEIGHT
         containerViewHeight.constant = 10
         isExpanding = false
         isPlaying = false
+        isTapped = false
         
         dataTableView.dataSource = self
         dataTableView.delegate = self
-
         
+        img_Question.contentMode = .scaleAspectFit
+        
+        
+        if ((Exam?["examQuestionaireTwo"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        {
+            titleQuestion.text = TITLEPHOTO
+            img_Question.isHidden = false
+            img_Question.sd_setImage(with: URL(string: Exam?["examQuestionaireTwo"] as! String), placeholderImage: nil, options: [], completed: nil)
+            controlFontSizeView.isHidden = true
+            tv_Content.isHidden = true
+        }
+        else
+        {
+            titleQuestion.text = TITLESTRING
+            img_Question.isHidden = true
+            controlFontSizeView.isHidden = false
+            tv_Content.isHidden = false
+            tv_Content.text = Exam?["examQuestionaireTwo"] as! String
+        }
+                
+    }
+    
+    @IBAction func onClickDecrease(_ sender: Any) {
+        
+        tv_Content.decreaseFontSize()
+    }
+    
+    @IBAction func onClickIncrease(_ sender: Any) {
+        
+        tv_Content.increaseFontSize()        
     }
     
     @IBAction func playAudioTap(_ sender: UIButton) {
         
-        play_pauseAudio(button: sender, isPlay: isPlaying)
-        isPlaying = !isPlaying
+        play_pauseAudio(button: sender, isPlay: isTapped)
+        
+        if isPlaying
+        {
+            pause()
+            
+        }
+        else
+        {
+            resume()
+            
+        }
+        
+        isTapped = !isTapped
+        print(isPlaying)
+    }
+    
+    func pause()
+    {
+        currentPlayer?.pause()
+        print("PAUSED at:", (currentPlayer?.currentTime)!)
+        isPlaying = false
+    }
+    
+    func resume()
+    {
+        currentPlayer?.play()
+        isPlaying = true
+        print("PLAY AGAIN at:", (currentPlayer?.currentTime)!)
+        
+    }
+    
+    func stop()
+    {
+        currentPlayer?.stop()
+        isPlaying = false
+        print("DID STOP")
+
     }
     
     @IBAction func scoreTap(_ sender: Any) {
@@ -47,7 +162,7 @@ class Assessor_Part2VC: UIViewController {
         setupViewData(subView: dataTableView, height: height)
         createAnimatePopup(from: dataTableView, with: backgroundView)
     }
-
+    
     @IBAction func expandBtnTap(_ sender: Any) {
         
         let button = sender as! UIButton
@@ -58,9 +173,40 @@ class Assessor_Part2VC: UIViewController {
     }
     
     @IBAction func nextBtnTap(_ sender: Any) {
+        self.pause()
+        self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
+        self.isTapped = false
         
-        let part3VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part3VC") as! Assessor_Part3VC
-        self.navigationController?.pushViewController(part3VC, animated: true)
+        if score == 0 || tv_Comment.text.trimmingCharacters(in: .whitespacesAndNewlines).characters.count == 0
+        {
+            self.alertMissingText(mess: "Score and Comment is required.", textField: nil)
+        }
+        else
+        {
+            userDefault.set(tv_Comment.text, forKey: COMMENT_PART2)
+            userDefault.synchronize()
+
+            if self.Exam?["examQuestionaireThree"] as? String == nil
+            {
+                let overviewVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "overviewVC") as! Assessor_OverviewVC
+                overviewVC.numberOfQuestion = 2
+                overviewVC.data1 = self.data1
+                overviewVC.data2 = self.data2
+                self.stop()
+
+                self.navigationController?.pushViewController(overviewVC, animated: true)
+            }
+            else
+            {
+                let part3VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part3VC") as! Assessor_Part3VC
+                part3VC.Exam = self.Exam
+                part3VC.data1 = self.data1
+                part3VC.data2 = self.data2
+                self.navigationController?.pushViewController(part3VC, animated: true)
+
+            }
+        }
+        
     }
     
     func setupViewData(subView: UIView, height: CGFloat)
@@ -98,7 +244,7 @@ class Assessor_Part2VC: UIViewController {
         self.backgroundView.removeFromSuperview()
         self.dataTableView.removeFromSuperview()
     }
-
+    
 }
 
 extension Assessor_Part2VC:UITableViewDataSource, UITableViewDelegate
@@ -122,8 +268,20 @@ extension Assessor_Part2VC:UITableViewDataSource, UITableViewDelegate
         
         scoreBtn.setTitle("\(indexPath.row + 1)", for: .normal)
         userDefault.set(indexPath.row + 1, forKey: SCORE_PART2)
-
+        
+        score = indexPath.row + 1
+        
         handleCloseView()
+        
+    }
+}
 
+extension Assessor_Part2VC: AVAudioPlayerDelegate
+{
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        print("DID PLAYED")
+        self.stop()
+        self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
+        self.isTapped = false
     }
 }

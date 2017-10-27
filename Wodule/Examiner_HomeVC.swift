@@ -195,8 +195,8 @@ class Examiner_HomeVC: UIViewController {
     
     @IBAction func startAssessmentTap(_ sender: Any) {
         
-        let categoriesVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "categoriesVC") as! Examinee_CategoriesVC
-        self.navigationController?.pushViewController(categoriesVC, animated: true)
+        let instruction_guideVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "instruction_guideVC") as! Instruction_GuideVC
+        self.navigationController?.pushViewController(instruction_guideVC, animated: true)
     }
 }
 

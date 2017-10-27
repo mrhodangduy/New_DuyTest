@@ -560,43 +560,25 @@ struct Categories
     }
     
     
-    static func getAllCategory(withToken token:String, completion: @escaping (Bool?,[Categories]?) -> ())
+    static func getCategory(completion: @escaping (Bool,NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.categoriesURL)
-        let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
-        Alamofire.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON { (response) in
-            
-            var result = [Categories]()
+        Alamofire.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).responseJSON { (response) in
             
             print("RESPONSE:---->\n",response.description)
             print("RESPONSE:---->\n",(response.response?.statusCode)!)
             
             if response.response?.statusCode == 200
             {
-                let json = response.result.value as? [String: AnyObject]
-                if let jsonData  = json?["data"] as? [[String: AnyObject]]
-                {
-                    for item in jsonData
-                    {
-                        if let category = try? Categories(json: item)
-                        {
-                            result.append(category)
-                        }
-                        else
-                        {
-                            result = []
-                            completion(false,result)
-                            
-                        }
-                    }
-                    completion(true,result)
-                }
+                
+                completion(true, response.result.value as? NSDictionary)
+            
             }
             else
             {
-                result = []
-                completion(false,result)
+                
+                completion(false,response.result.value as? NSDictionary)
                 
             }
             
@@ -696,107 +678,46 @@ struct CategoriesExam
 
 struct AssesmentHistory
 {
-    let identifier: Int
-    let audio: String
-    let exam: String
-    let score: Int
-    let comment:String
-    let examCategory: String
-    let examDetails: String
-    let examQuestionaire: String
-    let examinee:Int
-    let creationDate: String
-    let lastChange: String
-    let links:[[String:AnyObject]]
     
-    enum error:Error {
-        case missing(String)
-    }
-    
-    
-    init(json: [String: AnyObject]) throws {
-        
-        guard let identifier = json["identifier"] as? Int else { throw error.missing("missing value") }
-        guard let audio = json["audio"] as? String else { throw error.missing("missing value") }
-        guard let exam = json["exam"] as? String else { throw error.missing("missing value") }
-        guard let score = json["score"] as? Int else { throw error.missing("missing value") }
-        guard let comment = json["comment"] as? String else { throw error.missing("missing value") }
-        guard let examCategory = json["examCategory"] as? String else { throw error.missing("missing value") }
-        guard let examDetails = json["examDetails"] as? String else { throw error.missing("missing value") }
-        guard let examQuestionaire = json["examQuestionaire"] as? String else { throw error.missing("missing value") }
-        guard let examinee = json["examinee"] as? Int else { throw error.missing("missing value") }
-        guard let creationDate = json["creationDate"] as? String else { throw error.missing("missing value") }
-        guard let lastChange = json["lastChange"] as? String else { throw error.missing("missing value") }
-        guard let links = json["links"] as? [[String:AnyObject]] else { throw error.missing("missing value") }
-        
-        self.identifier = identifier
-        self.audio = audio
-        self.exam = exam
-        self.score = score
-        self.comment = comment
-        self.examCategory = examCategory
-        self.examDetails = examDetails
-        self.examQuestionaire = examQuestionaire
-        self.examinee = examinee
-        self.creationDate = creationDate
-        self.lastChange = lastChange
-        self.links = links
-        
-    }
-    
-    static func getUserHistory(withToken token: String, userID: Int,page: Int, completion: @escaping (Bool?,AnyObject?,[AssesmentHistory]?,Int?) -> ())
+    static func getUserHistory(withToken token: String, userID: Int,page: Int, completion: @escaping (Bool?,AnyObject?,[NSDictionary]?,Int) -> ())
     {
         let url = URL(string: "http://wodule.io/api/users/\(userID)/records?page=\(page)")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
         Alamofire.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON { (response) in
             
-            var result = [AssesmentHistory]()
-            
             if response.response?.statusCode == 200
             {
-                let json = response.result.value as? [String:AnyObject]
+                let json = response.result.value as? NSDictionary
                 print("JSON",json)
-                if let data = json?["data"] as? [[String:AnyObject]]
+                if let data = json?["data"] as? [NSDictionary]
                 {
                     print("DATA",data)
                     if data.count != 0
                     {
                         guard let meta = json?["meta"] as? NSDictionary, let pagination = meta["pagination"] as? NSDictionary, let total_pages = pagination["total_pages"] as? Int else {return}
                         
-                        for item in data
-                        {
-                            if let history = try? AssesmentHistory(json: item)
-                            {
-                                result.append(history)
-                            }
-                        }
-                        completion(true,nil, result, total_pages)
+                        completion(true,nil, data, total_pages)
                     }
                     else
                     {
-                        result = []
-                        completion(true,nil, result, 1)
+                        completion(true,nil, nil, 1)
                     }
                     
                 }
                 else
                 {
-                    result = []
-                    
-                    completion(false,response.result.value as? NSDictionary , result, 1)
+                    completion(false,response.result.value as? NSDictionary , nil, 1)
                 }
             }
             else if response.response?.statusCode == 401
             {
-                result = []
-                completion(false,response.result.value as? NSDictionary, result, 1)
+                completion(false,response.result.value as? NSDictionary, nil, 1)
                 
             }
             else
             {
-                result = []
-                completion(false,response.result.value as? NSDictionary, result, 1)
+                completion(false,response.result.value as? NSDictionary, nil, 1)
                 
             }
             

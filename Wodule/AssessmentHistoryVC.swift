@@ -12,7 +12,7 @@ import UIKit
 class AssessmentHistoryVC: UIViewController {
     
     @IBOutlet weak var lbl_NoFound: UILabel!
-    var History = [AssesmentHistory]()
+    var History = [NSDictionary]()
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
     var userID:Int!
     var currentpage:Int!
@@ -97,19 +97,18 @@ extension AssessmentHistoryVC: UITableViewDataSource,UITableViewDelegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! Examinee_HistoryCell
         
+        let historyItem = History[indexPath.row]
         
+        cell.lbl_date.text = convertDay(DateString: historyItem["creationDate"] as! String)
+        cell.lbl_ExamID.text = historyItem["exam"] as? String
         
-        cell.lbl_date.text = convertDay(DateString: History[indexPath.row].creationDate)
-        cell.lbl_ExamID.text = History[indexPath.row].exam
-        
-        if History[indexPath.row].score == 0
+        if historyItem["score"] as? String == "pending"
         {
             cell.lbl_Point.text = "-"
         }
         else
         {
-            cell.lbl_Point.text = "\(History[indexPath.row].score)"
-
+            cell.lbl_Point.text = historyItem["score"] as? String
         }
         
         return cell
@@ -120,8 +119,12 @@ extension AssessmentHistoryVC: UITableViewDataSource,UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        tableView.deselectRow(at: indexPath, animated: true)
-        
+//        tableView.deselectRow(at: indexPath, animated: true)
+//        let examdetailVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examdetailVC") as! Examinee_ExamDetailVC
+//        
+//        examdetailVC.ExamDetail = History[indexPath.row]
+//        
+//        self.navigationController?.pushViewController(examdetailVC, animated: true)
         
         print("HISTORY\n----->",History[indexPath.row])
     }

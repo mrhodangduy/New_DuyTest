@@ -21,42 +21,13 @@ class Examinee_CategoriesVC: UIViewController {
         
         dataTableView.delegate = self
         dataTableView.dataSource = self
-        getCategories()
 
     }
     
     override func viewDidAppear(_ animated: Bool) {
     }
     
-    func getCategories()
-    {
-        CategoryList.removeAll()
-        loadingShow()
-        DispatchQueue.global(qos: .default).async { 
-            
-            Categories.getAllCategory(withToken: self.token!, completion: { (status, results) in
-                
-                if status!
-                {
-                    self.CategoryList = results!
-                    DispatchQueue.main.async(execute: { 
-                        self.dataTableView.reloadData()
-                        self.loadingHide()
-                    })
-                }
-                else
-                {
-                    print("ERROR:--->", status!)
-                    DispatchQueue.main.async(execute: {
-                        self.dataTableView.reloadData()
-                        self.loadingHide()
-                    })
-                }
-            })
-            
-            
-        }
-    }
+    
     @IBAction func backtoHomeTap(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
@@ -90,7 +61,6 @@ extension Examinee_CategoriesVC: UITableViewDataSource, UITableViewDelegate
         tableView.deselectRow(at: indexPath, animated: true)
         
         let instruction_guideVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "instruction_guideVC") as! Instruction_GuideVC
-        instruction_guideVC.categoryID = CategoryList[indexPath.row].identifier
         
         self.navigationController?.pushViewController(instruction_guideVC, animated: true)
     }

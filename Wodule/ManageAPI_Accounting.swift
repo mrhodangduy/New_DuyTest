@@ -13,7 +13,7 @@ import Alamofire
 struct ManageAPI_Accounting
 {
     
-    static func getAccounting(witkToken token: String, completion: @escaping (Bool,NSDictionary?) -> ())
+    static func getAccounting(witkToken token: String, completion: @escaping (Bool,Int?,NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.accountingURL)
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
@@ -25,16 +25,16 @@ struct ManageAPI_Accounting
                 if response.response?.statusCode == 200
                 {
                     let json = response.result.value as? NSDictionary
-                    completion(true, json?["data"] as? NSDictionary)
+                    completion(true,response.response?.statusCode, json?["data"] as? NSDictionary)
                 }
                 else
                 {
-                    completion(false, response.result.value as? NSDictionary)
+                    completion(false,response.response?.statusCode, response.result.value as? NSDictionary)
                 }
             }
             else
             {
-                completion(false, nil)
+                completion(false,response.response?.statusCode, response.result.value as? NSDictionary)
             }
                         
         }

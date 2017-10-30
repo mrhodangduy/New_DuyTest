@@ -49,48 +49,7 @@ extension UIViewController
         
     }
     
-//    func uploadRecord(token: String,userID: Int, examID: Int, completion: @escaping (Bool?) -> ())
-//    {
-//        let url  = AudioRecorderManager.shared.getUserDocumentsPath()
-//        print("File LOcation:", url.path)
-//        
-//        if FileManager.default.fileExists(atPath: url.path)
-//        {
-//            print("File found and ready to upload")
-//            print(self.listFilesFromDocumentsFolder()!)
-//            print(url.appendingPathComponent("Recordedby-\(userID)-forexam-\(examID)").appendingPathExtension("m4a"))
-//            
-//            let audioURL = url.appendingPathComponent("Recordedby-\(userID)-forexam-\(examID)").appendingPathExtension("m4a")
-//            
-//            let data: Data?
-//            do
-//            {
-//                data = try? Data(contentsOf: audioURL)
-//            }
-//            
-//            ExamRecord.uploadExam(withToken: token, idExam: examID, audiofile1: data, audiofile2: <#Data?#>, audiofile3: <#Data?#>, audiofile4: <#Data?#>) { (status:Bool?, result:NSDictionary?) in
-//                
-//                if status == true
-//                {
-//                    print("UPLOAD DONE\n",result!)                    
-//                    completion(true)
-//                }
-//                else
-//                {
-//                    print(result as Any)
-//                    completion(false)
-//                }
-//            }            
-//        }
-//        else
-//        {
-//            print("No file")
-//        }
-//        
-//    }
 
-
-    
     func StarRecording(userID: Int, examID: Int,audio: Int, result: (_ audioURL: NSURL?) -> Void)
     {
         
@@ -221,6 +180,32 @@ extension UIViewController
             return 0
             
         }
+    }
+    
+    func onHandleTokenInvalidAlert(autoLogin: Bool)
+    {
+        let alert = UIAlertController(title: "Wodule", message: "Your session has expired. Please Login again.", preferredStyle: .alert)
+        let btnOK = UIAlertAction(title: "OK", style: .default) { (action) in
+            
+            if autoLogin
+            {
+                let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
+                self.navigationController?.pushViewController(loginVC, animated: false)
+
+            }
+            else
+            {
+                let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+                for loginVC in viewControllers {
+                    if loginVC is LoginVC {
+                        self.navigationController!.popToViewController(loginVC, animated: false)
+                    }
+                }
+            }
+          
+        }
+        alert.addAction(btnOK)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func alertMissingText(mess: String, textField: UITextField?)

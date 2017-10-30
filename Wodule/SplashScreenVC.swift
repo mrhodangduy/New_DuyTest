@@ -65,7 +65,7 @@ class SplashScreenVC: UIViewController {
                             let assessor_homeVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessor_homeVC") as! Assessor_HomeVC
                             
                             assessor_homeVC.userInfomation = userinfo!
-                            assessor_homeVC.autologin = true
+                            autologin = true
                             
                             self.navigationController?.pushViewController(assessor_homeVC, animated: true)
                         }
@@ -74,7 +74,7 @@ class SplashScreenVC: UIViewController {
                             let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
                             
                             examiner_homeVC.userInfomation = userinfo!
-                            examiner_homeVC.autologin = true
+                            autologin = true
                             
                             self.navigationController?.pushViewController(examiner_homeVC, animated: true)
                         }

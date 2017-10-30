@@ -61,7 +61,7 @@ class Examinee_ExamDetailVC: UIViewController {
     var part2Type:Int!
     var part3Type:Int!
     var part4Type:Int!
-    
+
     var isPlaying: Int!
     var time:Timer!
     var totalTime: TimeInterval!

@@ -95,13 +95,14 @@ struct ExamRecord
         
     }
     
-    static func getAllRecord(page: Int, completion: @escaping ([NSDictionary]?, _ totalPage: Int?, NSDictionary?) -> ())
+    static func getAllRecord(page: Int, completion: @escaping ([NSDictionary]?, _ totalPage: Int?,_ code: Int? ,NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.getAllrecordURL + "\(page)")
         
         Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
             
             let json = response.result.value as? NSDictionary
+            let code = response.response?.statusCode as? Int
             
             if response.result.isSuccess
             {
@@ -110,7 +111,7 @@ struct ExamRecord
                 {
                     guard let meta = json?["meta"] as? NSDictionary, let pagination = meta["pagination"] as? NSDictionary, let total_pages = pagination["total_pages"] as? Int else {return}
                     
-                    completion(data, total_pages,json)
+                    completion(data, total_pages,code,json)
                     
                 }
                 else
@@ -119,7 +120,7 @@ struct ExamRecord
                     {
                         
                         print(error, json?["code"] as! Int)
-                        completion(nil, nil,json)
+                        completion(nil, nil,code, json)
                     }
                     
                     
@@ -127,7 +128,7 @@ struct ExamRecord
             }
             else
             {
-                completion(nil, nil,json)
+                completion(nil, nil,code,json)
             }
             
         }

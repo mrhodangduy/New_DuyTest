@@ -679,7 +679,7 @@ struct CategoriesExam
 struct AssesmentHistory
 {
     
-    static func getUserHistory(withToken token: String, userID: Int,page: Int, completion: @escaping (Bool?,AnyObject?,[NSDictionary]?,Int) -> ())
+    static func getUserHistory(withToken token: String, userID: Int,page: Int, completion: @escaping (Bool?,_ code:Int?,AnyObject?,[NSDictionary]?,Int) -> ())
     {
         let url = URL(string: "http://wodule.io/api/users/\(userID)/records?page=\(page)")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
@@ -697,27 +697,27 @@ struct AssesmentHistory
                     {
                         guard let meta = json?["meta"] as? NSDictionary, let pagination = meta["pagination"] as? NSDictionary, let total_pages = pagination["total_pages"] as? Int else {return}
                         
-                        completion(true,nil, data, total_pages)
+                        completion(true,response.response?.statusCode,nil, data, total_pages)
                     }
                     else
                     {
-                        completion(true,nil, nil, 1)
+                        completion(true,response.response?.statusCode,nil, nil, 1)
                     }
                     
                 }
                 else
                 {
-                    completion(false,response.result.value as? NSDictionary , nil, 1)
+                    completion(false,response.response?.statusCode,response.result.value as? NSDictionary , nil, 1)
                 }
             }
             else if response.response?.statusCode == 401
             {
-                completion(false,response.result.value as? NSDictionary, nil, 1)
+                completion(false,response.response?.statusCode,response.result.value as? NSDictionary, nil, 1)
                 
             }
             else
             {
-                completion(false,response.result.value as? NSDictionary, nil, 1)
+                completion(false,response.response?.statusCode,response.result.value as? NSDictionary, nil, 1)
                 
             }
             

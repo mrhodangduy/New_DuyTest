@@ -34,7 +34,7 @@ class AssessmentHistoryVC: UIViewController {
         currentpage = 1
         
         loadingShow()
-        AssesmentHistory.getUserHistory(withToken: token!, userID: userID, page: currentpage) { (status,mess, results, totalpage) in
+        AssesmentHistory.getUserHistory(withToken: token!, userID: userID, page: currentpage) { (status,code,mess, results, totalpage) in
             
             if status!
             {
@@ -64,8 +64,18 @@ class AssessmentHistoryVC: UIViewController {
                 
                 
             }
+            else if code == 401
+            {
+                if let error = mess?["error"] as? String
+                {
+                    if error.contains("Token")
+                    {
+                        self.onHandleTokenInvalidAlert(autoLogin: autologin)
+                    }
+                }
+
+            }
             else
-                
             {
                 print("\nERROR:---->",mess!)
                 DispatchQueue.main.async(execute: {
@@ -155,7 +165,7 @@ extension AssessmentHistoryVC: UITableViewDataSource,UITableViewDelegate
     
     func loadmore(page:Int)
     {
-        AssesmentHistory.getUserHistory(withToken: token!, userID: userID, page: page) { (status, data, results, totolPage) in
+        AssesmentHistory.getUserHistory(withToken: token!, userID: userID, page: page) { (status,code, data, results, totolPage) in
             
             if results != nil
             {

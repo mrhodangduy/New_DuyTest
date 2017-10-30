@@ -192,7 +192,7 @@ class Examiner_HomeVC: UIViewController {
         {
             self.navigationController?.popViewController(animated: false)
         }
-                
+        autologin = false
         userDefault.removeObject(forKey: SOCIALKEY)
         userDefault.removeObject(forKey: TOKEN_STRING)
         AppDelegate.share.removeAllValueObject()

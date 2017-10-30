@@ -12,6 +12,8 @@ import SVProgressHUD
 import FBSDKLoginKit
 import FacebookLogin
 
+var autologin = false
+
 class Assessor_HomeVC: UIViewController {
     
     @IBOutlet weak var lbl_Name1: UILabel!
@@ -27,7 +29,6 @@ class Assessor_HomeVC: UIViewController {
     var userInfomation:NSDictionary!
     var socialAvatar: URL!
     var socialIdentifier: String!
-    var autologin = false
 
     
     var CategoryList = [Categories]()
@@ -194,7 +195,7 @@ class Assessor_HomeVC: UIViewController {
         {
             self.navigationController?.popViewController(animated: false)
         }
-        
+        autologin = false
         userDefault.removeObject(forKey: TOKEN_STRING)
         userDefault.removeObject(forKey: SOCIALKEY)
         userDefault.removeObject(forKey: USERNAMELOGIN)

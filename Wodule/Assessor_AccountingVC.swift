@@ -29,7 +29,7 @@ class Assessor_AccountingVC: UIViewController {
         availabelLBL.isHidden = true
         
         self.loadingShow()
-        ManageAPI_Accounting.getAccounting(witkToken: token!) { (status: Bool, result:NSDictionary?) in
+        ManageAPI_Accounting.getAccounting(witkToken: token!) { (status: Bool,code:Int?, result:NSDictionary?) in
             
             if status
             {
@@ -41,13 +41,23 @@ class Assessor_AccountingVC: UIViewController {
                 })
             }
                 
-            else
+            else if code == 401
             {
                 
+                if let error = result?["error"] as? String
+                {
+                    if error.contains("Token")
+                    {
+                        self.onHandleTokenInvalidAlert(autoLogin: autologin)
+                    }
+                }
+                
+            }
+            else
+            {
                 self.loadingHide()
                 self.alertMissingText(mess: "Something went wrong.", textField: nil)
                 print(result)
-                
             }
             
             

@@ -43,7 +43,7 @@ class Assessor_AssessmentVC: UIViewController {
         loadingShow()
         DispatchQueue.global(qos: .default).async { 
             
-            ExamRecord.getAllRecord(page: self.currentpage, completion: { (result:[NSDictionary]?, totalPage:Int?, json:NSDictionary?) in
+            ExamRecord.getAllRecord(page: self.currentpage, completion: { (result:[NSDictionary]?, totalPage:Int?,code:Int?, json:NSDictionary?) in
                 
                 if result != nil
                 {
@@ -70,6 +70,16 @@ class Assessor_AssessmentVC: UIViewController {
                         self.alertMissingText(mess: "\(errorMess)\n(ErrorCode:\(json?["code"] as! Int))", textField: nil)
                     })
                 }
+                else if code == 401
+                {
+                    if let error = json?["error"] as? String
+                    {
+                        if error.contains("Token")
+                        {
+                            self.onHandleTokenInvalidAlert(autoLogin: autologin)
+                        }
+                    }
+                }
                 else
                 {
                     self.lbl_NoFound.text = "No Record Found"
@@ -78,6 +88,7 @@ class Assessor_AssessmentVC: UIViewController {
                         self.dataTableView.reloadData()
                         self.loadingHide()
                     })
+
                 }
                 
             })
@@ -113,6 +124,17 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
         return 30
     }
     
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let selectedCell = tableView.cellForRow(at: indexPath)
+        selectedCell?.contentView.backgroundColor = UIColor(red: 27/255, green: 81/255, blue: 45/255, alpha: 1)
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        let selectedCell = tableView.cellForRow(at: indexPath)
+        selectedCell?.contentView.backgroundColor = UIColor.clear
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -121,7 +143,7 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
         part1VC.Exam = AllRecord[indexPath.row]
         print(AllRecord[indexPath.row])
         let identifier = self.AllRecord[indexPath.row]["identifier"] as? Int
-        let examID = self.AllRecord[indexPath.row]["exam"] as? String
+        _ = self.AllRecord[indexPath.row]["exam"] as? String
         userDefault.set(identifier, forKey: IDENTIFIER_KEY)
         userDefault.synchronize()
         
@@ -144,7 +166,7 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
     
     func loadMore(currentpage: Int)
     {
-        ExamRecord.getAllRecord(page: currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?, json: NSDictionary?) in
+        ExamRecord.getAllRecord(page: currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?,code: Int?, json: NSDictionary?) in
             
             if var data = result
             {
@@ -192,8 +214,5 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
         })
         
     }
-    
-    
-    
     
 }

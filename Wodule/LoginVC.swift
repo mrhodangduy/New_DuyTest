@@ -211,6 +211,7 @@ class LoginVC: UIViewController {
                                             
                                             examiner_homeVC.userInfomation = result!
                                             examiner_homeVC.socialAvatar = URL(string: avatarLink)
+                                            examiner_homeVC.autologin = false
                                             userDefault.set(FACEBOOKLOGIN, forKey: SOCIALKEY)
                                             userDefault.synchronize()
                                             
@@ -329,6 +330,7 @@ class LoginVC: UIViewController {
                                         let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
                                         
                                         examiner_homeVC.userInfomation = result
+                                        examiner_homeVC.autologin = false
                                         if profile_picture != nil
                                         {
                                             examiner_homeVC.socialAvatar = URL(string: profile_picture!)
@@ -442,7 +444,7 @@ class LoginVC: UIViewController {
                                         {
                                             print(UserType.examinee.rawValue)
                                             let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
-                                            
+                                            examiner_homeVC.autologin = false
                                             examiner_homeVC.userInfomation = result!
                                             if avatarLink != nil
                                             {
@@ -546,7 +548,6 @@ class LoginVC: UIViewController {
                                     let assessor_homeVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessor_homeVC") as! Assessor_HomeVC
                                     
                                     assessor_homeVC.userInfomation = userinfo!
-                                    
                                     self.navigationController?.pushViewController(assessor_homeVC, animated: true)
                                 }
                                 else
@@ -554,7 +555,7 @@ class LoginVC: UIViewController {
                                     let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
                                     
                                     examiner_homeVC.userInfomation = userinfo!
-                                    
+                                    examiner_homeVC.autologin = false
                                     self.navigationController?.pushViewController(examiner_homeVC, animated: true)
                                 }
                                 print("-----> LOGIN SUCCESSFUL")

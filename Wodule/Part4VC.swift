@@ -24,9 +24,9 @@ class Part4VC: UIViewController {
     
     var expectTime:TimeInterval = timeCoutdown
     var Exam:NSDictionary?
-    var audio1_Path: NSURL?
-    var audio2_Path: NSURL?
-    var audio3_Path: NSURL?
+    var audio1_Data: Data?
+    var audio2_Data: Data?
+    var audio3_Data: Data?
 
     
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
@@ -112,17 +112,14 @@ extension Part4VC: JWGCircleCounterDelegate
             self.view.layoutIfNeeded()
         }, completion: { (done) in
             self.recordingMess.text = "Time Out"
-            self.nextBtn.isHidden = false
             self.stopRecord()
             self.loadingShowwithStatus(status: "Uploading your Exam.")
             do
             {
-                let data1 = try? Data(contentsOf: self.audio1_Path! as URL)
-                let data2 = try? Data(contentsOf: self.audio2_Path! as URL)
-                let data3 = try? Data(contentsOf: self.audio3_Path! as URL)
+                
                 let data4 = try? Data(contentsOf: audioURL! as URL)
                 
-                ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: data1, audiofile2: data2, audiofile3: data3, audiofile4: data4, completion: { (status:Bool?, result:NSDictionary?) in
+                ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: self.audio3_Data, audiofile4: data4, completion: { (status:Bool?, result:NSDictionary?) in
                     
                     if status!
                     {

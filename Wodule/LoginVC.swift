@@ -86,7 +86,10 @@ class LoginVC: UIViewController {
                                 print(result!)
                                 
                                 guard let userID = result?["id"] as? Int else { return }
-                                
+                                userDefault.set(username, forKey: USERNAMELOGIN)
+                                userDefault.set(password, forKey: PASSWORDLOGIN)
+                                userDefault.synchronize()
+
                                 if result!["type"] as? String == UserType.assessor.rawValue
                                 {
                                     let assessor_homeVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessor_homeVC") as! Assessor_HomeVC
@@ -112,7 +115,7 @@ class LoginVC: UIViewController {
                                 else
                                 {
                                     print("Missing Code")
-                                    self.createAlertFB(user: self.dict, avatarLink: avatar, password: password, userID: userID)
+                                    self.createAlertFB(user: self.dict, avatarLink: avatar, password: password, userID: userID,username: username)
                                     
                                 }
                                 
@@ -139,7 +142,7 @@ class LoginVC: UIViewController {
     }
     
     
-    func createAlertFB(user: [String: AnyObject], avatarLink: String,password: String, userID:Int)
+    func createAlertFB(user: [String: AnyObject], avatarLink: String,password: String, userID:Int, username: String)
     {
         let alertInputCode = UIAlertController(title: "Wodule", message: "Please enter a valid code.", preferredStyle: .alert)
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
@@ -183,6 +186,11 @@ class LoginVC: UIViewController {
                                 if status == true
                                 {
                                     LoginWithSocial.getUserInfoSocial(withToken: token, completion: { (result) in
+                                        
+                                        userDefault.set(username, forKey: USERNAMELOGIN)
+                                        userDefault.set(password, forKey: PASSWORDLOGIN)
+                                        userDefault.synchronize()
+
                                         
                                         if result!["type"] as? String == UserType.assessor.rawValue
                                         {
@@ -292,6 +300,11 @@ class LoginVC: UIViewController {
                                     
                                     guard let userID = result?["id"] as? Int else { return }
                                     
+                                    userDefault.set(username, forKey: USERNAMELOGIN)
+                                    userDefault.set(password, forKey: PASSWORDLOGIN)
+                                    userDefault.synchronize()
+
+                                    
                                     if result!["type"] as? String == UserType.assessor.rawValue
                                     {
                                         
@@ -335,7 +348,7 @@ class LoginVC: UIViewController {
                                         DispatchQueue.main.async {
                                             self.loadingHide()
                                         }
-                                        self.createAlert(fullname: name!, avatarLink: profile_picture!, password: password, userID: userID)
+                                        self.createAlert(fullname: name!, avatarLink: profile_picture!, password: password, userID: userID, username:username)
                                         
                                     }
 
@@ -360,7 +373,7 @@ class LoginVC: UIViewController {
         self.present(instagramLogin, animated: true, completion: nil)
     }
     
-    func createAlert(fullname: String?, avatarLink: String?,password: String, userID: Int)
+    func createAlert(fullname: String?, avatarLink: String?,password: String, userID: Int, username:String)
     {
         let alertInputCode = UIAlertController(title: "Wodule", message: "Please enter a valid code.", preferredStyle: .alert)
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
@@ -404,6 +417,10 @@ class LoginVC: UIViewController {
                                 if status == true
                                 {
                                     LoginWithSocial.getUserInfoSocial(withToken: token, completion: { (result) in
+                                        
+                                        userDefault.set(username, forKey: USERNAMELOGIN)
+                                        userDefault.set(password, forKey: PASSWORDLOGIN)
+                                        userDefault.synchronize()
                                         
                                         if result!["type"] as? String == UserType.assessor.rawValue
                                         {
@@ -520,6 +537,10 @@ class LoginVC: UIViewController {
                             
                             UserInfoAPI.getUserInfo(withToken: token!, completion: { (userinfo) in
                                 
+                                userDefault.set(self.tf_Username.text, forKey: USERNAMELOGIN)
+                                userDefault.set(self.tf_Password.text, forKey: PASSWORDLOGIN)
+                                userDefault.synchronize()
+                                
                                 if userinfo!["type"] as? String == UserType.assessor.rawValue
                                 {
                                     let assessor_homeVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessor_homeVC") as! Assessor_HomeVC
@@ -551,8 +572,7 @@ class LoginVC: UIViewController {
                                 print("-----> LOGIN FALED")
                                 self.alertMissingText(mess: "Username or Password is not correct. Try again.", textField: nil)
                             })
-                            
-                            
+                                                        
                         }
                         
                     })

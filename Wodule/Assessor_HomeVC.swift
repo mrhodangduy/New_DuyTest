@@ -27,7 +27,8 @@ class Assessor_HomeVC: UIViewController {
     var userInfomation:NSDictionary!
     var socialAvatar: URL!
     var socialIdentifier: String!
-    
+    var autologin = false
+
     
     var CategoryList = [Categories]()
     
@@ -51,11 +52,7 @@ class Assessor_HomeVC: UIViewController {
         print("\nCURRENT USER AVATARLINK: ------>\n",socialAvatar)
 
         
-        asignDataInView()
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.logOut))
-        tapGesture.numberOfTapsRequired = 2
-        img_Avatar.addGestureRecognizer(tapGesture)
+        asignDataInView()        
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.loadNewData), name: NSNotification.Name(rawValue: NOTIFI_UPDATED), object: nil)
         
@@ -134,35 +131,6 @@ class Assessor_HomeVC: UIViewController {
         }
     }
     
-    
-    
-    func logOut()
-    {
-        
-        switch socialIdentifier {
-        case GOOGLELOGIN:
-            GIDSignIn.sharedInstance().signOut()
-            print("LogOut G+")
-            
-        case FACEBOOKLOGIN:
-            let manger = FBSDKLoginManager()
-            manger.logOut()
-            print("LogOut FB")
-            
-        default:
-            print("LogOut Normal")
-        }
-        
-        self.navigationController?.popToRootViewController(animated: true)
-
-        userDefault.removeObject(forKey: TOKEN_STRING)
-        userDefault.removeObject(forKey: SOCIALKEY)
-        
-        AppDelegate.share.removeAllValueObject()
-        
-        userDefault.synchronize()
-    }
-    
     @IBAction func assessmentHistoryTap(_ sender: Any) {
         
         
@@ -199,5 +167,39 @@ class Assessor_HomeVC: UIViewController {
         editprofileVC.userInfo = self.userInfomation
         
         self.navigationController?.pushViewController(editprofileVC, animated: true)
+    }
+    @IBAction func onClickLogOut(_ sender: Any) {
+        
+        switch socialIdentifier {
+        case GOOGLELOGIN:
+            GIDSignIn.sharedInstance().signOut()
+            print("LogOut G+")
+            
+        case FACEBOOKLOGIN:
+            let manger = FBSDKLoginManager()
+            manger.logOut()
+            print("LogOut FB")
+            
+        default:
+            print("LogOut Normal")
+        }
+        
+        let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
+        
+        if autologin
+        {
+            self.navigationController?.pushViewController(loginVC, animated: false)
+        }
+        else
+        {
+            self.navigationController?.popViewController(animated: false)
+        }
+        
+        userDefault.removeObject(forKey: TOKEN_STRING)
+        userDefault.removeObject(forKey: SOCIALKEY)
+        userDefault.removeObject(forKey: USERNAMELOGIN)
+        userDefault.removeObject(forKey: PASSWORDLOGIN)
+        AppDelegate.share.removeAllValueObject()
+        userDefault.synchronize()
     }
 }

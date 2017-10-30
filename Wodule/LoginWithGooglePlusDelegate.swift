@@ -30,7 +30,10 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                 {
                     
                     let token = userDefault.object(forKey: TOKEN_STRING) as? String
-                    
+                    userDefault.set(username, forKey: USERNAMELOGIN)
+                    userDefault.set(password, forKey: PASSWORDLOGIN)
+                    userDefault.synchronize()
+
                     LoginWithSocial.getUserInfoSocial(withToken: token!, completion: { (result) in
                         
                         print(result!)
@@ -62,7 +65,7 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                         else
                         {
                             print("Missing Code")
-                            self.createAlertGPlus(user: user, password: password, userID: userID)
+                            self.createAlertGPlus(user: user, password: password, userID: userID, username: username)
                             
                         }
                         
@@ -100,7 +103,7 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
         self.dismiss(animated: true, completion: nil)
     }
     
-    func createAlertGPlus(user: GIDGoogleUser, password: String, userID: Int)
+    func createAlertGPlus(user: GIDGoogleUser, password: String, userID: Int, username: String)
     {
         let alertInputCode = UIAlertController(title: "Wodule", message: "Please enter a valid code.", preferredStyle: .alert)
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
@@ -146,7 +149,12 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                                 
                                 if status == true
                                 {
-                                    LoginWithSocial.getUserInfoSocial(withToken: token, completion: { (result) in
+                                    
+                                    userDefault.set(username, forKey: USERNAMELOGIN)
+                                    userDefault.set(password, forKey: PASSWORDLOGIN)
+                                    userDefault.synchronize()
+
+                                    LoginWithSocial.getUserInfoSocial(withToken: token, completion: { (result) in                                        
                                         
                                         if result!["type"] as? String == UserType.assessor.rawValue
                                         {

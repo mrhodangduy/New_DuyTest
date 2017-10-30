@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ExK-xS-xVp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ExK-xS-xVp">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -12,7 +12,7 @@
         <!--LoginVC-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginVC" customModule="Wodule" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loginVC" id="BYZ-38-t0r" customClass="LoginVC" customModule="Wodule" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -1874,6 +1874,31 @@
             </objects>
             <point key="canvasLocation" x="1159" y="-653"/>
         </scene>
+        <!--Splash ScreenVC-->
+        <scene sceneID="7lO-fV-3Yh">
+            <objects>
+                <viewController id="tRk-Uu-s8V" customClass="SplashScreenVC" customModule="Wodule" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="GyX-9J-8Hx"/>
+                        <viewControllerLayoutGuide type="bottom" id="N3A-nZ-Sut"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0eJ-sa-UQc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="splash_ip6" translatesAutoresizingMaskIntoConstraints="NO" id="whS-nd-ebf">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="tuz-JT-dXj"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z81-tk-Vas" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-144" y="35"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="Gc6-QT-Cdy">
             <objects>
@@ -1885,12 +1910,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="nEK-Xf-trB"/>
+                        <segue destination="tRk-Uu-s8V" kind="relationship" relationship="rootViewController" id="sDe-PE-0l6"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="61P-HS-j2g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="220" y="34.632683658170919"/>
+            <point key="canvasLocation" x="-1009" y="35"/>
         </scene>
     </scenes>
     <resources>
@@ -1912,5 +1937,6 @@
         <image name="ic_newuser" width="15" height="15"/>
         <image name="ic_tick" width="15" height="15"/>
         <image name="line_login" width="193" height="6"/>
+        <image name="splash_ip6" width="750" height="1334"/>
     </resources>
 </document>

@@ -48,9 +48,9 @@ class Assessor_GradeVC: UIViewController {
         DispatchQueue.global(qos: .background).async {
             do
             {
-                let data = try Data(contentsOf: url!)
+                self.data = try Data(contentsOf: url!)
                 do {
-                    self.currentPlayer = try AVAudioPlayer(data: data)
+                    self.currentPlayer = try AVAudioPlayer(data: self.data!)
                     DispatchQueue.main.async(execute: {
                         self.currentPlayer?.play()
                         self.currentPlayer?.pause()

@@ -63,6 +63,7 @@
 		63F1459D1F8721E500CD03BF /* Examinee_CategoriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F1459C1F8721E500CD03BF /* Examinee_CategoriesCell.swift */; };
 		63F1459F1F8721FA00CD03BF /* Examinee_CategoriesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F1459E1F8721FA00CD03BF /* Examinee_CategoriesVC.swift */; };
 		63F145A31F87330600CD03BF /* Part4VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F145A21F87330600CD03BF /* Part4VC.swift */; };
+		63F43A561FA72B080070DEDD /* SplashScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F43A551FA72B080070DEDD /* SplashScreenVC.swift */; };
 		DA1620771F8D16200056D7D3 /* AudioRecorderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1620761F8D16200056D7D3 /* AudioRecorderManager.swift */; };
 		DA7517BA1F8275A200E96E56 /* NewUser3_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7517B91F8275A200E96E56 /* NewUser3_TableViewCell.swift */; };
 		DA7517BC1F82923B00E96E56 /* ManageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7517BB1F82923B00E96E56 /* ManageAPI.swift */; };
@@ -140,6 +141,7 @@
 		63F1459E1F8721FA00CD03BF /* Examinee_CategoriesVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Examinee_CategoriesVC.swift; sourceTree = "<group>"; };
 		63F145A21F87330600CD03BF /* Part4VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Part4VC.swift; sourceTree = "<group>"; };
 		63F145A41F8772E900CD03BF /* Wodule-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Wodule-Bridging-Header.h"; sourceTree = "<group>"; };
+		63F43A551FA72B080070DEDD /* SplashScreenVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreenVC.swift; sourceTree = "<group>"; };
 		A0A11A97D58C2A42E8F6CAAA /* Pods-Wodule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wodule.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wodule/Pods-Wodule.release.xcconfig"; sourceTree = "<group>"; };
 		DA1620711F8D0B5E0056D7D3 /* Wodule.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wodule.entitlements; sourceTree = "<group>"; };
 		DA1620761F8D16200056D7D3 /* AudioRecorderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecorderManager.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				630BD8B41F821D8000B24CA5 /* ForgotPasswordVC.swift */,
 				6362081A1F8B659C005D800F /* LoginWithGooglePlusDelegate.swift */,
 				6347CF071F8C6819009D717D /* InstagramLoginVC.swift */,
+				63F43A551FA72B080070DEDD /* SplashScreenVC.swift */,
 			);
 			name = Login_Register;
 			sourceTree = "<group>";
@@ -579,6 +582,7 @@
 				63A36C081F84D230005857DE /* Assessor_AccountingVC.swift in Sources */,
 				63A36C021F84CEE4005857DE /* Assessor_AssessmentVC.swift in Sources */,
 				63A36BF61F84A1DA005857DE /* Assessor_GradeVC.swift in Sources */,
+				63F43A561FA72B080070DEDD /* SplashScreenVC.swift in Sources */,
 				DAAD6B491F85309600F45371 /* Assessor_Part1Cell.swift in Sources */,
 				63C57BF01FA2F1F600DC3B40 /* Assessor_Part2VC.swift in Sources */,
 				630BD8B51F821D8000B24CA5 /* ForgotPasswordVC.swift in Sources */,

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -278,7 +278,11 @@
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cZj-OX-zwK">
-                                                        <rect key="frame" x="278" y="8" width="22" height="22"/>
+                                                        <rect key="frame" x="270" y="8" width="30" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="30" id="Zd4-DG-aby"/>
+                                                            <constraint firstAttribute="height" constant="30" id="r8b-Vc-5y9"/>
+                                                        </constraints>
                                                         <state key="normal" image="ic_edit"/>
                                                         <connections>
                                                             <action selector="editProfile:" destination="oXX-bt-BdA" eventType="touchUpInside" id="PCF-xa-FPw"/>
@@ -358,12 +362,24 @@
                                     <constraint firstItem="uYB-Yp-Zr9" firstAttribute="width" secondItem="31y-AI-u04" secondAttribute="width" id="zHh-AH-tMG"/>
                                 </constraints>
                             </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ec7-S4-9HM">
+                                <rect key="frame" x="260" y="32.5" width="50" height="28"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                <state key="normal" title="Log Out">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickLogOut:" destination="oXX-bt-BdA" eventType="touchUpInside" id="qiN-pg-j0g"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.091643892229999996" green="0.28536835310000003" blue="0.1567776203" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="dVg-W6-DZz" firstAttribute="top" secondItem="31y-AI-u04" secondAttribute="bottom" id="0gV-xC-kjd"/>
                             <constraint firstAttribute="trailing" secondItem="31y-AI-u04" secondAttribute="trailing" id="567-Nb-p9u"/>
                             <constraint firstItem="dJc-qN-Lpq" firstAttribute="leading" secondItem="zBa-gV-1IU" secondAttribute="leading" constant="20" id="BQ9-y6-vDp"/>
+                            <constraint firstItem="Ec7-S4-9HM" firstAttribute="centerY" secondItem="dJc-qN-Lpq" secondAttribute="centerY" id="N6o-AG-nhI"/>
+                            <constraint firstAttribute="trailing" secondItem="Ec7-S4-9HM" secondAttribute="trailing" constant="10" id="NJH-xR-Q96"/>
                             <constraint firstItem="31y-AI-u04" firstAttribute="top" secondItem="dJc-qN-Lpq" secondAttribute="bottom" constant="10" id="PHS-SL-2dp"/>
                             <constraint firstItem="31y-AI-u04" firstAttribute="top" secondItem="uoS-Eu-uCK" secondAttribute="bottom" constant="50" id="f9c-Fi-yVr"/>
                             <constraint firstItem="31y-AI-u04" firstAttribute="leading" secondItem="zBa-gV-1IU" secondAttribute="leading" id="hty-qo-T4z"/>
@@ -946,7 +962,7 @@
                                                 <rect key="frame" x="20" y="10" width="280" height="308"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda. Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image1" translatesAutoresizingMaskIntoConstraints="NO" id="KCM-34-x7t" customClass="UIImageViewX" customModule="Wodule" customModuleProvider="target">
@@ -1001,7 +1017,7 @@
                                                 <rect key="frame" x="20" y="36" width="280" height="194"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
@@ -1296,14 +1312,22 @@
                                                                             <action selector="part1_playAudioTap:" destination="WvS-w8-L3N" eventType="touchUpInside" id="a3C-2s-bll"/>
                                                                         </connections>
                                                                     </button>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playing..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nsh-0f-tSK">
+                                                                        <rect key="frame" x="44" y="28" width="62.5" height="18"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
                                                                 </subviews>
                                                                 <color key="backgroundColor" red="0.23048081994056702" green="0.61026853322982788" blue="0.33864325284957886" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstItem="J2Y-En-rUg" firstAttribute="top" secondItem="dUN-wX-NBv" secondAttribute="top" id="GTt-uJ-zi6"/>
+                                                                    <constraint firstItem="nsh-0f-tSK" firstAttribute="centerY" secondItem="dUN-wX-NBv" secondAttribute="centerY" id="LIq-Bp-3ix"/>
                                                                     <constraint firstItem="olA-Vo-Hhp" firstAttribute="centerY" secondItem="dUN-wX-NBv" secondAttribute="centerY" id="RE7-NC-GGI"/>
                                                                     <constraint firstItem="J2Y-En-rUg" firstAttribute="leading" secondItem="dUN-wX-NBv" secondAttribute="leading" id="jLS-fb-AKm"/>
                                                                     <constraint firstAttribute="bottom" secondItem="J2Y-En-rUg" secondAttribute="bottom" id="vpO-ij-7c2"/>
                                                                     <constraint firstItem="olA-Vo-Hhp" firstAttribute="centerX" secondItem="dUN-wX-NBv" secondAttribute="centerX" id="zLI-qU-tlk"/>
+                                                                    <constraint firstItem="nsh-0f-tSK" firstAttribute="centerX" secondItem="dUN-wX-NBv" secondAttribute="centerX" id="zci-Aj-Umv"/>
                                                                 </constraints>
                                                             </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PART 1: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kz7-BR-iRF">
@@ -1319,7 +1343,10 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TY8-7J-GJs">
-                                                                <rect key="frame" x="246" y="11" width="64" height="13"/>
+                                                                <rect key="frame" x="246" y="2.5" width="64" height="30"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="30" id="Ois-wt-gbc"/>
+                                                                </constraints>
                                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
                                                                 <state key="normal" title="VIEW TEXT" image="ic_textview">
                                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1430,11 +1457,19 @@
                                                                             <action selector="part2_PlayAudioTap:" destination="WvS-w8-L3N" eventType="touchUpInside" id="FoL-au-wJf"/>
                                                                         </connections>
                                                                     </button>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playing..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YRB-ca-xez">
+                                                                        <rect key="frame" x="43" y="27" width="62.5" height="18"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
                                                                 </subviews>
                                                                 <color key="backgroundColor" red="0.23048081989999999" green="0.61026853319999996" blue="0.33864325280000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
+                                                                    <constraint firstItem="YRB-ca-xez" firstAttribute="centerX" secondItem="Uba-4a-KwP" secondAttribute="centerX" id="2kt-EA-Kzm"/>
                                                                     <constraint firstAttribute="bottom" secondItem="4mR-Ug-i5d" secondAttribute="bottom" id="CVP-VW-Jw6"/>
                                                                     <constraint firstItem="KII-kH-1UY" firstAttribute="centerX" secondItem="Uba-4a-KwP" secondAttribute="centerX" id="MQz-99-rYk"/>
+                                                                    <constraint firstItem="YRB-ca-xez" firstAttribute="centerY" secondItem="Uba-4a-KwP" secondAttribute="centerY" id="a70-CX-InZ"/>
                                                                     <constraint firstItem="KII-kH-1UY" firstAttribute="centerY" secondItem="Uba-4a-KwP" secondAttribute="centerY" id="gAt-wR-rJ1"/>
                                                                     <constraint firstItem="4mR-Ug-i5d" firstAttribute="leading" secondItem="Uba-4a-KwP" secondAttribute="leading" id="qWB-cN-ctC"/>
                                                                     <constraint firstItem="4mR-Ug-i5d" firstAttribute="top" secondItem="Uba-4a-KwP" secondAttribute="top" id="sfq-q5-aav"/>
@@ -1453,7 +1488,10 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YT6-wM-KJw">
-                                                                <rect key="frame" x="237" y="11.5" width="73" height="13"/>
+                                                                <rect key="frame" x="237" y="3" width="73" height="30"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="30" id="5hv-Gk-OL1"/>
+                                                                </constraints>
                                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
                                                                 <state key="normal" title="VIEW PHOTO" image="ic_textview">
                                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1564,12 +1602,20 @@
                                                                             <action selector="part3_PlayAudioTap:" destination="WvS-w8-L3N" eventType="touchUpInside" id="ZG3-Ic-oqe"/>
                                                                         </connections>
                                                                     </button>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playing..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G2F-IQ-3MG">
+                                                                        <rect key="frame" x="43" y="27.5" width="62.5" height="18"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
                                                                 </subviews>
                                                                 <color key="backgroundColor" red="0.23048081989999999" green="0.61026853319999996" blue="0.33864325280000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstItem="38Y-91-CqJ" firstAttribute="top" secondItem="jk2-GK-H4b" secondAttribute="top" id="0eZ-pq-0fm"/>
                                                                     <constraint firstAttribute="bottom" secondItem="38Y-91-CqJ" secondAttribute="bottom" id="BGa-k1-reI"/>
                                                                     <constraint firstItem="38Y-91-CqJ" firstAttribute="leading" secondItem="jk2-GK-H4b" secondAttribute="leading" id="Eml-7h-FtJ"/>
+                                                                    <constraint firstItem="G2F-IQ-3MG" firstAttribute="centerX" secondItem="jk2-GK-H4b" secondAttribute="centerX" id="gaP-Dn-lH8"/>
+                                                                    <constraint firstItem="G2F-IQ-3MG" firstAttribute="centerY" secondItem="jk2-GK-H4b" secondAttribute="centerY" id="hrB-qP-VWv"/>
                                                                     <constraint firstItem="9K6-qJ-8hV" firstAttribute="centerY" secondItem="jk2-GK-H4b" secondAttribute="centerY" id="wA8-T7-t4I"/>
                                                                     <constraint firstItem="9K6-qJ-8hV" firstAttribute="centerX" secondItem="jk2-GK-H4b" secondAttribute="centerX" id="wfd-aG-0py"/>
                                                                 </constraints>
@@ -1587,7 +1633,10 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TgC-nj-wbw">
-                                                                <rect key="frame" x="246" y="11.5" width="64" height="13"/>
+                                                                <rect key="frame" x="246" y="3" width="64" height="30"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="30" id="bWd-U9-4CU"/>
+                                                                </constraints>
                                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
                                                                 <state key="normal" title="VIEW TEXT" image="ic_textview">
                                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1699,12 +1748,20 @@
                                                                             <action selector="part4_PlayAudioTap:" destination="WvS-w8-L3N" eventType="touchUpInside" id="Fc9-zt-Fca"/>
                                                                         </connections>
                                                                     </button>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playing..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7bC-67-c7f">
+                                                                        <rect key="frame" x="43" y="27" width="62.5" height="18"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
                                                                 </subviews>
                                                                 <color key="backgroundColor" red="0.23048081989999999" green="0.61026853319999996" blue="0.33864325280000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstItem="7bq-ha-Z1g" firstAttribute="leading" secondItem="Mws-qS-KOr" secondAttribute="leading" id="3gN-u8-oQd"/>
                                                                     <constraint firstItem="oJf-08-Zvh" firstAttribute="centerY" secondItem="Mws-qS-KOr" secondAttribute="centerY" id="E8u-3F-72b"/>
                                                                     <constraint firstAttribute="bottom" secondItem="7bq-ha-Z1g" secondAttribute="bottom" id="LNc-e4-skN"/>
+                                                                    <constraint firstItem="7bC-67-c7f" firstAttribute="centerY" secondItem="Mws-qS-KOr" secondAttribute="centerY" id="WVj-R3-EOG"/>
+                                                                    <constraint firstItem="7bC-67-c7f" firstAttribute="centerX" secondItem="Mws-qS-KOr" secondAttribute="centerX" id="Yh9-ip-9oU"/>
                                                                     <constraint firstItem="7bq-ha-Z1g" firstAttribute="top" secondItem="Mws-qS-KOr" secondAttribute="top" id="fU6-lM-O3R"/>
                                                                     <constraint firstItem="oJf-08-Zvh" firstAttribute="centerX" secondItem="Mws-qS-KOr" secondAttribute="centerX" id="t74-is-zEY"/>
                                                                 </constraints>
@@ -1722,7 +1779,10 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D8S-fP-50b">
-                                                                <rect key="frame" x="246" y="11.5" width="64" height="13"/>
+                                                                <rect key="frame" x="246" y="3" width="64" height="30"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="30" id="9Vt-1l-DpZ"/>
+                                                                </constraints>
                                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
                                                                 <state key="normal" title="VIEW TEXT" image="ic_textview">
                                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1927,17 +1987,25 @@
                         <outlet property="dataTableView" destination="Bvj-bF-tX2" id="sXt-A0-3Tg"/>
                         <outlet property="examIDLabel" destination="p2e-5N-36i" id="gbr-4O-u7o"/>
                         <outlet property="mainContainerView" destination="ybQ-nd-gqG" id="SeU-rH-N1E"/>
+                        <outlet property="part1PlayButton" destination="olA-Vo-Hhp" id="Ac2-A9-E33"/>
+                        <outlet property="part1PlayingLabel" destination="nsh-0f-tSK" id="53v-j6-njE"/>
                         <outlet property="part1ScoreLabel" destination="sbQ-zz-Wdd" id="L8P-Uo-RLv"/>
                         <outlet property="part1TitleLabel" destination="dDA-XM-nt5" id="lNf-SU-uBO"/>
                         <outlet property="part1_ViewData" destination="TY8-7J-GJs" id="hSU-zV-KhK"/>
+                        <outlet property="part2PlayButton" destination="KII-kH-1UY" id="nxU-Qb-Eda"/>
+                        <outlet property="part2PlayingLabel" destination="YRB-ca-xez" id="Cr5-Le-Djc"/>
                         <outlet property="part2ScoreLabel" destination="Fne-X8-vrO" id="qnC-ga-LY9"/>
                         <outlet property="part2TitleLabel" destination="U8d-5J-cmg" id="JVu-aK-1jX"/>
                         <outlet property="part2_ViewData" destination="YT6-wM-KJw" id="PUn-Ei-nF5"/>
                         <outlet property="part3ContainerView" destination="qaD-CD-HYe" id="E3O-W3-hwN"/>
+                        <outlet property="part3PlayButton" destination="9K6-qJ-8hV" id="mFF-YH-aUv"/>
+                        <outlet property="part3PlayingLabel" destination="G2F-IQ-3MG" id="H6d-tO-ta3"/>
                         <outlet property="part3ScoreLabel" destination="zDX-M1-QIU" id="NBF-as-Zgg"/>
                         <outlet property="part3TitleLabel" destination="ClB-Dn-9MG" id="pjE-ee-BlA"/>
                         <outlet property="part3_ViewData" destination="TgC-nj-wbw" id="fJI-40-oAM"/>
                         <outlet property="part4ContainerView" destination="nt9-V2-7eh" id="p19-aI-Ln1"/>
+                        <outlet property="part4PlayButton" destination="oJf-08-Zvh" id="O6b-gN-b7x"/>
+                        <outlet property="part4PlayingLabel" destination="7bC-67-c7f" id="MjE-XE-GYC"/>
                         <outlet property="part4ScoreLabel" destination="EUc-0M-3l2" id="X5f-ep-9r0"/>
                         <outlet property="part4TitleLabel" destination="hnn-dh-IMb" id="sVX-9P-8Lo"/>
                         <outlet property="part4_ViewData" destination="D8S-fP-50b" id="1Gg-UV-ejq"/>
@@ -1995,7 +2063,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
@@ -2266,7 +2334,7 @@
                                                 <rect key="frame" x="20" y="10" width="280" height="308"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda. Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image1" translatesAutoresizingMaskIntoConstraints="NO" id="kA1-oc-voe" customClass="UIImageViewX" customModule="Wodule" customModuleProvider="target">
@@ -2321,7 +2389,7 @@
                                                 <rect key="frame" x="20" y="36" width="280" height="194"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
@@ -2640,7 +2708,7 @@
                                                 <rect key="frame" x="20" y="10" width="280" height="308"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda. Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image1" translatesAutoresizingMaskIntoConstraints="NO" id="e0V-YD-6Ts" customClass="UIImageViewX" customModule="Wodule" customModuleProvider="target">
@@ -2696,7 +2764,7 @@
                                                 <rect key="frame" x="20" y="36" width="280" height="194"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
@@ -3012,7 +3080,7 @@
                                                 <rect key="frame" x="20" y="10" width="280" height="308"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda. Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image1" translatesAutoresizingMaskIntoConstraints="NO" id="StQ-eC-dlb" customClass="UIImageViewX" customModule="Wodule" customModuleProvider="target">
@@ -3069,7 +3137,7 @@
                                                 <rect key="frame" x="20" y="36" width="280" height="194"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">

@@ -8,10 +8,12 @@
 
 import UIKit
 import SDWebImage
+import AVFoundation
 
 class Assessor_OverviewVC: UIViewController {
     
-    var isPlaying:Bool!
+    var isPlaying: Int!
+    
     @IBOutlet var dataTableView: UITableView!
     @IBOutlet var contentTextView: UITextView!
     @IBOutlet var contentImageView: UIImageView!
@@ -30,6 +32,12 @@ class Assessor_OverviewVC: UIViewController {
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var part3ContainerView: UIView!
     @IBOutlet weak var part4ContainerView: UIView!
+    
+    @IBOutlet weak var part1PlayingLabel: UILabel!
+    @IBOutlet weak var part2PlayingLabel: UILabel!
+    @IBOutlet weak var part3PlayingLabel: UILabel!
+    @IBOutlet weak var part4PlayingLabel: UILabel!
+    
     var numberOfQuestion:Int!
     
     var data1: Data?
@@ -41,30 +49,34 @@ class Assessor_OverviewVC: UIViewController {
     var part2Type:Int!
     var part3Type:Int!
     var part4Type:Int!
-
+    
     let VIEWPHOTO = "VIEW PHOTO"
     let VIEWTEXT = "VIEW TEXT"
     
     var widthViewScore: CGFloat!
     var widthViewPhoto: CGFloat!
     var xFrame: CGFloat!
-
+    var currentAudioPlayer: AVAudioPlayer?
+    
     
     var Exam: NSDictionary?
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         widthViewScore = view.frame.size.width * (4/6)
         widthViewPhoto = view.frame.size.width
         xFrame = view.frame.size.width * (1/6)
         
         onHandleInitView()
         
-        isPlaying = false
-        
         dataTableView.dataSource = self
         dataTableView.delegate = self
+        
+        part1PlayingLabel.isHidden = true
+        part2PlayingLabel.isHidden = true
+        part3PlayingLabel.isHidden = true
+        part4PlayingLabel.isHidden = true
+        
         
     }
     
@@ -167,8 +179,10 @@ class Assessor_OverviewVC: UIViewController {
         }
         else
         {
-            onHandleViewData(subView: contentTextView, height: view.frame.height / 3, width: self.view.frame.width * (5/6), xFrame: self.view.frame.width * (1/12))
+            onHandleViewData(subView: contentTextView, height: view.frame.height / 3, width: self.view.frame.width, xFrame: 0)
             contentTextView.text =  question
+            contentTextView.textContainerInset = UIEdgeInsetsMake(10, 8, 5, 8)
+            
         }
     }
     
@@ -176,21 +190,14 @@ class Assessor_OverviewVC: UIViewController {
     @IBOutlet weak var background1: UIView!
     @IBOutlet weak var runningView1: UIView!
     @IBOutlet weak var part1ScoreLabel: UILabelX!
+    @IBOutlet weak var part1PlayButton: UIButton!
     
     @IBAction func part1_playAudioTap(_ sender: Any) {
-        
-        let button = sender as! UIButton
-        play_pauseAudio(button: button, isPlay: isPlaying)
-        if !isPlaying
-        {
-            UIView.animate(withDuration: 10, animations: {
-                self.runningView1.frame.size.width = self.background1.frame.size.width
-                self.view.layoutIfNeeded()
-            }, completion: { (done) in
-                self.runningView1.frame.size.width = 0
-                button.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
-            })
-        }
+        currentAudioPlayer = AVAudioPlayer()
+
+        isPlaying = 1
+        self.onHandlePlayAudio(data: data1!, button: part1PlayButton, runningView: runningView1, mainView: background1, label: part1PlayingLabel)
+        self.onHandleDisableButton(sub1: part2PlayButton, sub2: part3PlayButton, sub3: part4PlayButton, isStatus: false)
     }
     
     @IBAction func part1_viewTextTap(_ sender: Any) {
@@ -210,25 +217,19 @@ class Assessor_OverviewVC: UIViewController {
     @IBOutlet weak var background2: UIView!
     @IBOutlet weak var runningView2: UIView!
     @IBOutlet weak var part2ScoreLabel: UILabelX!
+    @IBOutlet weak var part2PlayButton: UIButton!
     
     @IBAction func part2_PlayAudioTap(_ sender: Any) {
-        let button = sender as! UIButton
-        play_pauseAudio(button: button, isPlay: isPlaying)
-        if !isPlaying
-        {
-            UIView.animate(withDuration: 10, animations: {
-                self.runningView2.frame.size.width = self.background2.frame.size.width
-                self.view.layoutIfNeeded()
-            }, completion: { (done) in
-                self.runningView2.frame.size.width = 0
-                button.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
-            })
-        }
+        isPlaying = 2
+        currentAudioPlayer = AVAudioPlayer()
+
+        self.onHandlePlayAudio(data: data2!, button: part2PlayButton, runningView: runningView2, mainView: background2, label: part2PlayingLabel)
+        self.onHandleDisableButton(sub1: part1PlayButton, sub2: part3PlayButton, sub3: part4PlayButton, isStatus: false)
     }
     @IBAction func part2_ViewPhotoTap(_ sender: Any) {
         
         onHandleDisplayView(type: part2Type, question: (Exam?["examQuestionaireTwo"] as? String)!)
-
+        
     }
     @IBAction func part2_ScoreTap(_ sender: Any) {
         
@@ -240,26 +241,20 @@ class Assessor_OverviewVC: UIViewController {
     @IBOutlet weak var background3: UIView!
     @IBOutlet weak var runningView3: UIView!
     @IBOutlet weak var part3ScoreLabel: UILabelX!
+    @IBOutlet weak var part3PlayButton: UIButton!
     
     @IBAction func part3_PlayAudioTap(_ sender: Any) {
-        let button = sender as! UIButton
-        play_pauseAudio(button: button, isPlay: isPlaying)
-        if !isPlaying
-        {
-            UIView.animate(withDuration: 10, animations: {
-                self.runningView3.frame.size.width = self.background3.frame.size.width
-                self.view.layoutIfNeeded()
-            }, completion: { (done) in
-                self.runningView3.frame.size.width = 0
-                button.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
-            })
-        }
+        isPlaying = 3
+        currentAudioPlayer = AVAudioPlayer()
+
+        self.onHandlePlayAudio(data: data3!, button: part3PlayButton, runningView: runningView3, mainView: background3, label: part3PlayingLabel)
+        self.onHandleDisableButton(sub1: part1PlayButton, sub2: part2PlayButton, sub3: part4PlayButton, isStatus: false)
     }
     
     @IBAction func part3_ViewData(_ sender: Any) {
         
         onHandleDisplayView(type: part3Type, question: (Exam?["examQuestionaireThree"] as? String)!)
-
+        
     }
     
     
@@ -274,20 +269,16 @@ class Assessor_OverviewVC: UIViewController {
     @IBOutlet weak var background4: UIView!
     @IBOutlet weak var runningView4: UIView!
     @IBOutlet weak var part4ScoreLabel: UILabelX!
+    @IBOutlet weak var part4PlayButton: UIButton!
     
     @IBAction func part4_PlayAudioTap(_ sender: Any) {
-        let button = sender as! UIButton
-        play_pauseAudio(button: button, isPlay: isPlaying)
-        if !isPlaying
-        {
-            UIView.animate(withDuration: 10, animations: {
-                self.runningView4.frame.size.width = self.background4.frame.size.width
-                self.view.layoutIfNeeded()
-            }, completion: { (done) in
-                self.runningView4.frame.size.width = 0
-                button.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
-            })
-        }
+        
+        isPlaying = 4
+        currentAudioPlayer = AVAudioPlayer()
+
+        self.onHandlePlayAudio(data: data4!, button: part4PlayButton, runningView: runningView4, mainView: background4, label: part4PlayingLabel)
+        self.onHandleDisableButton(sub1: part2PlayButton, sub2: part3PlayButton, sub3: part1PlayButton, isStatus: false)
+        
     }
     @IBAction func part4_ScoreTap(_ sender: Any) {
         
@@ -298,10 +289,16 @@ class Assessor_OverviewVC: UIViewController {
     @IBAction func part4_ViewData(_ sender: Any) {
         
         onHandleDisplayView(type: part4Type, question: (Exam?["examQuestionaireFour"] as? String)!)
-
+        
     }
     
     @IBAction func submitTap(_ sender: Any) {
+        
+        if self.currentAudioPlayer != nil
+        {
+            self.currentAudioPlayer?.stop()
+            self.currentAudioPlayer = nil
+        }
         
         let score_Part1 = userDefault.object(forKey: SCORE_PART1) as? Int
         let score_Part2 = userDefault.object(forKey: SCORE_PART2) as? Int
@@ -359,7 +356,7 @@ class Assessor_OverviewVC: UIViewController {
             })
             
         }
-    
+        
     }
     
     func setupViewData(subView: UIView, height: CGFloat, width: CGFloat, x: CGFloat)
@@ -375,7 +372,6 @@ class Assessor_OverviewVC: UIViewController {
         view.addSubview(subView)
         subView.layer.cornerRadius = 10
         
-
         let heightView:CGFloat = height
         subView.frame = CGRect(x: x, y: (view.frame.size.height - heightView) / 2 , width: width, height: heightView)
         subView.alpha = 0
@@ -386,13 +382,13 @@ class Assessor_OverviewVC: UIViewController {
         UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
             self.backgroundView.alpha = 0
             self.dataTableView.alpha = 0
+            self.contentTextView.alpha = 0
+            self.contentImageView.alpha = 0
         }, completion: { (true) in
             self.perform(#selector(self.removeView), with: self, afterDelay: 0)
             
         })
     }
-    
-
     
     func removeView()
     {
@@ -415,6 +411,44 @@ class Assessor_OverviewVC: UIViewController {
         
         setupViewData(subView: subView, height: height, width: width, x: xFrame)
         createAnimatePopup(from: subView, with: backgroundView)
+    }
+    
+    func onHandlePlayAudio(data: Data, button: UIButton, runningView: UIView, mainView: UIView,label: UILabel)
+    {
+        runningView.frame.size.width = 0
+        loadingShow()
+        DispatchQueue.global(qos: .background).async {
+            do {
+                self.currentAudioPlayer = try AVAudioPlayer(data: data)
+                print("DATA", data)
+                DispatchQueue.main.async(execute: {
+                    button.isHidden = true
+                    label.isHidden = false
+                    self.currentAudioPlayer?.play()
+                    self.currentAudioPlayer?.delegate = self
+                    self.loadingHide()
+                    print("TOTAL TIME:",self.currentAudioPlayer?.duration as Any)
+                    
+                    UIView.animate(withDuration: (self.currentAudioPlayer?.duration)!, animations: {
+                        runningView.frame.size.width = mainView.frame.width
+                        self.view.layoutIfNeeded()
+                    })
+                })
+            }
+            catch
+            {
+                print("cannot play")
+                self.loadingHide()
+            }
+        }
+        
+    }
+    
+    func onHandleDisableButton(sub1: UIButton, sub2:UIButton, sub3: UIButton, isStatus: Bool)
+    {
+        sub1.isUserInteractionEnabled = isStatus
+        sub2.isUserInteractionEnabled = isStatus
+        sub3.isUserInteractionEnabled = isStatus
     }
     
     func removeScoreObject()
@@ -468,10 +502,51 @@ extension Assessor_OverviewVC:UITableViewDataSource, UITableViewDelegate
             userDefault.set(indexPath.row + 1, forKey: SCORE_PART4)
         default:
             return
-        }        
+        }
         userDefault.synchronize()
         handleCloseView()
     }
 }
+
+extension Assessor_OverviewVC: AVAudioPlayerDelegate
+{
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        switch isPlaying {
+        case 1:
+            print("FINISH 1")
+            self.currentAudioPlayer?.stop()
+            self.part1PlayButton.isHidden = false
+            self.currentAudioPlayer = nil
+            self.onHandleDisableButton(sub1: part2PlayButton, sub2: part3PlayButton, sub3: part4PlayButton, isStatus: true)
+            self.part1PlayingLabel.isHidden = true
+        case 2:
+            print("FINISH 2")
+            self.currentAudioPlayer?.stop()
+            self.part2PlayButton.isHidden = false
+            self.currentAudioPlayer = nil
+            self.onHandleDisableButton(sub1: part1PlayButton, sub2: part3PlayButton, sub3: part4PlayButton, isStatus: true)
+            self.part2PlayingLabel.isHidden = true
+            
+        case 3:
+            print("FINISH 3")
+            self.currentAudioPlayer?.stop()
+            self.part3PlayButton.isHidden = false
+            self.currentAudioPlayer = nil
+            self.onHandleDisableButton(sub1: part1PlayButton, sub2: part2PlayButton, sub3: part4PlayButton, isStatus: true)
+            self.part3PlayingLabel.isHidden = true
+            
+        default:
+            print("FINISH 4")
+            self.currentAudioPlayer?.stop()
+            self.part4PlayButton.isHidden = false
+            self.currentAudioPlayer = nil
+            self.onHandleDisableButton(sub1: part1PlayButton, sub2: part2PlayButton, sub3: part3PlayButton, isStatus: true)
+            self.part4PlayingLabel.isHidden = true
+            
+        }
+        
+    }
+}
+
 
 

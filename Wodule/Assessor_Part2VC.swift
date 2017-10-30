@@ -45,9 +45,9 @@ class Assessor_Part2VC: UIViewController {
         DispatchQueue.global(qos: .background).async {
             do
             {
-                let data = try Data(contentsOf: url!)
+                self.data2 = try Data(contentsOf: url!)
                 do {
-                    self.currentPlayer = try AVAudioPlayer(data: data)
+                    self.currentPlayer = try AVAudioPlayer(data: self.data2!)
                     DispatchQueue.main.async(execute: {
                         self.currentPlayer?.play()
                         self.currentPlayer?.pause()

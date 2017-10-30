@@ -40,7 +40,7 @@ class AssessmentHistoryVC: UIViewController {
             {
                 if results?.count != 0
                 {
-                    print("\n\nHISTORY LIST:--->\n",results!)
+                    print("\n\nHISTORY LIST:--->\n",results)
                     self.totalPage = totalpage
                     for result in results!
                     {
@@ -119,12 +119,12 @@ extension AssessmentHistoryVC: UITableViewDataSource,UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-//        tableView.deselectRow(at: indexPath, animated: true)
-//        let examdetailVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examdetailVC") as! Examinee_ExamDetailVC
-//        
-//        examdetailVC.ExamDetail = History[indexPath.row]
-//        
-//        self.navigationController?.pushViewController(examdetailVC, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
+        let examdetailVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examdetailVC") as! Examinee_ExamDetailVC
+        
+        examdetailVC.ExamDetail = History[indexPath.row]
+        
+        self.navigationController?.pushViewController(examdetailVC, animated: true)
         
         print("HISTORY\n----->",History[indexPath.row])
     }

@@ -24,22 +24,22 @@ struct ExamRecord
             if let audioURL1 = audiofile1
             {
                 print("\n\nAUDIODATA1-->",audioURL1)
-                data.append(audioURL1, withName: "audio_1", fileName: "upload1.m4a", mimeType: "audio/m4a")
+                data.append(audioURL1, withName: "audio_1", fileName: "upload1.mp3", mimeType: "audio/mpeg")
             }
             if let audioURL2 = audiofile2
             {
                 print("\n\nAUDIODATA2-->",audioURL2)
-                data.append(audioURL2, withName: "audio_2", fileName: "upload2.m4a", mimeType: "audio/m4a")
+                data.append(audioURL2, withName: "audio_2", fileName: "upload2.mp3", mimeType: "audio/mpeg")
             }
             if let audioURL3 = audiofile3
             {
                 print("\n\nAUDIODATA3-->",audioURL3)
-                data.append(audioURL3, withName: "audio_3", fileName: "upload3.m4a", mimeType: "audio/m4a")
+                data.append(audioURL3, withName: "audio_3", fileName: "upload3.mp3", mimeType: "audio/mpeg")
             }
             if let audioURL4 = audiofile4
             {
                 print("\n\nAUDIODATA4-->",audioURL4)
-                data.append(audioURL4, withName: "audio_4", fileName: "upload3.m4a", mimeType: "audio/m4a")
+                data.append(audioURL4, withName: "audio_4", fileName: "upload4.mp3", mimeType: "audio/mpeg")
             }
                 
             else

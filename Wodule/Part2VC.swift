@@ -24,8 +24,8 @@ class Part2VC: UIViewController {
     
     var expectTime:TimeInterval = timeCoutdown
     var Exam:NSDictionary?
-    var audio1_Path: NSURL?
-    var audio2_Path: NSURL?
+    var audio1_Data: Data?
+    var audio2_Data: Data?
     
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
 
@@ -104,8 +104,8 @@ class Part2VC: UIViewController {
             
             part3_tempVC.Exam = self.Exam
             part3_tempVC.examID = self.examID
-            part3_tempVC.audio1_Path = self.audio1_Path
-            part3_tempVC.audio2_Path = self.audio2_Path
+            part3_tempVC.audio1_Data = self.audio1_Data
+            part3_tempVC.audio2_Data = self.audio2_Data
             
             self.navigationController?.pushViewController(part3_tempVC, animated: true)
         }
@@ -131,31 +131,30 @@ extension Part2VC: JWGCircleCounterDelegate
         }, completion: { (done) in
             self.recordingMess.text = "Time Out"
             self.stopRecord()
-            self.audio2_Path = audioURL
-
-            if self.Exam?["question_3"] as? String == nil && self.Exam?["image_3"] as? String == nil
+            do
             {
-                self.loadingShowwithStatus(status: "Uploading your Exam.")                
-                do
+                self.audio2_Data = try? Data(contentsOf: audioURL! as URL)
+                if self.Exam?["question_3"] as? String == nil && self.Exam?["image_3"] as? String == nil
                 {
-                    let data1 = try? Data(contentsOf: self.audio1_Path! as URL)
-                    let data2 = try? Data(contentsOf: self.audio2_Path! as URL)
-                    ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: data1, audiofile2: data2, audiofile3: nil, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
-                        if status!
-                        {
-                            DispatchQueue.main.async(execute: {
-                                self.loadingHide()
-                                self.nextBtn.isHidden = false
-                            })
-                        }
-                    })
+                    self.loadingShowwithStatus(status: "Uploading your Exam.")
+                    ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: nil, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
+                            if status!
+                            {
+                                DispatchQueue.main.async(execute: {
+                                    self.loadingHide()
+                                    self.nextBtn.isHidden = false
+                                })
+                            }
+                        })                   
+                    
                 }
-                
+                else
+                {
+                    self.nextBtn.isHidden = false
+                }
+
             }
-            else
-            {
-                self.nextBtn.isHidden = false
-            }
+            
             
         })
         

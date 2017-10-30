@@ -250,7 +250,10 @@ class NewUser_Page3VC: UIViewController {
                     {
                         self.removeValueObject()
                         let token = userDefault.object(forKey: TOKEN_STRING) as? String
-                        
+                        userDefault.set(self.username, forKey: USERNAMELOGIN)
+                        userDefault.set(self.password, forKey: PASSWORDLOGIN)
+                        userDefault.synchronize()
+
                         UserInfoAPI.getUserInfo(withToken: token!, completion: { (userInfo) in
                             
                             if userInfo?["type"] as? String == UserType.assessor.rawValue

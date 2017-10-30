@@ -27,6 +27,7 @@ class Examiner_HomeVC: UIViewController {
     var userInfomation:NSDictionary!
     var socialAvatar: URL!
     var socialIdentifier:String!
+    var autologin = false
     
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
     
@@ -51,19 +52,9 @@ class Examiner_HomeVC: UIViewController {
         userDefault.set(userInfomation["id"] as! Int, forKey: USERID_STRING)
         userDefault.synchronize()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.logOut))
-        tapGesture.numberOfTapsRequired = 2
-        img_Avatar.addGestureRecognizer(tapGesture)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(self.loadNewData), name: NSNotification.Name(rawValue: NOTIFI_UPDATED), object: nil)
         
     }
-    
-    
-    
-    
-    
-    
     
     func asignDataInView()
     {
@@ -140,30 +131,6 @@ class Examiner_HomeVC: UIViewController {
         }
     }
     
-    func logOut()
-    {
-        switch socialIdentifier {
-        case GOOGLELOGIN:
-            GIDSignIn.sharedInstance().signOut()
-            print("LogOut G+")
-            
-        case FACEBOOKLOGIN:
-            let manger = FBSDKLoginManager()
-            manger.logOut()
-            print("LogOut FB")
-            
-        default:
-            print("LogOut")
-        }
-
-        self.navigationController?.popToRootViewController(animated: true)
-        userDefault.removeObject(forKey: SOCIALKEY)
-        userDefault.removeObject(forKey: TOKEN_STRING)
-        AppDelegate.share.removeAllValueObject()
-
-        userDefault.synchronize()
-    }
-    
     @IBAction func editProfile(_ sender: Any) {
         
         let editprofileVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "editprofileVC") as! EditProfileVC
@@ -198,6 +165,43 @@ class Examiner_HomeVC: UIViewController {
         let instruction_guideVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "instruction_guideVC") as! Instruction_GuideVC
         self.navigationController?.pushViewController(instruction_guideVC, animated: true)
     }
+    
+    @IBAction func onClickLogOut(_ sender: Any) {
+        
+        switch socialIdentifier {
+        case GOOGLELOGIN:
+            GIDSignIn.sharedInstance().signOut()
+            print("LogOut G+")
+            
+        case FACEBOOKLOGIN:
+            let manger = FBSDKLoginManager()
+            manger.logOut()
+            print("LogOut FB")
+            
+        default:
+            print("LogOut")
+        }
+        
+        let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
+        if autologin
+        {
+            self.navigationController?.pushViewController(loginVC, animated: false)
+
+        }
+        else
+        {
+            self.navigationController?.popViewController(animated: false)
+        }
+                
+        userDefault.removeObject(forKey: SOCIALKEY)
+        userDefault.removeObject(forKey: TOKEN_STRING)
+        AppDelegate.share.removeAllValueObject()
+        userDefault.removeObject(forKey: USERNAMELOGIN)
+        userDefault.removeObject(forKey: PASSWORDLOGIN)
+
+        userDefault.synchronize()
+    }
+    
 }
 
 

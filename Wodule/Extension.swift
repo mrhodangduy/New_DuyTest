@@ -94,7 +94,7 @@ extension UIViewController
     func StarRecording(userID: Int, examID: Int,audio: Int, result: (_ audioURL: NSURL?) -> Void)
     {
         
-        AudioRecorderManager.shared.recored(fileName: "Recordedby-\(userID)-forexam-\(examID)-audio\(audio)") { (status:Bool, audioURL:NSURL?) in
+        AudioRecorderManager.shared.recored(fileName: "Recordedby-\(userID)-forExam-\(examID)-audio\(audio)") { (status:Bool, audioURL:NSURL?) in
             
             if status == true
             {
@@ -113,15 +113,6 @@ extension UIViewController
     func stopRecord()
     {
         AudioRecorderManager.shared.finishRecording()
-        
-        //        do
-//        {
-//            let data = try? Data(contentsOf: audioURL! as URL)
-//            
-//            print("DATA AUDIO SIZE:----->",data as Any)
-//        }    
-        
-        
     }
     
     func loadingShowwithStatus(status: String)

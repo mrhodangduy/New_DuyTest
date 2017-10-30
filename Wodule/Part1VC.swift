@@ -25,7 +25,7 @@ class Part1VC: UIViewController {
     @IBOutlet weak var recordingMess: UILabelX!
     
     var Exam:NSDictionary?
-    var audio1_Path: NSURL?
+    var audio1_Data: Data?
     
     var time:Timer!
     var expectTime:TimeInterval = timeCoutdown
@@ -97,7 +97,7 @@ class Part1VC: UIViewController {
         
         part2VC.Exam = self.Exam
         part2VC.examID = self.examID
-        part2VC.audio1_Path = self.audio1_Path
+        part2VC.audio1_Data = self.audio1_Data
         
         self.navigationController?.pushViewController(part2VC, animated: true)
     }
@@ -119,15 +119,23 @@ extension Part1VC: JWGCircleCounterDelegate
         }
         
         self.recordingMess.isHidden = false
-        UIView.animate(withDuration: expectTime, delay: 1, options: [], animations: {
+        UIView.animate(withDuration: expectTime, delay: 0, options: [], animations: {
             self.viewbackground.frame.size.width = self.containerView.frame.size.width
             self.view.layoutIfNeeded()
         }) { (done) in
             self.nextBtn.isHidden = false
             self.recordingMess.text = "Time Out"
             self.stopRecord()
-            self.audio1_Path = audioURL
+            do
+            {
+                self.audio1_Data = try Data(contentsOf: audioURL! as URL)
+                print("audio1_Data",self.audio1_Data)
+            }
         
+            catch
+            {
+                
+            }
         }
         
     }

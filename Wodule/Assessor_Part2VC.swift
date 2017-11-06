@@ -16,6 +16,7 @@ class Assessor_Part2VC: UIViewController {
     
     @IBOutlet weak var titleQuestion: UILabel!
     @IBOutlet weak var controlFontSizeView: UIView!
+    @IBOutlet weak var controlImageView: UIView!
     @IBOutlet weak var tv_Content: UITextView!
     @IBOutlet weak var img_Question: UIImageViewX!
     @IBOutlet var dataTableView: UITableView!
@@ -92,6 +93,7 @@ class Assessor_Part2VC: UIViewController {
             img_Question.isHidden = false
             img_Question.sd_setImage(with: URL(string: Exam?["examQuestionaireTwo"] as! String), placeholderImage: nil, options: [], completed: nil)
             controlFontSizeView.isHidden = true
+            controlImageView.isHidden = false
             tv_Content.isHidden = true
         }
         else
@@ -99,11 +101,26 @@ class Assessor_Part2VC: UIViewController {
             titleQuestion.text = TITLESTRING
             img_Question.isHidden = true
             controlFontSizeView.isHidden = false
+            controlImageView.isHidden = true
             tv_Content.isHidden = false
+            tv_Content.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
             tv_Content.text = Exam?["examQuestionaireTwo"] as! String
         }
                 
     }
+    
+    @IBAction func onClickPromtQuestion(_ sender: Any) {
+        
+        if Exam?["image_2"] as? String != nil
+        {
+            let promt_1 = Exam?["promt2_1"] as? String
+            let promt_2 = Exam?["promt2_2"] as? String
+            let promt_3 = Exam?["promt2_3"] as? String
+            self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
+            
+        }
+    }
+    
     
     @IBAction func onClickDecrease(_ sender: Any) {
         

@@ -21,6 +21,8 @@ class Part4VC: UIViewController {
     @IBOutlet weak var decreaseBtn: UIButtonX!
     @IBOutlet weak var increaseBtn: UIButtonX!
     @IBOutlet weak var lbl_Title: UILabel!
+    @IBOutlet weak var controlImageView: UIView!
+    @IBOutlet weak var controlTextView: UIView!
     
     var expectTime:TimeInterval = timeCoutdown
     var Exam:NSDictionary?
@@ -53,8 +55,8 @@ class Part4VC: UIViewController {
         {
             lbl_Title.text = TITLEPHOTO
             img_Photo.isHidden = false
-            decreaseBtn.isHidden = true
-            increaseBtn.isHidden = true
+            controlTextView.isHidden = true
+            controlImageView.isHidden = false
             img_Photo.contentMode = .scaleAspectFit
             img_Photo.sd_setIndicatorStyle(.white)
             img_Photo.sd_showActivityIndicatorView()
@@ -69,11 +71,24 @@ class Part4VC: UIViewController {
         else
         {
             lbl_Title.text = TITLESTRING
+            controlTextView.isHidden = false
+            controlImageView.isHidden = true
             tv_Data.isHidden = false
+            tv_Data.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
             tv_Data.text = Exam?["question_4"] as! String
             circleTime.start(withSeconds: timeInitial)
             
         }
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tv_Data.isScrollEnabled = false
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tv_Data.isScrollEnabled = true
         
     }
 
@@ -88,6 +103,20 @@ class Part4VC: UIViewController {
         tv_Data.increaseFontSize()
         
     }
+    
+    @IBAction func onClickPromt(_ sender: Any) {
+        
+        if Exam?["image_4"] as? String != nil
+        {
+            let promt_1 = Exam?["promt4_1"] as? String
+            let promt_2 = Exam?["promt4_2"] as? String
+            let promt_3 = Exam?["promt4_3"] as? String
+            self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
+        }
+        
+        
+    }
+    
     
     @IBAction func nextBtnTap(_ sender: Any) {
         

@@ -30,6 +30,7 @@ class SplashScreenVC: UIViewController {
         if username == nil && password == nil
         {
             let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
+            
             self.navigationController?.pushViewController(loginVC, animated: true)
             
             
@@ -79,7 +80,6 @@ class SplashScreenVC: UIViewController {
                             self.navigationController?.pushViewController(examiner_homeVC, animated: true)
                         }
                         print("-----> LOGIN SUCCESSFUL")
-                        
                     })
                     
                 }

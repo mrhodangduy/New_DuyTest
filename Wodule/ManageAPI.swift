@@ -526,6 +526,43 @@ struct UserInfoAPI
             }
         }
     }
+    
+    static func getMessage(withToken token: String, completion: @escaping (_ status: Bool,_ code: Int,_ results:[NSDictionary]?,_ otalPage:Int?) -> ())
+    {
+        let url = URL(string: APIURL.messageURL)
+        let httpHeader: HTTPHeaders = ["Authorization":"Bearer \(token)"]
+        
+        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+            
+            if response.result.isSuccess
+            {
+                if response.response?.statusCode == 200
+                {
+                    let json = response.result.value as? NSDictionary
+                    if let data = json?["data"] as? [NSDictionary]
+                    {
+                        if data.count > 0
+                        {
+                            guard let meta = json?["meta"] as? NSDictionary, let pagination = meta["pagination"] as? NSDictionary, let total_pages = pagination["total_pages"] as? Int else {return}
+                            completion(true, 200, data, total_pages)
+
+                        }
+                                            }
+                }
+                else
+                {
+                    completion(false, (response.response?.statusCode)!, nil,1)
+                }
+            }
+            else
+            {
+                completion(false, (response.response?.statusCode)!, nil,1)
+            }
+            
+        }
+
+    }
+    
 }
 
 struct Categories

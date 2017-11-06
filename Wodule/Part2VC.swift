@@ -21,6 +21,8 @@ class Part2VC: UIViewController {
     @IBOutlet weak var decreaseBtn: UIButtonX!
     @IBOutlet weak var increaseBtn: UIButtonX!
     @IBOutlet weak var lbl_Title: UILabel!
+    @IBOutlet weak var controlTextView: UIView!
+    @IBOutlet weak var controlImageView: UIView!
     
     var expectTime:TimeInterval = timeCoutdown
     var Exam:NSDictionary?
@@ -28,7 +30,6 @@ class Part2VC: UIViewController {
     var audio2_Data: Data?
     
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
-
     
     let userID = userDefault.object(forKey: USERID_STRING) as? Int
     var examID:Int!
@@ -36,7 +37,7 @@ class Part2VC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        AudioRecorderManager.shared.recorder?.prepareToRecord()        
+        AudioRecorderManager.shared.recorder?.prepareToRecord()
         circleTime.circleBackgroundColor = .clear
         circleTime.circleColor = .white
         circleTime.circleTimerWidth = 2
@@ -44,9 +45,6 @@ class Part2VC: UIViewController {
         recordingMess.isHidden = true
         nextBtn.isHidden = true
         
-        
-        
-               
         img_Photo.isHidden = true
         tv_Data.isHidden = true
         
@@ -54,8 +52,8 @@ class Part2VC: UIViewController {
         {
             lbl_Title.text = TITLEPHOTO
             img_Photo.isHidden = false
-            decreaseBtn.isHidden = true
-            increaseBtn.isHidden = true
+            controlTextView.isHidden = true
+            controlImageView.isHidden = false
             img_Photo.contentMode = .scaleAspectFit
             img_Photo.sd_setIndicatorStyle(.white)
             img_Photo.sd_showActivityIndicatorView()
@@ -63,21 +61,29 @@ class Part2VC: UIViewController {
             img_Photo.sd_setImage(with: URL(string: Exam?["image_2"] as! String), placeholderImage: nil, options: [.continueInBackground]) { (iamge, error, type, url) in
                 
                 self.circleTime.start(withSeconds: timeInitial)
-                
-            }
-            
+            }            
         }
         else
         {
             lbl_Title.text = TITLESTRING
+            controlTextView.isHidden = false
+            controlImageView.isHidden = true
             tv_Data.isHidden = false
+            tv_Data.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
             tv_Data.text = Exam?["question_2"] as! String
             circleTime.start(withSeconds: timeInitial)
             
         }
-
         
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tv_Data.isScrollEnabled = false
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tv_Data.isScrollEnabled = true
         
     }
     
@@ -90,6 +96,19 @@ class Part2VC: UIViewController {
         
         tv_Data.increaseFontSize()
     }
+    
+    @IBAction func onClickPromt(_ sender: Any) {
+        
+        if Exam?["image_2"] as? String != nil
+        {
+            let promt_1 = Exam?["promt2_1"] as? String
+            let promt_2 = Exam?["promt2_2"] as? String
+            let promt_3 = Exam?["promt2_3"] as? String
+            self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
+
+        }
+    }
+    
     
     @IBAction func nextBtnTap(_ sender: Any) {
         
@@ -109,8 +128,6 @@ class Part2VC: UIViewController {
             
             self.navigationController?.pushViewController(part3_tempVC, animated: true)
         }
-        
-        
     }
     
 }
@@ -123,7 +140,7 @@ extension Part2VC: JWGCircleCounterDelegate
         self.StarRecording(userID: userID!, examID: examID, audio: 2) { (audioURLs:NSURL?) in
             audioURL = audioURLs
         }
-
+        
         self.recordingMess.isHidden = false
         UIView.animate(withDuration: expectTime, animations: {
             self.viewBackground.frame.size.width = self.containerView.frame.size.width
@@ -138,24 +155,21 @@ extension Part2VC: JWGCircleCounterDelegate
                 {
                     self.loadingShowwithStatus(status: "Uploading your Exam.")
                     ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: nil, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
-                            if status!
-                            {
-                                DispatchQueue.main.async(execute: {
-                                    self.loadingHide()
-                                    self.nextBtn.isHidden = false
-                                })
-                            }
-                        })                   
-                    
+                        if status!
+                        {
+                            DispatchQueue.main.async(execute: {
+                                self.loadingHide()
+                                self.nextBtn.isHidden = false
+                            })
+                        }
+                        
+                    })
                 }
                 else
                 {
                     self.nextBtn.isHidden = false
-                }
-
+                }                
             }
-            
-            
         })
         
     }

@@ -76,6 +76,7 @@ class Assessor_AssessmentVC: UIViewController {
                     {
                         if error.contains("Token")
                         {
+                            self.loadingHide()
                             self.onHandleTokenInvalidAlert(autoLogin: autologin)
                         }
                     }

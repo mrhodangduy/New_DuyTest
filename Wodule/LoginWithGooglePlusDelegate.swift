@@ -33,7 +33,7 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                     userDefault.set(username, forKey: USERNAMELOGIN)
                     userDefault.set(password, forKey: PASSWORDLOGIN)
                     userDefault.synchronize()
-
+                    
                     LoginWithSocial.getUserInfoSocial(withToken: token!, completion: { (result) in
                         
                         print(result!)
@@ -45,17 +45,19 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                             
                             assessor_homeVC.userInfomation = result
                             assessor_homeVC.socialAvatar = user.profile.imageURL(withDimension: 500)
+                            autologin = false
                             userDefault.set(GOOGLELOGIN, forKey: SOCIALKEY)
                             userDefault.synchronize()
                             
                             self.navigationController?.pushViewController(assessor_homeVC, animated: true)
-                                                    }
+                        }
                         else if result!["type"] as? String == UserType.examinee.rawValue
                         {
                             let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
                             
                             examiner_homeVC.userInfomation = result
                             examiner_homeVC.socialAvatar = user.profile.imageURL(withDimension: 500)
+                            autologin = false
                             userDefault.set(GOOGLELOGIN, forKey: SOCIALKEY)
                             userDefault.synchronize()
                             
@@ -153,8 +155,8 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                                     userDefault.set(username, forKey: USERNAMELOGIN)
                                     userDefault.set(password, forKey: PASSWORDLOGIN)
                                     userDefault.synchronize()
-
-                                    LoginWithSocial.getUserInfoSocial(withToken: token, completion: { (result) in                                        
+                                    
+                                    LoginWithSocial.getUserInfoSocial(withToken: token, completion: { (result) in
                                         
                                         if result!["type"] as? String == UserType.assessor.rawValue
                                         {
@@ -163,6 +165,7 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                                             
                                             assessor_homeVC.userInfomation = result!
                                             assessor_homeVC.socialAvatar = user.profile.imageURL(withDimension: 500)
+                                            autologin = false
                                             userDefault.set(GOOGLELOGIN, forKey: SOCIALKEY)
                                             userDefault.synchronize()
                                             
@@ -176,6 +179,7 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                                             
                                             examiner_homeVC.userInfomation = result!
                                             examiner_homeVC.socialAvatar = user.profile.imageURL(withDimension: 500)
+                                            autologin = false
                                             userDefault.set(GOOGLELOGIN, forKey: SOCIALKEY)
                                             userDefault.synchronize()
                                             
@@ -211,7 +215,7 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                     })
                 }
             })
-   
+            
         })
         alertInputCode.addTextField(configurationHandler: { (textField) -> Void in
             textField.placeholder = "Input Code"

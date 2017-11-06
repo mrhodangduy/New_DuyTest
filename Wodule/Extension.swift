@@ -257,6 +257,15 @@ extension UIViewController
         dateFormatter.dateFormat = "yy.MM.dd"
         return dateFormatter.string(from: date!)
     }
+    
+    func alert_PromtQuestion(title: String,mess: String)
+        
+    {
+        let alert = UIAlertController(title: title, message: mess, preferredStyle: .alert)
+        let btnOK = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(btnOK)
+        self.present(alert, animated: true, completion: nil)
+    }
 
 
 

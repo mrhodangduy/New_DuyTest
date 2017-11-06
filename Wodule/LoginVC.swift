@@ -199,6 +199,7 @@ class LoginVC: UIViewController {
                                             
                                             assessor_homeVC.userInfomation = result!
                                             assessor_homeVC.socialAvatar = URL(string: avatarLink)
+                                            autologin = false
                                             userDefault.set(FACEBOOKLOGIN, forKey: SOCIALKEY)
                                             userDefault.synchronize()
                                             self.navigationController?.pushViewController(assessor_homeVC, animated: true)
@@ -211,7 +212,7 @@ class LoginVC: UIViewController {
                                             
                                             examiner_homeVC.userInfomation = result!
                                             examiner_homeVC.socialAvatar = URL(string: avatarLink)
-                                            examiner_homeVC.autologin = false
+                                            autologin = false
                                             userDefault.set(FACEBOOKLOGIN, forKey: SOCIALKEY)
                                             userDefault.synchronize()
                                             
@@ -318,7 +319,7 @@ class LoginVC: UIViewController {
                                         }
                                         userDefault.set(INSTAGRAMLOGIN, forKey: SOCIALKEY)
                                         userDefault.synchronize()
-                                        
+                                        autologin = false
                                         self.navigationController?.pushViewController(assessor_homeVC, animated: true)
                                         
                                         DispatchQueue.main.async {
@@ -330,7 +331,7 @@ class LoginVC: UIViewController {
                                         let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
                                         
                                         examiner_homeVC.userInfomation = result
-                                        examiner_homeVC.autologin = false
+                                        autologin = false
                                         if profile_picture != nil
                                         {
                                             examiner_homeVC.socialAvatar = URL(string: profile_picture!)
@@ -435,6 +436,7 @@ class LoginVC: UIViewController {
                                                 assessor_homeVC.socialAvatar = URL(string: avatarLink!)
                                             }
                                             assessor_homeVC.socialAvatar = URL(string: avatarLink!)
+                                            autologin = false
                                             userDefault.set(FACEBOOKLOGIN, forKey: SOCIALKEY)
                                             userDefault.synchronize()
                                             self.navigationController?.pushViewController(assessor_homeVC, animated: true)
@@ -444,7 +446,7 @@ class LoginVC: UIViewController {
                                         {
                                             print(UserType.examinee.rawValue)
                                             let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
-                                            examiner_homeVC.autologin = false
+                                            autologin = false
                                             examiner_homeVC.userInfomation = result!
                                             if avatarLink != nil
                                             {
@@ -546,7 +548,7 @@ class LoginVC: UIViewController {
                                 if userinfo!["type"] as? String == UserType.assessor.rawValue
                                 {
                                     let assessor_homeVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessor_homeVC") as! Assessor_HomeVC
-                                    
+                                    autologin = false
                                     assessor_homeVC.userInfomation = userinfo!
                                     self.navigationController?.pushViewController(assessor_homeVC, animated: true)
                                 }
@@ -555,7 +557,7 @@ class LoginVC: UIViewController {
                                     let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
                                     
                                     examiner_homeVC.userInfomation = userinfo!
-                                    examiner_homeVC.autologin = false
+                                    autologin = false
                                     self.navigationController?.pushViewController(examiner_homeVC, animated: true)
                                 }
                                 print("-----> LOGIN SUCCESSFUL")

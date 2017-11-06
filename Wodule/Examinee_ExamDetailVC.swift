@@ -49,6 +49,9 @@ class Examinee_ExamDetailVC: UIViewController {
     @IBOutlet weak var part4CountdownLabel: UILabel!
     
     @IBOutlet weak var containerMainView: UIViewX!
+    @IBOutlet weak var part3ContainerView: UIView!
+    @IBOutlet weak var part4ContainerView: UIView!
+    @IBOutlet weak var mainScrollView: UIScrollView!
     
     let VIEWPHOTO = "VIEW PHOTO"
     let VIEWTEXT = "VIEW TEXT"
@@ -83,6 +86,14 @@ class Examinee_ExamDetailVC: UIViewController {
     func onHandleInitData()
     {
         examIDLabel.text = ExamDetail["exam"] as? String
+        
+        if (ExamDetail?["examQuestionaireThree"] as? String) == nil
+        {
+            part3ContainerView.isHidden = true
+            part4ContainerView.isHidden = true
+            mainScrollView.isScrollEnabled = false
+            
+        }
         
         if ExamDetail["score"] as? String == "pending"
         {
@@ -125,7 +136,7 @@ class Examinee_ExamDetailVC: UIViewController {
             part2Type = 0
             
         }
-        if ((ExamDetail?["examQuestionaireThree"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        if ((ExamDetail?["examQuestionaireThree"] as? String)?.hasPrefix("http://wodule.io/user/")) == true
         {
             part3QuestionButton.setTitle(VIEWPHOTO, for: .normal)
             part3TitleLabel.text = TITLEPHOTO
@@ -138,7 +149,7 @@ class Examinee_ExamDetailVC: UIViewController {
             part3Type = 0
             
         }
-        if ((ExamDetail?["examQuestionaireFour"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        if ((ExamDetail?["examQuestionaireFour"] as? String)?.hasPrefix("http://wodule.io/user/")) == true
         {
             part4QuestionButton.setTitle(VIEWPHOTO, for: .normal)
             part4TitleLabel.text = TITLEPHOTO
@@ -153,19 +164,41 @@ class Examinee_ExamDetailVC: UIViewController {
     }
     
     @IBAction func onClickPart1Question(_ sender: Any) {
-        self.onHandleDisplayView(type: part1Type, question: ExamDetail["examQuestionaireOne"] as! String)
+        self.onHandleDisplayView(type: part1Type, question: ExamDetail["examQuestionaireOne"] as! String, tvHeight: self.view.frame.height * (2/3))
     }
     
     @IBAction func onClickPart2Question(_ sender: Any) {
-        self.onHandleDisplayView(type: part2Type, question: ExamDetail["examQuestionaireTwo"] as! String)
+        self.onHandleDisplayView(type: part2Type, question: ExamDetail["examQuestionaireTwo"] as! String, tvHeight: self.view.frame.height * (2/3))
     }
     
     @IBAction func onClickPart3Question(_ sender: Any) {
-        self.onHandleDisplayView(type: part3Type, question: ExamDetail["examQuestionaireThree"] as! String)
+        self.onHandleDisplayView(type: part3Type, question: ExamDetail["examQuestionaireThree"] as! String, tvHeight: self.view.frame.height * (2/3))
     }
     
     @IBAction func onClickPart4Question(_ sender: Any) {
-        self.onHandleDisplayView(type: part4Type, question: ExamDetail["examQuestionaireFour"] as! String)
+        self.onHandleDisplayView(type: part4Type, question: ExamDetail["examQuestionaireFour"] as! String, tvHeight: self.view.frame.height * (2/3)
+        )
+    }
+    
+    @IBAction func onClickViewComment(_ sender: UIButton) {
+        
+        switch sender.tag {
+        case 1:
+            let comment1 = ExamDetail["comment_1"] as? String
+            self.onHandleDisplayView(type: 0, question: comment1!, tvHeight: self.view.frame.height/2)
+        case 2:
+            let comment2 = ExamDetail["comment_2"] as? String
+            self.onHandleDisplayView(type: 0, question: comment2!, tvHeight: self.view.frame.height/2)
+        case 3:
+            let comment3 = ExamDetail["comment_3"] as? String
+            self.onHandleDisplayView(type: 0, question: comment3!, tvHeight: self.view.frame.height/2)
+        case 4:
+            let comment4 = ExamDetail["comment_4"] as? String
+            self.onHandleDisplayView(type: 0, question: comment4!, tvHeight: self.view.frame.height/2)
+        default:
+            return
+        }
+        
     }
     
     @IBAction func onClickPart1Audio(_ sender: Any) {
@@ -246,7 +279,7 @@ class Examinee_ExamDetailVC: UIViewController {
 
     }
     
-    func onHandleDisplayView(type:Int, question: String)
+    func onHandleDisplayView(type:Int, question: String, tvHeight: CGFloat)
     {
         if type == 1
         {
@@ -255,9 +288,9 @@ class Examinee_ExamDetailVC: UIViewController {
         }
         else
         {
-            onHandleViewData(subView: questionTextView, height: view.frame.height / 3, width: self.view.frame.width, xFrame: 0)
+            onHandleViewData(subView: questionTextView, height: tvHeight, width: self.view.frame.width, xFrame: 0)
             questionTextView.text =  question
-            questionTextView.textContainerInset = UIEdgeInsetsMake(10, 8, 5, 8)
+            questionTextView.textContainerInset = UIEdgeInsetsMake(15, 15, 10, 10)
         }
     }
 

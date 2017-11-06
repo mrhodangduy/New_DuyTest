@@ -23,6 +23,8 @@ class Part1VC: UIViewController {
     @IBOutlet weak var decreaseBtn: UIButtonX!
     @IBOutlet weak var increaseBtn: UIButtonX!
     @IBOutlet weak var recordingMess: UILabelX!
+    @IBOutlet weak var controlTextView: UIView!
+    @IBOutlet weak var controlImageView: UIView!
     
     var Exam:NSDictionary?
     var audio1_Data: Data?
@@ -56,8 +58,8 @@ class Part1VC: UIViewController {
         {
             lbl_Title.text = TITLEPHOTO
             image_Question.isHidden = false
-            decreaseBtn.isHidden = true
-            increaseBtn.isHidden = true
+            controlTextView.isHidden = true
+            controlImageView.isHidden = false
             image_Question.contentMode = .scaleAspectFit
             image_Question.sd_setIndicatorStyle(.white)
             image_Question.sd_showActivityIndicatorView()
@@ -72,12 +74,25 @@ class Part1VC: UIViewController {
         else
         {
             lbl_Title.text = TITLESTRING
+            controlTextView.isHidden = false
+            controlImageView.isHidden = true
             tv_Data.isHidden = false
+            tv_Data.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
             tv_Data.text = Exam?["question_1"] as? String
             circleTime.start(withSeconds: timeInitial)
             
         }
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tv_Data.isScrollEnabled = false
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tv_Data.isScrollEnabled = true
+
     }
     
     @IBAction func decreaseSizeTap(_ sender: Any) {
@@ -89,6 +104,18 @@ class Part1VC: UIViewController {
         
         tv_Data.increaseFontSize()
         
+    }
+    
+    
+    @IBAction func onClickPromt(_ sender: Any) {
+        
+        if Exam?["image_1"] as? String != nil
+        {
+            let promt_1 = Exam?["promt1_1"] as? String
+            let promt_2 = Exam?["promt1_2"] as? String
+            let promt_3 = Exam?["promt1_3"] as? String
+            self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
+        }
     }
     
     

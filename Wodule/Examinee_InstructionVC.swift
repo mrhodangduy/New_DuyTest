@@ -23,6 +23,8 @@ class Examinee_InstructionVC: UIViewController {
         circleView.circleBackgroundColor = .clear
         circleView.circleColor = .white
 
+        instroductionTextView.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
+
         loadingShow()
         Categories.getCategory { (status:Bool, results:NSDictionary?) in
             

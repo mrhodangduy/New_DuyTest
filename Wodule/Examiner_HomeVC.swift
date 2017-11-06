@@ -22,18 +22,37 @@ class Examiner_HomeVC: UIViewController {
     @IBOutlet weak var lbl_Sex: UILabel!
     @IBOutlet weak var lbl_Age: UILabel!
     @IBOutlet weak var img_Avatar: UIImageViewX!
+    @IBOutlet weak var unreadLabel: UILabelX!
     
     var imageData: Data?
     var userInfomation:NSDictionary!
     var socialAvatar: URL!
     var socialIdentifier:String!
-    var autologin = false
+    
+    var messagesList = [NSDictionary]()
     
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("Autologin", autologin)
+        
+        self.loadingShow()
+        UserInfoAPI.getMessage(withToken: self.token!) { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
+            
+            if status
+            {
+                self.messagesList = results!
+                print(results)
+                DispatchQueue.main.async(execute: {
+                    self.messagesList = self.messagesList.filter({$0["read"] as? String == ""})
+                    self.loadingHide()
+                    print(self.messagesList)
+                    
+                })
+            }
+        }
                 
         if userDefault.object(forKey: SOCIALKEY) as? String != nil
         {
@@ -49,6 +68,8 @@ class Examiner_HomeVC: UIViewController {
         
         asignDataInView()
         
+        
+        
         userDefault.set(userInfomation["id"] as! Int, forKey: USERID_STRING)
         userDefault.synchronize()
         
@@ -58,6 +79,9 @@ class Examiner_HomeVC: UIViewController {
     
     func asignDataInView()
     {
+        
+        
+        
         lbl_ExaminerID.text = "\((userInfomation["id"] as? Int)!)"
         lbl_Sex.text = userInfomation["gender"] as? String
         lbl_University.text = userInfomation["organization"] as? String
@@ -183,6 +207,7 @@ class Examiner_HomeVC: UIViewController {
         }
         
         let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
+        
         if autologin
         {
             self.navigationController?.pushViewController(loginVC, animated: false)
@@ -191,6 +216,7 @@ class Examiner_HomeVC: UIViewController {
         else
         {
             self.navigationController?.popViewController(animated: false)
+            
         }
         autologin = false
         userDefault.removeObject(forKey: SOCIALKEY)

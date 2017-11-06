@@ -22,6 +22,7 @@ class APIURL{
     static let updateSocialInfoURL = "http://wodule.io/api/socialite"
     static let getAllrecordURL = "http://wodule.io/api/records?page="
     static let accountingURL = "http://wodule.io/api/accounting"
+    static let messageURL = "http://wodule.io/api/message"
 
     
 }
@@ -96,7 +97,7 @@ let NOTIFI_ERROR = "notifcationError"
 let NOTIFI_UPDATED = "userUpdated"
 
 let TITLEPHOTO = "Talk about this picture"
-let TITLESTRING = "Spoken Interation"
+let TITLESTRING = "Reading Aloud"
 
 let USERID_STRING = "userID"
 

@@ -37,6 +37,7 @@ class Assessor_OverviewVC: UIViewController {
     @IBOutlet weak var part2PlayingLabel: UILabel!
     @IBOutlet weak var part3PlayingLabel: UILabel!
     @IBOutlet weak var part4PlayingLabel: UILabel!
+    @IBOutlet weak var mainScrollView: UIScrollView!
     
     var numberOfQuestion:Int!
     
@@ -84,7 +85,15 @@ class Assessor_OverviewVC: UIViewController {
     {
         examIDLabel.text = Exam?["exam"] as? String
         
-        if ((Exam?["examQuestionaireOne"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        if (Exam?["examQuestionaireThree"] as? String) == nil
+        {
+            part3ContainerView.isHidden = true
+            part4ContainerView.isHidden = true
+            mainScrollView.isScrollEnabled = false
+            
+        }
+        
+        if ((Exam?["examQuestionaireOne"] as? String)?.hasPrefix("http://wodule.io/user/")) == true
         {
             part1_ViewData.setTitle(VIEWPHOTO, for: .normal)
             part1TitleLabel.text = TITLEPHOTO
@@ -97,7 +106,7 @@ class Assessor_OverviewVC: UIViewController {
             part1Type = 0
             
         }
-        if ((Exam?["examQuestionaireTwo"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        if ((Exam?["examQuestionaireTwo"] as? String)?.hasPrefix("http://wodule.io/user/")) == true
         {
             part2_ViewData.setTitle(VIEWPHOTO, for: .normal)
             part2TitleLabel.text = TITLEPHOTO
@@ -110,7 +119,7 @@ class Assessor_OverviewVC: UIViewController {
             part2Type = 0
             
         }
-        if ((Exam?["examQuestionaireThree"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        if ((Exam?["examQuestionaireThree"] as? String)?.hasPrefix("http://wodule.io/user/")) == true
         {
             part3_ViewData.setTitle(VIEWPHOTO, for: .normal)
             part3TitleLabel.text = TITLEPHOTO
@@ -123,7 +132,7 @@ class Assessor_OverviewVC: UIViewController {
             part3Type = 0
             
         }
-        if ((Exam?["examQuestionaireFour"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        if ((Exam?["examQuestionaireFour"] as? String)?.hasPrefix("http://wodule.io/user/")) == true
         {
             part4_ViewData.setTitle(VIEWPHOTO, for: .normal)
             part4TitleLabel.text = TITLEPHOTO
@@ -179,9 +188,9 @@ class Assessor_OverviewVC: UIViewController {
         }
         else
         {
-            onHandleViewData(subView: contentTextView, height: view.frame.height / 3, width: self.view.frame.width, xFrame: 0)
+            onHandleViewData(subView: contentTextView, height: view.frame.height * (2/3), width: self.view.frame.width, xFrame: 0)
             contentTextView.text =  question
-            contentTextView.textContainerInset = UIEdgeInsetsMake(10, 8, 5, 8)
+            contentTextView.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
             
         }
     }

@@ -15,6 +15,7 @@ struct ExamRecord
     static func uploadExam(withToken token:String, idExam: Int, audiofile1: Data?,audiofile2: Data?,audiofile3: Data?,audiofile4: Data?, completion: @escaping (Bool?, NSDictionary?) -> ())
     {
         let url = URL(string: "http://wodule.io/api/exams/\(idExam)/records")
+        print(url)
         
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
         

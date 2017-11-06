@@ -563,6 +563,32 @@ struct UserInfoAPI
 
     }
     
+    static func readMessage(withToken token: String, identifier: Int, completion: @escaping (Bool, Int, NSDictionary?) -> ())
+    {
+        let url = URL(string: APIURL.messageURL + "/\(identifier)")
+        let httpHeader: HTTPHeaders = ["Authorization":"Bearer \(token)"]
+
+        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+            
+            if response.result.isSuccess
+            {
+                if response.response?.statusCode == 200
+                {
+                    completion(true,200, response.result.value as? NSDictionary)
+                }
+                else
+                {
+                    completion(false, response.response!.statusCode, response.result.value as? NSDictionary)
+                }
+            }
+            else
+            {
+                completion(false, response.response!.statusCode, nil)
+            }
+            
+        }
+    }
+    
 }
 
 struct Categories

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -362,27 +362,58 @@
                                     <constraint firstItem="uYB-Yp-Zr9" firstAttribute="width" secondItem="31y-AI-u04" secondAttribute="width" id="zHh-AH-tMG"/>
                                 </constraints>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ec7-S4-9HM">
-                                <rect key="frame" x="260" y="32.5" width="50" height="28"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                <state key="normal" title="Log Out">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ec7-S4-9HM">
+                                <rect key="frame" x="286" y="34.5" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="bLh-7q-hCp"/>
+                                    <constraint firstAttribute="width" constant="24" id="sMJ-zq-WC5"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="ic_logout">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="onClickLogOut:" destination="oXX-bt-BdA" eventType="touchUpInside" id="qiN-pg-j0g"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="enR-XA-xHX">
+                                <rect key="frame" x="236" y="31.5" width="30" height="30"/>
+                                <state key="normal" image="ic_bell"/>
+                                <connections>
+                                    <action selector="onClickMessage:" destination="oXX-bt-BdA" eventType="touchUpInside" id="9ND-G3-w4k"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sGi-Al-hFV" customClass="UILabelX" customModule="Wodule" customModuleProvider="target">
+                                <rect key="frame" x="251" y="28" width="18" height="18"/>
+                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="04K-Qi-DnR"/>
+                                    <constraint firstAttribute="width" constant="18" id="u2q-xr-hQG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="9"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.091643892229999996" green="0.28536835310000003" blue="0.1567776203" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="dVg-W6-DZz" firstAttribute="top" secondItem="31y-AI-u04" secondAttribute="bottom" id="0gV-xC-kjd"/>
                             <constraint firstAttribute="trailing" secondItem="31y-AI-u04" secondAttribute="trailing" id="567-Nb-p9u"/>
                             <constraint firstItem="dJc-qN-Lpq" firstAttribute="leading" secondItem="zBa-gV-1IU" secondAttribute="leading" constant="20" id="BQ9-y6-vDp"/>
+                            <constraint firstItem="Ec7-S4-9HM" firstAttribute="leading" secondItem="enR-XA-xHX" secondAttribute="trailing" constant="20" id="GuP-yi-Q3E"/>
                             <constraint firstItem="Ec7-S4-9HM" firstAttribute="centerY" secondItem="dJc-qN-Lpq" secondAttribute="centerY" id="N6o-AG-nhI"/>
                             <constraint firstAttribute="trailing" secondItem="Ec7-S4-9HM" secondAttribute="trailing" constant="10" id="NJH-xR-Q96"/>
                             <constraint firstItem="31y-AI-u04" firstAttribute="top" secondItem="dJc-qN-Lpq" secondAttribute="bottom" constant="10" id="PHS-SL-2dp"/>
+                            <constraint firstItem="sGi-Al-hFV" firstAttribute="leading" secondItem="enR-XA-xHX" secondAttribute="trailing" constant="-15" id="TVU-P8-5eO"/>
+                            <constraint firstItem="enR-XA-xHX" firstAttribute="centerY" secondItem="Ec7-S4-9HM" secondAttribute="centerY" id="cYn-Iw-Zqa"/>
                             <constraint firstItem="31y-AI-u04" firstAttribute="top" secondItem="uoS-Eu-uCK" secondAttribute="bottom" constant="50" id="f9c-Fi-yVr"/>
                             <constraint firstItem="31y-AI-u04" firstAttribute="leading" secondItem="zBa-gV-1IU" secondAttribute="leading" id="hty-qo-T4z"/>
+                            <constraint firstItem="sGi-Al-hFV" firstAttribute="top" secondItem="uoS-Eu-uCK" secondAttribute="bottom" constant="8" id="yUK-Yx-qmo"/>
                         </constraints>
                     </view>
                     <connections>
@@ -394,6 +425,7 @@
                         <outlet property="lbl_Name2" destination="Lq4-Bt-ELg" id="Wye-gw-6Xc"/>
                         <outlet property="lbl_ResidenceAdd" destination="rWh-Xc-dXa" id="iUk-4L-2E9"/>
                         <outlet property="lbl_Sex" destination="oI7-1W-N1k" id="bd2-xl-uI9"/>
+                        <outlet property="unreadLabel" destination="sGi-Al-hFV" id="MBl-jb-FWH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NJf-tH-E0X" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3647,9 +3679,11 @@
         <image name="btn_play" width="39" height="39"/>
         <image name="ic_accounting" width="57" height="57"/>
         <image name="ic_assessmenthistory" width="57" height="57"/>
+        <image name="ic_bell" width="30" height="30"/>
         <image name="ic_calendar_home" width="57" height="57"/>
         <image name="ic_edit" width="22" height="22"/>
         <image name="ic_logo_small" width="99" height="27"/>
+        <image name="ic_logout" width="32" height="32"/>
         <image name="ic_newuser" width="15" height="15"/>
         <image name="ic_startassessment" width="57" height="57"/>
         <image name="ic_textview" width="13" height="13"/>

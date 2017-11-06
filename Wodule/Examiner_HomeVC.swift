@@ -38,22 +38,7 @@ class Examiner_HomeVC: UIViewController {
         
         print("Autologin", autologin)
         
-        self.loadingShow()
-        UserInfoAPI.getMessage(withToken: self.token!) { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
-            
-            if status
-            {
-                self.messagesList = results!
-                print(results)
-                DispatchQueue.main.async(execute: {
-                    self.messagesList = self.messagesList.filter({$0["read"] as? String == ""})
-                    self.loadingHide()
-                    print(self.messagesList)
-                    
-                })
-            }
-        }
-                
+        
         if userDefault.object(forKey: SOCIALKEY) as? String != nil
         {
             socialIdentifier = userDefault.object(forKey: SOCIALKEY) as! String
@@ -77,10 +62,28 @@ class Examiner_HomeVC: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.loadingShow()
+        UserInfoAPI.getMessage(withToken: self.token!) { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
+            
+            if status
+            {
+                self.messagesList = results!
+                self.messagesList = self.messagesList.filter({$0["read"] as? String == ""})
+                self.unreadLabel.text = "\(self.messagesList.count)"
+                DispatchQueue.main.async(execute: {
+                    self.loadingHide()
+                    print(self.messagesList)
+                    
+                })
+            }
+        }
+
+    }
+    
     func asignDataInView()
-    {
-        
-        
+    {        
         
         lbl_ExaminerID.text = "\((userInfomation["id"] as? Int)!)"
         lbl_Sex.text = userInfomation["gender"] as? String
@@ -155,6 +158,14 @@ class Examiner_HomeVC: UIViewController {
         }
     }
     
+    @IBAction func onClickMessage(_ sender: Any) {
+        
+        let messageVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "messageVC") as! MessagesVC
+        self.navigationController?.pushViewController(messageVC, animated: true)
+
+    }
+    
+    
     @IBAction func editProfile(_ sender: Any) {
         
         let editprofileVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "editprofileVC") as! EditProfileVC
@@ -192,6 +203,22 @@ class Examiner_HomeVC: UIViewController {
     
     @IBAction func onClickLogOut(_ sender: Any) {
         
+        let alert = UIAlertController(title: "Wodule", message: "Do you want to log out?", preferredStyle: .alert)
+        let okBtn = UIAlertAction(title: "OK", style: .default) { (action) in
+            
+            self.onHandleLogOut()
+        }
+        
+        let cancelBtn = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(okBtn)
+        alert.addAction(cancelBtn)
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onHandleLogOut()
+    {
         switch socialIdentifier {
         case GOOGLELOGIN:
             GIDSignIn.sharedInstance().signOut()
@@ -211,7 +238,7 @@ class Examiner_HomeVC: UIViewController {
         if autologin
         {
             self.navigationController?.pushViewController(loginVC, animated: false)
-
+            
         }
         else
         {
@@ -224,7 +251,7 @@ class Examiner_HomeVC: UIViewController {
         AppDelegate.share.removeAllValueObject()
         userDefault.removeObject(forKey: USERNAMELOGIN)
         userDefault.removeObject(forKey: PASSWORDLOGIN)
-
+        
         userDefault.synchronize()
     }
     

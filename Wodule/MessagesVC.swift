@@ -21,20 +21,25 @@ class MessagesVC: UIViewController {
         
         messageTableView.delegate = self
         messageTableView.dataSource = self
-        
+        messageTableView.layer.cornerRadius = 10
+               
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.loadingShow()
         UserInfoAPI.getMessage(withToken: self.token!) { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
             
             if status
             {
                 self.messagesList = results!
-                DispatchQueue.main.async(execute: { 
+                DispatchQueue.main.async(execute: {
                     self.loadingHide()
                     self.messageTableView.reloadData()
+                    print(self.messagesList)
                 })
             }
         }
-        
     }
 
     @IBAction func onClickBack(_ sender: Any) {
@@ -59,14 +64,54 @@ extension MessagesVC : UITableViewDataSource, UITableViewDelegate
         let item = messagesList[indexPath.row]
         
         cell.messageLabel.text = item["message"] as? String
-        cell.dateLabel.text = item["creationDate"] as? String
+        cell.dateLabel.text = convertDay(DateString: item["creationDate"] as! String)
         
-        if item["read"] as? String == nil
+        if item["read"] as? String == ""
         {
-            cell.messageLabel.font = UIFont.boldSystemFont(ofSize: 15)
-            cell.backgroundColor = #colorLiteral(red: 0.2779593766, green: 0.7153381705, blue: 0.4422388971, alpha: 1)
+            cell.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+        }
+        else
+        {
+            cell.backgroundColor = .clear
         }
         
         return cell
     }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 65
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        self.loadingShow()
+        UserInfoAPI.readMessage(withToken: token!, identifier: messagesList[indexPath.row]["identifier"] as! Int) { (status:Bool, code:Int, results: NSDictionary?) in
+            
+            if status
+            {
+                DispatchQueue.main.async(execute: { 
+                    self.loadingHide()
+                    let messagedetailVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "messagedetailVC") as! MessageDetailsVC
+                    messagedetailVC.messageDetail = self.messagesList[indexPath.row]
+                    self.navigationController?.pushViewController(messagedetailVC, animated: true)
+                    
+                })
+            }
+            else
+            {
+                self.loadingHide()
+            }
+            
+        }
+    }
+    
 }
+
+
+
+
+
+
+
+
+
+

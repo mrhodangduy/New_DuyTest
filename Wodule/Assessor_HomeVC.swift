@@ -24,12 +24,15 @@ class Assessor_HomeVC: UIViewController {
     @IBOutlet weak var lbl_Sex: UILabel!
     @IBOutlet weak var lbl_Age: UILabel!
     @IBOutlet weak var img_Avatar: UIImageViewX!
+    @IBOutlet weak var unreadLabel: UILabelX!
     
     var imageData:Data!
     var userInfomation:NSDictionary!
     var socialAvatar: URL!
     var socialIdentifier: String!
-
+    
+    var messagesList = [NSDictionary]()
+    var temp = [NSDictionary]()
     
     var CategoryList = [Categories]()
     
@@ -47,11 +50,9 @@ class Assessor_HomeVC: UIViewController {
             socialIdentifier = NORMALLOGIN
         }
         
-        
         print("\nCURRENT USER TOKEN: ------>\n", token!)
         print("\nCURRENT USER INFO: ------>\n",userInfomation)
         print("\nCURRENT USER AVATARLINK: ------>\n",socialAvatar)
-
         
         asignDataInView()        
         
@@ -59,6 +60,25 @@ class Assessor_HomeVC: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.loadingShow()
+        UserInfoAPI.getMessage(withToken: self.token!) { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
+            
+            if status
+            {
+                self.messagesList = results!
+                self.temp = self.messagesList.filter({$0["read"] as? String == ""})
+                self.unreadLabel.text = "\(self.temp.count)"
+                DispatchQueue.main.async(execute: {
+                    self.loadingHide()
+                    print(self.temp)
+                    
+                })
+            }
+        }
+        
+    }
     
     func asignDataInView()
         
@@ -159,6 +179,14 @@ class Assessor_HomeVC: UIViewController {
         
     }
     
+    @IBAction func onClickMessage(_ sender: Any) {
+        
+        let messageVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "messageVC") as! MessagesVC
+        self.navigationController?.pushViewController(messageVC, animated: true)
+
+    }
+    
+    
     @IBAction func editProfile(_ sender: Any) {
         
         let editprofileVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "editprofileVC") as! EditProfileVC
@@ -171,6 +199,23 @@ class Assessor_HomeVC: UIViewController {
     }
     @IBAction func onClickLogOut(_ sender: Any) {
         
+        let alert = UIAlertController(title: "Wodule", message: "Do you want to log out?", preferredStyle: .alert)
+        let okBtn = UIAlertAction(title: "OK", style: .default) { (action) in
+            
+            self.onHandleLogOut()
+        }
+        
+        let cancelBtn = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(okBtn)
+        alert.addAction(cancelBtn)
+        self.present(alert, animated: true, completion: nil)
+
+        
+        
+    }
+    func onHandleLogOut()
+    {
         switch socialIdentifier {
         case GOOGLELOGIN:
             GIDSignIn.sharedInstance().signOut()

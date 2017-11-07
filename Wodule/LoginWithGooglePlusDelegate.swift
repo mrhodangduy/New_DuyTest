@@ -218,7 +218,7 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
             
         })
         alertInputCode.addTextField(configurationHandler: { (textField) -> Void in
-            textField.placeholder = "Input Code"
+            textField.placeholder = "Input a valid Code"
             textField.textAlignment = .center
         })
         alertInputCode.addAction(cancel)

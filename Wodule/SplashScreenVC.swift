@@ -10,6 +10,8 @@ import UIKit
 
 class SplashScreenVC: UIViewController {
     
+    @IBOutlet weak var loadingImageView: UIImageView!
+    @IBOutlet weak var notifiLabel: UILabel!
     
     let username = userDefault.object(forKey: USERNAMELOGIN) as? String
     let password = userDefault.object(forKey: PASSWORDLOGIN) as? String
@@ -17,22 +19,29 @@ class SplashScreenVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("username:", username, "password:", password)
+        loadingImageView.image = UIImage.gifImageWithName("loading")
+        loadingImageView.isHidden = true
+        notifiLabel.isHidden = true
+        
+        print("username:", username as Any, "password:", password as Any)
+        
+        if username != nil && password != nil
+        {
+            self.loadingImageView.isHidden = false
+            self.notifiLabel.isHidden = false
+        }
+        
         self.perform(#selector(self.onHanldeAutoLogin), with: self, afterDelay: 1)
-
         
     }
     
     func onHanldeAutoLogin()
     {
         
-        
         if username == nil && password == nil
         {
             let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
-            
             self.navigationController?.pushViewController(loginVC, animated: true)
-            
             
         }
         else

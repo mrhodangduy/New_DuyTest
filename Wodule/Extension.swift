@@ -249,12 +249,38 @@ extension UIViewController
         }
     }
     
-    func convertDay(DateString: String) -> String
+    func convertDayHistory(DateString: String) -> String
     {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let date = dateFormatter.date(from: DateString)
         dateFormatter.dateFormat = "yy.MM.dd"
+        return dateFormatter.string(from: date!)
+    }
+    
+    func convertDayMessage(DateString: String) -> String
+    {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let date = dateFormatter.date(from: DateString)
+        dateFormatter.dateFormat = "MMM dd HH:mm"
+        return dateFormatter.string(from: date!)
+    }
+    
+    func convertDayEvent(DateString: String) -> String
+    {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let date = dateFormatter.date(from: DateString)
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        return dateFormatter.string(from: date!)
+    }
+    func convertTimeEvent(DateString: String) -> String
+    {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let date = dateFormatter.date(from: DateString)
+        dateFormatter.dateFormat = "HH:mm"
         return dateFormatter.string(from: date!)
     }
     

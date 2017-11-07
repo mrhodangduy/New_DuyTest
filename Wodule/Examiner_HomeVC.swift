@@ -37,7 +37,7 @@ class Examiner_HomeVC: UIViewController {
         super.viewDidLoad()
         
         print("Autologin", autologin)
-        
+        self.unreadLabel.isHidden = true
         
         if userDefault.object(forKey: SOCIALKEY) as? String != nil
         {
@@ -65,18 +65,25 @@ class Examiner_HomeVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.loadingShow()
-        UserInfoAPI.getMessage(withToken: self.token!) { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
-            
-            if status
-            {
-                self.messagesList = results!
-                self.messagesList = self.messagesList.filter({$0["read"] as? String == ""})
-                self.unreadLabel.text = "\(self.messagesList.count)"
-                DispatchQueue.main.async(execute: {
+        DispatchQueue.global(qos: .background).async { 
+            UserInfoAPI.getMessage(withToken: self.token!) { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
+                
+                if status
+                {
+                    self.messagesList = results!
+                    self.messagesList = self.messagesList.filter({$0["read"] as? String == ""})
+                    self.unreadLabel.text = "\(self.messagesList.count)"
+                    self.unreadLabel.isHidden = false
+                    DispatchQueue.main.async(execute: {
+                        self.loadingHide()
+                        print(self.messagesList)
+                        
+                    })
+                }
+                else
+                {
                     self.loadingHide()
-                    print(self.messagesList)
-                    
-                })
+                }
             }
         }
 

@@ -116,7 +116,7 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
         
         cell.lbl_ExamID.text = item["exam"] as? String
         cell.lbl_Score.text = "-"
-        cell.lbl_Date.text = convertDay(DateString: item["creationDate"] as! String)
+        cell.lbl_Date.text = convertDayHistory(DateString: item["creationDate"] as! String)
         cell.lbl_examinerrID.text = "\(item["examinee"] as! Int)"
         return cell
     }

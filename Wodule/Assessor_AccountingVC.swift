@@ -58,7 +58,7 @@ class Assessor_AccountingVC: UIViewController {
             {
                 self.loadingHide()
                 self.alertMissingText(mess: "Something went wrong.", textField: nil)
-                print(result)
+                print(result as Any)
             }
             
             

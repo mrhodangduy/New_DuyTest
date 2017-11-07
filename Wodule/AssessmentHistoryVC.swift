@@ -40,7 +40,7 @@ class AssessmentHistoryVC: UIViewController {
             {
                 if results?.count != 0
                 {
-                    print("\n\nHISTORY LIST:--->\n",results)
+                    print("\n\nHISTORY LIST:--->\n",results as Any)
                     self.totalPage = totalpage
                     for result in results!
                     {
@@ -110,7 +110,7 @@ extension AssessmentHistoryVC: UITableViewDataSource,UITableViewDelegate
         
         let historyItem = History[indexPath.row]
         
-        cell.lbl_date.text = convertDay(DateString: historyItem["creationDate"] as! String)
+        cell.lbl_date.text = convertDayHistory(DateString: historyItem["creationDate"] as! String)
         cell.lbl_ExamID.text = historyItem["exam"] as? String
         
         if historyItem["score"] as? String == "pending"

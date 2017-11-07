@@ -156,7 +156,7 @@ extension Part1VC: JWGCircleCounterDelegate
             do
             {
                 self.audio1_Data = try Data(contentsOf: audioURL! as URL)
-                print("audio1_Data",self.audio1_Data)
+                print("audio1_Data",self.audio1_Data as Any)
             }
         
             catch

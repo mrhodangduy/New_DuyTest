@@ -32,7 +32,6 @@ class Assessor_HomeVC: UIViewController {
     var socialIdentifier: String!
     
     var messagesList = [NSDictionary]()
-    var temp = [NSDictionary]()
     
     var CategoryList = [Categories]()
     
@@ -40,7 +39,8 @@ class Assessor_HomeVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        self.unreadLabel.isHidden = true
+        
         if userDefault.object(forKey: SOCIALKEY) as? String != nil
         {
             socialIdentifier = userDefault.object(forKey: SOCIALKEY) as! String
@@ -63,18 +63,25 @@ class Assessor_HomeVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.loadingShow()
-        UserInfoAPI.getMessage(withToken: self.token!) { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
-            
-            if status
-            {
-                self.messagesList = results!
-                self.temp = self.messagesList.filter({$0["read"] as? String == ""})
-                self.unreadLabel.text = "\(self.temp.count)"
-                DispatchQueue.main.async(execute: {
+        DispatchQueue.global(qos: .background).async { 
+            UserInfoAPI.getMessage(withToken: self.token!) { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
+                
+                if status
+                {
+                    self.messagesList = results!
+                    self.messagesList = self.messagesList.filter({$0["read"] as? String == ""})
+                    self.unreadLabel.text = "\(self.messagesList.count)"
+                    self.unreadLabel.isHidden = false
+                    DispatchQueue.main.async(execute: {
+                        self.loadingHide()
+                        print(self.messagesList)
+                        
+                    })
+                }
+                else
+                {
                     self.loadingHide()
-                    print(self.temp)
-                    
-                })
+                }
             }
         }
         
@@ -166,15 +173,18 @@ class Assessor_HomeVC: UIViewController {
     
     @IBAction func calendarTap(_ sender: Any) {
         
-        let calendarVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "calendarVC") as! Assessor_CalendarVC
+        let calendarVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "calendarVC") as! CalendarVC
         self.navigationController?.pushViewController(calendarVC, animated: true)
+        
+//        let calendarVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "calendarVC") as! Assessor_CalendarVC
+//        self.navigationController?.pushViewController(calendarVC, animated: true)
         
     }
     @IBAction func startAssessmentTap(_ sender: Any) {
         
-        let allReocrdVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "allrecordVC") as! Assessor_AssessmentVC
+        let allrecordVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "allrecordVC") as! Assessor_AssessmentVC
         
-        self.navigationController?.pushViewController(allReocrdVC, animated: true)
+        self.navigationController?.pushViewController(allrecordVC, animated: true)
 
         
     }

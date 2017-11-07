@@ -15,12 +15,11 @@ struct ExamRecord
     static func uploadExam(withToken token:String, idExam: Int, audiofile1: Data?,audiofile2: Data?,audiofile3: Data?,audiofile4: Data?, completion: @escaping (Bool?, NSDictionary?) -> ())
     {
         let url = URL(string: "http://wodule.io/api/exams/\(idExam)/records")
-        print(url)
+        print(url as Any)
         
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
         Alamofire.upload(multipartFormData: { (data) in
-            
             
             if let audioURL1 = audiofile1
             {
@@ -45,7 +44,7 @@ struct ExamRecord
                 
             else
             {
-                completion(false, nil)
+                completion(nil, nil)
             }
             
             
@@ -103,7 +102,7 @@ struct ExamRecord
         Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
             
             let json = response.result.value as? NSDictionary
-            let code = response.response?.statusCode as? Int
+            let code = response.response?.statusCode
             
             if response.result.isSuccess
             {
@@ -174,7 +173,7 @@ struct ExamRecord
             else
             {
                 completion(false, code, json)
-                print(response.result.error?.localizedDescription)
+                print(response.result.error?.localizedDescription as Any)
                 
             }
             

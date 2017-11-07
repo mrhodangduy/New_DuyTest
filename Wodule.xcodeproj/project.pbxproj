@@ -39,6 +39,9 @@
 		630BD8C11F8237AB00B24CA5 /* Define.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630BD8C01F8237AB00B24CA5 /* Define.swift */; };
 		630BD8C51F8244A200B24CA5 /* NewUser2_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630BD8C41F8244A200B24CA5 /* NewUser2_TableViewCell.swift */; };
 		630BD8C71F82450600B24CA5 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630BD8C61F82450600B24CA5 /* Extension.swift */; };
+		630C092C1FB162E600DCF7A5 /* iOSDevCenters+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630C092B1FB162E600DCF7A5 /* iOSDevCenters+GIF.swift */; };
+		630C09451FB194CB00DCF7A5 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630C09431FB194CB00DCF7A5 /* EventCell.swift */; };
+		630C09461FB194CB00DCF7A5 /* EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630C09441FB194CB00DCF7A5 /* EventCell.xib */; };
 		6347CF081F8C6819009D717D /* InstagramLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6347CF071F8C6819009D717D /* InstagramLoginVC.swift */; };
 		6347CF0A1F8C6FA5009D717D /* AuthInstagram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6347CF091F8C6FA5009D717D /* AuthInstagram.swift */; };
 		6347CF0C1F8CB687009D717D /* ManageAPI_Exam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6347CF0B1F8CB687009D717D /* ManageAPI_Exam.swift */; };
@@ -67,6 +70,7 @@
 		63F1459F1F8721FA00CD03BF /* Examinee_CategoriesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F1459E1F8721FA00CD03BF /* Examinee_CategoriesVC.swift */; };
 		63F145A31F87330600CD03BF /* Part4VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F145A21F87330600CD03BF /* Part4VC.swift */; };
 		63F43A561FA72B080070DEDD /* SplashScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F43A551FA72B080070DEDD /* SplashScreenVC.swift */; };
+		63F8CDB21FB1AED300B9341D /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 63F8CDB11FB1AED300B9341D /* loading.gif */; };
 		DA1620771F8D16200056D7D3 /* AudioRecorderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1620761F8D16200056D7D3 /* AudioRecorderManager.swift */; };
 		DA7517BA1F8275A200E96E56 /* NewUser3_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7517B91F8275A200E96E56 /* NewUser3_TableViewCell.swift */; };
 		DA7517BC1F82923B00E96E56 /* ManageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7517BB1F82923B00E96E56 /* ManageAPI.swift */; };
@@ -119,6 +123,9 @@
 		630BD8C01F8237AB00B24CA5 /* Define.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Define.swift; sourceTree = "<group>"; };
 		630BD8C41F8244A200B24CA5 /* NewUser2_TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewUser2_TableViewCell.swift; sourceTree = "<group>"; };
 		630BD8C61F82450600B24CA5 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		630C092B1FB162E600DCF7A5 /* iOSDevCenters+GIF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "iOSDevCenters+GIF.swift"; sourceTree = "<group>"; };
+		630C09431FB194CB00DCF7A5 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
+		630C09441FB194CB00DCF7A5 /* EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
 		6347CF071F8C6819009D717D /* InstagramLoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstagramLoginVC.swift; sourceTree = "<group>"; };
 		6347CF091F8C6FA5009D717D /* AuthInstagram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthInstagram.swift; sourceTree = "<group>"; };
 		6347CF0B1F8CB687009D717D /* ManageAPI_Exam.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageAPI_Exam.swift; sourceTree = "<group>"; };
@@ -148,6 +155,7 @@
 		63F145A21F87330600CD03BF /* Part4VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Part4VC.swift; sourceTree = "<group>"; };
 		63F145A41F8772E900CD03BF /* Wodule-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Wodule-Bridging-Header.h"; sourceTree = "<group>"; };
 		63F43A551FA72B080070DEDD /* SplashScreenVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreenVC.swift; sourceTree = "<group>"; };
+		63F8CDB11FB1AED300B9341D /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
 		A0A11A97D58C2A42E8F6CAAA /* Pods-Wodule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wodule.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wodule/Pods-Wodule.release.xcconfig"; sourceTree = "<group>"; };
 		DA1620711F8D0B5E0056D7D3 /* Wodule.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wodule.entitlements; sourceTree = "<group>"; };
 		DA1620761F8D16200056D7D3 /* AudioRecorderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecorderManager.swift; sourceTree = "<group>"; };
@@ -219,10 +227,12 @@
 		630BD8901F81DC3E00B24CA5 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				63F8CDB11FB1AED300B9341D /* loading.gif */,
 				63A36BF01F849F1A005857DE /* RoundTextView.swift */,
 				630BD8911F81DC8700B24CA5 /* TextFieldMaxLength.swift */,
 				630BD8921F81DC8700B24CA5 /* UIButtonX.swift */,
 				630BD8931F81DC8700B24CA5 /* UIImageViewX.swift */,
+				630C092B1FB162E600DCF7A5 /* iOSDevCenters+GIF.swift */,
 				630BD8941F81DC8700B24CA5 /* UILabelX.swift */,
 				630BD8951F81DC8700B24CA5 /* UISliderX.swift */,
 				630BD8961F81DC8700B24CA5 /* UITextFieldX.swift */,
@@ -331,6 +341,8 @@
 				63F07F9E1FB06AF50088B860 /* MessagesCell.swift */,
 				63F07F9C1FB06AD90088B860 /* MessagesVC.swift */,
 				63F07FA01FB06B8D0088B860 /* MessageDetailsVC.swift */,
+				630C09431FB194CB00DCF7A5 /* EventCell.swift */,
+				630C09441FB194CB00DCF7A5 /* EventCell.xib */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -475,9 +487,11 @@
 				63D0FCCF1F85F2F8006347B0 /* Profile.storyboard in Resources */,
 				630BD8891F81D72100B24CA5 /* LaunchScreen.storyboard in Resources */,
 				630BD8A81F81FC9300B24CA5 /* Assessor.storyboard in Resources */,
+				63F8CDB21FB1AED300B9341D /* loading.gif in Resources */,
 				630BD8861F81D72100B24CA5 /* Assets.xcassets in Resources */,
 				630BD8BB1F82293500B24CA5 /* Examinee.storyboard in Resources */,
 				630BD8841F81D72100B24CA5 /* Main.storyboard in Resources */,
+				630C09461FB194CB00DCF7A5 /* EventCell.xib in Resources */,
 				6352A0681F8B347600B13CC1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -593,6 +607,7 @@
 				63A36C021F84CEE4005857DE /* Assessor_AssessmentVC.swift in Sources */,
 				63A36BF61F84A1DA005857DE /* Assessor_GradeVC.swift in Sources */,
 				63F43A561FA72B080070DEDD /* SplashScreenVC.swift in Sources */,
+				630C092C1FB162E600DCF7A5 /* iOSDevCenters+GIF.swift in Sources */,
 				DAAD6B491F85309600F45371 /* Assessor_Part1Cell.swift in Sources */,
 				63C57BF01FA2F1F600DC3B40 /* Assessor_Part2VC.swift in Sources */,
 				630BD8B51F821D8000B24CA5 /* ForgotPasswordVC.swift in Sources */,
@@ -614,6 +629,7 @@
 				DA7560931F83F83B008DB772 /* AssessmentHistoryVC.swift in Sources */,
 				630BD8A21F81DC8700B24CA5 /* UIViewAnchorPoint.swift in Sources */,
 				DAAD6B4B1F8530A500F45371 /* Assessor_Part2Cell.swift in Sources */,
+				630C09451FB194CB00DCF7A5 /* EventCell.swift in Sources */,
 				630335991F9472F1002CA356 /* AudioPlayerManager.swift in Sources */,
 				63C57BF21FA2F1F600DC3B40 /* Assessor_Part4VC.swift in Sources */,
 				630BD89F1F81DC8700B24CA5 /* UILabelX.swift in Sources */,

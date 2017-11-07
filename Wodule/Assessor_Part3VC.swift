@@ -108,13 +108,13 @@ class Assessor_Part3VC: UIViewController {
     }
     
     @IBAction func onClickPromtQuestion(_ sender: Any) {
-        if Exam?["image_3"] as? String != nil
-        {
-            let promt_1 = Exam?["promt3_1"] as? String
-            let promt_2 = Exam?["promt3_2"] as? String
-            let promt_3 = Exam?["promt3_3"] as? String
-            self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
-        }
+//        if ((Exam?["examQuestionaireThree"] as? String)?.hasPrefix("http://wodule.io/user/")) == true
+//        {
+//            let promt_1 = Exam?["promt3_1"] as? String
+//            let promt_2 = Exam?["promt3_2"] as? String
+//            let promt_3 = Exam?["promt3_3"] as? String
+//            self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
+//        }
     }
     
     

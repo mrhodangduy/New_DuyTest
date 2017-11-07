@@ -43,6 +43,37 @@ struct ManageAPI_Accounting
     
 }
 
+struct ManageAPI_Calendar
+{
+    static func getCalendar(token: String, completion: @escaping (_ status: Bool,_ code: Int, _ results: NSDictionary?) -> ())
+    {
+        let url = URL(string: APIURL.calendarURL)
+        let header: HTTPHeaders = ["Authorization":"Bearer \(token)"]
+        
+        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
+            
+            if response.result.isSuccess
+            {
+                if response.response?.statusCode == 200
+                {
+                    
+                    completion(true, 200, response.result.value as? NSDictionary)
+                    
+                }
+                else
+                {
+                    completion(false, response.response!.statusCode, response.result.value as? NSDictionary)
+                }
+            }
+            else
+            {
+                completion(false, response.response!.statusCode, response.result.value as? NSDictionary)
+            }
+            
+        }
+    }
+}
+
 
 
 

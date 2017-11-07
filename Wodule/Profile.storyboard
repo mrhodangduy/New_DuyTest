@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -32,13 +32,13 @@
                                         <rect key="frame" x="20" y="12" width="15" height="15"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EDIT PROFILE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P0p-bX-F6e">
-                                        <rect key="frame" x="43" y="9.5" width="112.5" height="21"/>
+                                        <rect key="frame" x="43" y="9" width="113" height="21"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type: Examinee" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2JV-6D-fJa">
-                                        <rect key="frame" x="251" y="12" width="104" height="17"/>
+                                        <rect key="frame" x="251" y="11" width="104" height="17"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -65,7 +65,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="1281"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default" translatesAutoresizingMaskIntoConstraints="NO" id="g9E-9U-zPc" customClass="UIImageViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="94" y="20" width="187.5" height="225"/>
+                                                        <rect key="frame" x="94" y="20" width="188" height="225"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <gestureRecognizers/>
                                                         <userDefinedRuntimeAttributes>
@@ -75,10 +75,10 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ev-b5-Dbx" userLabel="UserName" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="264.5" width="335" height="40.5"/>
+                                                        <rect key="frame" x="20" y="265" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="O4M-gE-hpd">
-                                                                <rect key="frame" x="15" y="0.0" width="320" height="40.5"/>
+                                                                <rect key="frame" x="15" y="0.0" width="320" height="40"/>
                                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" returnKeyType="next"/>
@@ -122,10 +122,10 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cz9-ur-6EU" userLabel="1stname" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="365" width="335" height="40.5"/>
+                                                        <rect key="frame" x="20" y="365" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="First name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="yKA-0l-P7p">
-                                                                <rect key="frame" x="15" y="0.0" width="320" height="40.5"/>
+                                                                <rect key="frame" x="15" y="0.0" width="320" height="40"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
@@ -145,7 +145,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zND-Ps-I5p" userLabel="2ndName" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="415.5" width="335" height="40"/>
+                                                        <rect key="frame" x="20" y="415" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Middle name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="b13-Ay-TMh">
                                                                 <rect key="frame" x="15" y="0.0" width="320" height="40"/>
@@ -168,10 +168,10 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KIX-nf-V1W" userLabel="3rdName" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="465.5" width="335" height="40.5"/>
+                                                        <rect key="frame" x="20" y="465" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Last name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2dA-2N-aPS">
-                                                                <rect key="frame" x="15" y="0.0" width="320" height="40.5"/>
+                                                                <rect key="frame" x="15" y="0.0" width="320" height="40"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
@@ -191,7 +191,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="97j-qT-UTV" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="516" width="335" height="40"/>
+                                                        <rect key="frame" x="20" y="515" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Native name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="HeR-20-XN5">
                                                                 <rect key="frame" x="15" y="0.0" width="320" height="40"/>
@@ -214,16 +214,16 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bm4-8A-PCN" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="566" width="335" height="40.5"/>
+                                                        <rect key="frame" x="20" y="565" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Suffix" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="1ym-af-kNL">
-                                                                <rect key="frame" x="15" y="0.0" width="295" height="40.5"/>
+                                                                <rect key="frame" x="15" y="0.0" width="295" height="40"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                                             </textField>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_dropdown" translatesAutoresizingMaskIntoConstraints="NO" id="Cz7-8f-ftg">
-                                                                <rect key="frame" x="310" y="12" width="15" height="15"/>
+                                                                <rect key="frame" x="310" y="13" width="15" height="15"/>
                                                             </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xyg-q9-Oip">
                                                                 <rect key="frame" x="0.0" y="0.0" width="335" height="40"/>
@@ -249,7 +249,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WSz-AJ-26u">
-                                                        <rect key="frame" x="206" y="626.5" width="149" height="16"/>
+                                                        <rect key="frame" x="206" y="625" width="149" height="16"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                         <state key="normal" title=" Display lastname first" image="ic_tick"/>
                                                         <connections>
@@ -257,7 +257,7 @@
                                                         </connections>
                                                     </button>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lec-Gj-RSA" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="662.5" width="335" height="40"/>
+                                                        <rect key="frame" x="20" y="661" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Date of Birth" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rUx-1e-Cjb">
                                                                 <rect key="frame" x="15" y="0.0" width="295" height="40"/>
@@ -266,7 +266,7 @@
                                                                 <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                                             </textField>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_calendar" translatesAutoresizingMaskIntoConstraints="NO" id="kGr-ch-ski">
-                                                                <rect key="frame" x="310" y="12.5" width="15" height="15"/>
+                                                                <rect key="frame" x="310" y="12" width="15" height="15"/>
                                                             </imageView>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.57859247920000001" green="0.83674281839999998" blue="0.69126981499999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -285,10 +285,10 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xGa-lm-52Z" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="712.5" width="335" height="40.5"/>
+                                                        <rect key="frame" x="20" y="711" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Country of Birth" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gHn-eC-3BR">
-                                                                <rect key="frame" x="15" y="0.0" width="295" height="40.5"/>
+                                                                <rect key="frame" x="15" y="0.0" width="295" height="40"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" returnKeyType="next"/>
@@ -297,7 +297,7 @@
                                                                 <rect key="frame" x="310" y="12" width="15" height="15"/>
                                                             </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7DX-Ib-jDz">
-                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="40.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="40"/>
                                                                 <connections>
                                                                     <action selector="countryOfBirthTap:" destination="h3q-Lq-gY5" eventType="touchUpInside" id="ovo-pu-7MS"/>
                                                                 </connections>
@@ -323,7 +323,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rIM-iQ-eMx" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="763" width="335" height="40"/>
+                                                        <rect key="frame" x="20" y="761" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Residence Address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="1OL-hR-fTZ">
                                                                 <rect key="frame" x="15" y="0.0" width="320" height="40"/>
@@ -346,7 +346,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f33-ni-hgv" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="813" width="335" height="40"/>
+                                                        <rect key="frame" x="20" y="811" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="City" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gyw-4r-f8U">
                                                                 <rect key="frame" x="15" y="0.0" width="320" height="40"/>
@@ -369,10 +369,10 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fDR-my-7ff" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="863" width="335" height="39.5"/>
+                                                        <rect key="frame" x="20" y="861" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Country" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Mvj-l1-o5h">
-                                                                <rect key="frame" x="15" y="0.0" width="295" height="39.5"/>
+                                                                <rect key="frame" x="15" y="0.0" width="295" height="40"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" returnKeyType="next"/>
@@ -381,7 +381,7 @@
                                                                 <rect key="frame" x="310" y="12" width="15" height="15"/>
                                                             </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fMv-hC-XFg">
-                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="39.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="40"/>
                                                                 <connections>
                                                                     <action selector="countryTap:" destination="h3q-Lq-gY5" eventType="touchUpInside" id="dya-mo-3D4"/>
                                                                 </connections>
@@ -407,7 +407,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F5a-Q5-pmd" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="912.5" width="335" height="40"/>
+                                                        <rect key="frame" x="20" y="911" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Telephone" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="kI8-wK-UDA">
                                                                 <rect key="frame" x="15" y="0.0" width="320" height="40"/>
@@ -430,10 +430,10 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uDl-eh-5mu" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="962.5" width="335" height="39.5"/>
+                                                        <rect key="frame" x="20" y="961" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="E-Mail" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="mYz-Pr-u4C">
-                                                                <rect key="frame" x="15" y="0.0" width="320" height="39.5"/>
+                                                                <rect key="frame" x="15" y="0.0" width="320" height="40"/>
                                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
@@ -453,7 +453,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rkp-Ph-S1m" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="1012" width="335" height="40"/>
+                                                        <rect key="frame" x="20" y="1011" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nationality" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KXS-UJ-RtP">
                                                                 <rect key="frame" x="15" y="0.0" width="295" height="40"/>
@@ -491,10 +491,10 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="su1-Dg-FlX" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="1062" width="335" height="39.5"/>
+                                                        <rect key="frame" x="20" y="1061" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Ethnicity" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="XVx-k3-xif">
-                                                                <rect key="frame" x="15" y="0.0" width="295" height="39.5"/>
+                                                                <rect key="frame" x="15" y="0.0" width="295" height="40"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" returnKeyType="next"/>
@@ -503,7 +503,7 @@
                                                                 <rect key="frame" x="310" y="12" width="15" height="15"/>
                                                             </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LGg-dh-wMf">
-                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="39.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="40"/>
                                                                 <connections>
                                                                     <action selector="ethnicityTap:" destination="h3q-Lq-gY5" eventType="touchUpInside" id="GGH-Ie-acl"/>
                                                                 </connections>
@@ -529,7 +529,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iUF-oK-H42" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="1111.5" width="335" height="40"/>
+                                                        <rect key="frame" x="20" y="1111" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Status" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="sYp-Cw-4MC">
                                                                 <rect key="frame" x="15" y="0.0" width="295" height="40"/>
@@ -538,7 +538,7 @@
                                                                 <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                                             </textField>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_dropdown" translatesAutoresizingMaskIntoConstraints="NO" id="dCE-O1-CMf">
-                                                                <rect key="frame" x="310" y="12.5" width="15" height="15"/>
+                                                                <rect key="frame" x="310" y="12" width="15" height="15"/>
                                                             </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7pb-G6-TC7">
                                                                 <rect key="frame" x="0.0" y="0.0" width="335" height="40"/>
@@ -567,10 +567,10 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="49w-Jz-ADh" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="1161.5" width="335" height="39.5"/>
+                                                        <rect key="frame" x="20" y="1161" width="335" height="40"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Religion" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="lWo-mM-V4I">
-                                                                <rect key="frame" x="15" y="0.0" width="320" height="39.5"/>
+                                                                <rect key="frame" x="15" y="0.0" width="320" height="40"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
@@ -599,7 +599,7 @@
                                                                 <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                                             </textField>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_dropdown" translatesAutoresizingMaskIntoConstraints="NO" id="xtv-sG-VAd">
-                                                                <rect key="frame" x="310" y="12.5" width="15" height="15"/>
+                                                                <rect key="frame" x="310" y="13" width="15" height="15"/>
                                                             </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kxJ-cm-yoe">
                                                                 <rect key="frame" x="0.0" y="0.0" width="335" height="40"/>
@@ -833,7 +833,7 @@
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LSM-5q-hya">
-                                        <rect key="frame" x="0.0" y="43.5" width="350" height="0.5"/>
+                                        <rect key="frame" x="0.0" y="44" width="350" height="0.0"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="0.5" id="WlI-2s-t0h"/>
@@ -843,7 +843,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hs4-ay-wq7">
-                                        <rect key="frame" x="20" y="11.5" width="42" height="21"/>
+                                        <rect key="frame" x="20" y="12" width="42" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -885,7 +885,7 @@
                                         <rect key="frame" x="20" y="12" width="15" height="15"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MESSAGES" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6H8-sS-OM2">
-                                        <rect key="frame" x="43" y="10" width="93" height="20.5"/>
+                                        <rect key="frame" x="43" y="9" width="93" height="21"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -908,22 +908,21 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="70" id="WJn-H5-ZhW" customClass="MessagesCell" customModule="Wodule" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="375" height="70"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="65" id="WJn-H5-ZhW" customClass="MessagesCell" customModule="Wodule" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="28" width="375" height="65"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WJn-H5-ZhW" id="t1H-Xy-QYY">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mKQ-hE-2rF">
-                                                            <rect key="frame" x="20" y="15" width="320" height="20"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <rect key="frame" x="20" y="15" width="340" height="18"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hGr-xP-5Ma">
-                                                            <rect key="frame" x="0.0" y="69.5" width="375" height="0.5"/>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <rect key="frame" x="0.0" y="65" width="375" height="0.0"/>
+                                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="0.5" id="v24-gy-hav"/>
                                                             </constraints>
@@ -932,7 +931,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qVU-3Z-6qj">
-                                                            <rect key="frame" x="0.0" y="35" width="375" height="0.0"/>
+                                                            <rect key="frame" x="0.0" y="33" width="375" height="0.0"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" id="lRN-eb-y3I"/>
                                                             </constraints>
@@ -941,32 +940,27 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TOS-Y6-uf0">
-                                                            <rect key="frame" x="20" y="35" width="320" height="32.5"/>
+                                                            <rect key="frame" x="20" y="33" width="340" height="27"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="jgf-ub-eA5">
-                                                            <rect key="frame" x="355" y="30" width="10" height="10"/>
-                                                        </imageView>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="qVU-3Z-6qj" firstAttribute="centerY" secondItem="t1H-Xy-QYY" secondAttribute="centerY" id="2IH-B6-OMI"/>
                                                         <constraint firstItem="TOS-Y6-uf0" firstAttribute="top" secondItem="qVU-3Z-6qj" secondAttribute="bottom" id="3E3-bA-LjG"/>
-                                                        <constraint firstItem="jgf-ub-eA5" firstAttribute="centerY" secondItem="t1H-Xy-QYY" secondAttribute="centerY" id="E0T-ns-Sth"/>
                                                         <constraint firstItem="qVU-3Z-6qj" firstAttribute="top" secondItem="mKQ-hE-2rF" secondAttribute="bottom" id="ErT-IH-X3A"/>
                                                         <constraint firstItem="mKQ-hE-2rF" firstAttribute="top" secondItem="t1H-Xy-QYY" secondAttribute="top" constant="15" id="Q2F-yy-YHP"/>
                                                         <constraint firstItem="TOS-Y6-uf0" firstAttribute="width" secondItem="mKQ-hE-2rF" secondAttribute="width" id="VOT-gN-gTf"/>
-                                                        <constraint firstAttribute="trailing" secondItem="jgf-ub-eA5" secondAttribute="trailing" constant="10" id="VmA-EU-MeK"/>
                                                         <constraint firstAttribute="trailing" secondItem="qVU-3Z-6qj" secondAttribute="trailing" id="WGv-bV-2Zf"/>
-                                                        <constraint firstAttribute="trailing" secondItem="mKQ-hE-2rF" secondAttribute="trailing" constant="35" id="hFM-9S-rkh"/>
+                                                        <constraint firstAttribute="trailing" secondItem="mKQ-hE-2rF" secondAttribute="trailing" constant="15" id="hFM-9S-rkh"/>
                                                         <constraint firstAttribute="bottom" secondItem="hGr-xP-5Ma" secondAttribute="bottom" id="jIO-eZ-uoN"/>
                                                         <constraint firstItem="mKQ-hE-2rF" firstAttribute="leading" secondItem="t1H-Xy-QYY" secondAttribute="leading" constant="20" id="k1e-mG-xWi"/>
                                                         <constraint firstAttribute="trailing" secondItem="hGr-xP-5Ma" secondAttribute="trailing" id="mLo-VW-N91"/>
                                                         <constraint firstItem="hGr-xP-5Ma" firstAttribute="leading" secondItem="t1H-Xy-QYY" secondAttribute="leading" id="mu9-JH-DQv"/>
                                                         <constraint firstItem="TOS-Y6-uf0" firstAttribute="leading" secondItem="mKQ-hE-2rF" secondAttribute="leading" id="wGa-7J-KzB"/>
                                                         <constraint firstItem="qVU-3Z-6qj" firstAttribute="leading" secondItem="t1H-Xy-QYY" secondAttribute="leading" id="wdi-RD-HTD"/>
-                                                        <constraint firstItem="hGr-xP-5Ma" firstAttribute="top" secondItem="TOS-Y6-uf0" secondAttribute="bottom" constant="2" id="wfE-6C-izi"/>
+                                                        <constraint firstItem="hGr-xP-5Ma" firstAttribute="top" secondItem="TOS-Y6-uf0" secondAttribute="bottom" constant="5" id="wfE-6C-izi"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -978,7 +972,7 @@
                                         </prototypes>
                                     </tableView>
                                 </subviews>
-                                <color key="backgroundColor" red="0.26062870030000002" green="0.6807183027" blue="0.37879088519999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="aHN-rO-yaF" secondAttribute="trailing" id="K1D-Yb-Z81"/>
                                     <constraint firstAttribute="bottom" secondItem="aHN-rO-yaF" secondAttribute="bottom" id="KEI-GG-KAZ"/>
@@ -1049,7 +1043,7 @@
                                         <rect key="frame" x="20" y="12" width="15" height="15"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MESSAGES DETAILS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VfZ-Ob-Hth">
-                                        <rect key="frame" x="43" y="10" width="167" height="20.5"/>
+                                        <rect key="frame" x="43" y="9" width="167" height="21"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -1138,7 +1132,6 @@
         <image name="btn_back" width="50" height="50"/>
         <image name="btn_green3" width="145" height="40"/>
         <image name="default" width="500" height="500"/>
-        <image name="ic_arrow" width="10" height="10"/>
         <image name="ic_calendar" width="15" height="15"/>
         <image name="ic_dropdown" width="15" height="15"/>
         <image name="ic_logo_small" width="99" height="27"/>

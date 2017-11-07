@@ -61,7 +61,7 @@ class Part2VC: UIViewController {
             img_Photo.sd_setImage(with: URL(string: Exam?["image_2"] as! String), placeholderImage: nil, options: [.continueInBackground]) { (iamge, error, type, url) in
                 
                 self.circleTime.start(withSeconds: timeInitial)
-            }            
+            }
         }
         else
         {
@@ -101,14 +101,14 @@ class Part2VC: UIViewController {
         
         if Exam?["image_2"] as? String != nil
         {
-            let promt_1 = Exam?["promt2_1"] as? String
-            let promt_2 = Exam?["promt2_2"] as? String
-            let promt_3 = Exam?["promt2_3"] as? String
-            self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
-
+            guard let promt_1 = Exam?["promt2_1"] as? String else { return }
+            guard let promt_2 = Exam?["promt2_2"] as? String else { return }
+            guard let promt_3 = Exam?["promt2_3"] as? String else { return }
+            
+            self.alert_PromtQuestion(title: "Question", mess: promt_1 + "----------------\n" + promt_2 + "----------------\n" + promt_3)
+            
         }
     }
-    
     
     @IBAction func nextBtnTap(_ sender: Any) {
         
@@ -129,6 +129,66 @@ class Part2VC: UIViewController {
             self.navigationController?.pushViewController(part3_tempVC, animated: true)
         }
     }
+    
+    func onHandleUploadSuccessful(mess: String?)
+    {
+        let alert = UIAlertController(title: "Wodule", message: mess, preferredStyle: .alert)
+        let btnOK = UIAlertAction(title: "OK", style: .default) { (action) in
+            print("OK")
+            self.nextBtn.isHidden = false
+        }
+        
+        alert.addAction(btnOK)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func onHandleUploadError(mess: String?, audio2data: Data?)
+    {
+        let alert = UIAlertController(title: "Wodule", message: mess, preferredStyle: .alert)
+        let btnTryagain = UIAlertAction(title: "Try Again", style: .destructive) { (action) in
+            
+            print("Try again")
+            self.onHandleUploadExam(audio2data: audio2data)
+        }
+        
+        alert.addAction(btnTryagain)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func onHandleUploadExam(audio2data: Data?)
+    {
+        if self.presentedViewController != nil {
+            self.dismiss(animated: false, completion: nil)
+        }
+        self.loadingShowwithStatus(status: "Uploading your Exam.")
+        DispatchQueue.global(qos: .default).async {
+            ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2:audio2data, audiofile3: nil, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
+                
+                let message = result?["message"] as? String
+                
+                if status == true
+                {
+                    DispatchQueue.main.async(execute: {
+                        self.loadingHide()
+                        self.onHandleUploadSuccessful(mess: message)
+                        
+                    })
+                }
+                else if status == false
+                {
+                    DispatchQueue.main.async(execute: {
+                        self.loadingHide()
+                        self.onHandleUploadError(mess: message, audio2data: audio2data)
+                    })
+                }
+                else
+                {
+                    print("Uploading")
+                }
+            })
+        }
+    }
+    
     
 }
 
@@ -153,22 +213,12 @@ extension Part2VC: JWGCircleCounterDelegate
                 self.audio2_Data = try? Data(contentsOf: audioURL! as URL)
                 if self.Exam?["question_3"] as? String == nil && self.Exam?["image_3"] as? String == nil
                 {
-                    self.loadingShowwithStatus(status: "Uploading your Exam.")
-                    ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: nil, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
-                        if status!
-                        {
-                            DispatchQueue.main.async(execute: {
-                                self.loadingHide()
-                                self.nextBtn.isHidden = false
-                            })
-                        }
-                        
-                    })
+                    self.onHandleUploadExam(audio2data: self.audio2_Data)
                 }
                 else
                 {
                     self.nextBtn.isHidden = false
-                }                
+                }
             }
         })
         

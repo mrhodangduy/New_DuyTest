@@ -64,15 +64,19 @@ extension MessagesVC : UITableViewDataSource, UITableViewDelegate
         let item = messagesList[indexPath.row]
         
         cell.messageLabel.text = item["message"] as? String
-        cell.dateLabel.text = convertDay(DateString: item["creationDate"] as! String)
+        cell.dateLabel.text = convertDayMessage(DateString: item["creationDate"] as! String)
         
         if item["read"] as? String == ""
         {
-            cell.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+            cell.backgroundColor = #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 1)
+            cell.messageLabel.font = UIFont.boldSystemFont(ofSize: 17)
+            cell.dateLabel.font = UIFont.boldSystemFont(ofSize: 12)
         }
         else
         {
             cell.backgroundColor = .clear
+            cell.messageLabel.font = UIFont.systemFont(ofSize: 17)
+            cell.dateLabel.font = UIFont.systemFont(ofSize: 12)
         }
         
         return cell
@@ -83,25 +87,47 @@ extension MessagesVC : UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        self.loadingShow()
-        UserInfoAPI.readMessage(withToken: token!, identifier: messagesList[indexPath.row]["identifier"] as! Int) { (status:Bool, code:Int, results: NSDictionary?) in
-            
-            if status
-            {
-                DispatchQueue.main.async(execute: { 
-                    self.loadingHide()
-                    let messagedetailVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "messagedetailVC") as! MessageDetailsVC
-                    messagedetailVC.messageDetail = self.messagesList[indexPath.row]
-                    self.navigationController?.pushViewController(messagedetailVC, animated: true)
+        let item = messagesList[indexPath.row]
+        if item["read"] as? String == ""
+        {
+            self.loadingShow()
+            DispatchQueue.global(qos: .default).async {
+                UserInfoAPI.readMessage(withToken: self.token!, identifier: self.messagesList[indexPath.row]["identifier"] as! Int) { (status:Bool, code:Int, results: NSDictionary?) in
                     
-                })
+                    print(status,code,results as Any)
+                    
+                    if status
+                    {
+                        let messagedetailVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "messagedetailVC") as! MessageDetailsVC
+                        messagedetailVC.messageDetail = self.messagesList[indexPath.row]
+                        self.navigationController?.pushViewController(messagedetailVC, animated: true)
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            
+                        })
+                        
+                    }
+                    else
+                    {
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            
+                        })
+                    }
+                    
+                }
             }
-            else
-            {
-                self.loadingHide()
-            }
-            
+
         }
+        else
+        {
+            let messagedetailVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "messagedetailVC") as! MessageDetailsVC
+            messagedetailVC.messageDetail = item
+            self.navigationController?.pushViewController(messagedetailVC, animated: true)
+
+        }
+        
+        
     }
     
 }

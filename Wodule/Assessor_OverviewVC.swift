@@ -341,7 +341,7 @@ class Assessor_OverviewVC: UIViewController {
             let identifier = userDefault.integer(forKey: IDENTIFIER_KEY)
             
             ExamRecord.postGrade(withToken: token!, identifier: identifier, grade1: score_Part1!, comment1: comment_Part1!, grade2: score_Part2!, comment2: comment_Part2!, grade3: score_Part3, comment3: comment_Part3, grade4: score_Part4, comment4: comment_Part4, completion: { (status:Bool?, code:Int?, result:NSDictionary?) in
-                print(status, code , result)
+                print(status as Any, code as Any , result as Any)
                 
                 if status!
                 {

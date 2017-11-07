@@ -64,9 +64,7 @@ class Part4VC: UIViewController {
             img_Photo.sd_setImage(with: URL(string: Exam?["image_4"] as! String), placeholderImage: nil, options: [.continueInBackground]) { (iamge, error, type, url) in
                 
                 self.circleTime.start(withSeconds: timeInitial)
-                
-            }
-            
+            }            
         }
         else
         {
@@ -124,6 +122,62 @@ class Part4VC: UIViewController {
         self.navigationController?.pushViewController(endVC, animated: true)
     }
     
+    func onHandleUploadSuccessful(mess: String?)
+    {
+        let alert = UIAlertController(title: "Wodule", message: mess, preferredStyle: .alert)
+        let btnOK = UIAlertAction(title: "OK", style: .default) { (action) in
+            print("OK")
+            self.nextBtn.isHidden = false
+        }
+        
+        alert.addAction(btnOK)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func onHandleUploadError(mess: String?, audio4data: Data?)
+    {
+        let alert = UIAlertController(title: "Wodule", message: mess, preferredStyle: .alert)
+        let btnTryagain = UIAlertAction(title: "Try Again", style: .destructive) { (action) in
+            
+            print("Try again")
+            self.onHandleUploadExam(audio4data: audio4data)
+        }
+        
+        alert.addAction(btnTryagain)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func onHandleUploadExam(audio4data: Data?)
+    {
+        self.view.endEditing(true)
+        self.loadingShowwithStatus(status: "Uploading your Exam.")
+        DispatchQueue.global(qos: .default).async { 
+            ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: self.audio3_Data, audiofile4: audio4data, completion: { (status:Bool?, result:NSDictionary?) in
+                
+                let message = result?["message"] as? String
+
+                if status == true
+                {
+                    DispatchQueue.main.async(execute: {
+                        self.loadingHide()
+                        self.onHandleUploadSuccessful(mess: message)
+                    })
+                }
+                else if status == false
+                {
+                    DispatchQueue.main.async(execute: {
+                        self.loadingHide()
+                        self.onHandleUploadError(mess: message, audio4data: audio4data)
+                    })
+                }
+                else
+                {
+                    print("Uploading...")
+                }
+            })
+        }
+    }
+    
 }
 
 extension Part4VC: JWGCircleCounterDelegate
@@ -142,24 +196,11 @@ extension Part4VC: JWGCircleCounterDelegate
         }, completion: { (done) in
             self.recordingMess.text = "Time Out"
             self.stopRecord()
-            self.loadingShowwithStatus(status: "Uploading your Exam.")
             do
             {
-                
                 let data4 = try? Data(contentsOf: audioURL! as URL)
-                
-                ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: self.audio3_Data, audiofile4: data4, completion: { (status:Bool?, result:NSDictionary?) in
-                    
-                    if status!
-                    {
-                        DispatchQueue.main.async(execute: {
-                            self.loadingHide()
-                            self.nextBtn.isHidden = false
-                        })
-                    }
-                })
+                self.onHandleUploadExam(audio4data: data4)
             }
-            
         })
         
     }

@@ -752,7 +752,7 @@ struct AssesmentHistory
             if response.response?.statusCode == 200
             {
                 let json = response.result.value as? NSDictionary
-                print("JSON",json)
+                print("JSON",json as Any)
                 if let data = json?["data"] as? [NSDictionary]
                 {
                     print("DATA",data)
@@ -764,7 +764,7 @@ struct AssesmentHistory
                     }
                     else
                     {
-                        completion(true,response.response?.statusCode,nil, nil, 1)
+                        completion(true,response.response?.statusCode,nil, data, 1)
                     }
                     
                 }

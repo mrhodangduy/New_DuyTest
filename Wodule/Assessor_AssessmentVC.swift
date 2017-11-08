@@ -60,7 +60,7 @@ class Assessor_AssessmentVC: UIViewController {
                     }
                     self.totalPage = totalPage
                     DispatchQueue.main.async(execute: {
-                        self.dataTableView.reloadData()
+//                        self.dataTableView.reloadData()
                     })
                 }
                     
@@ -80,7 +80,7 @@ class Assessor_AssessmentVC: UIViewController {
                         if error.contains("Token")
                         {
                             self.loadingHide()
-                            self.onHandleTokenInvalidAlert(autoLogin: autologin)
+                            self.onHandleTokenInvalidAlert()
                         }
                     }
                 }

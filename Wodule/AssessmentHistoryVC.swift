@@ -32,17 +32,11 @@ class AssessmentHistoryVC: UIViewController {
         dataTableView.dataSource = self
         dataTableView.delegate = self
         
-        if Connectivity.isConnectedToInternet
-        {
-            self.onHandleInitData()
-        }
-        else
-        {
-            self.displayAlertNetWorkNotAvailable()
-        }
-        
+        self.onHandleInitData()
+
         
     }
+    
     func onHandleInitData()
     {
         currentpage = 1
@@ -53,6 +47,7 @@ class AssessmentHistoryVC: UIViewController {
             {
                 if results?.count != 0
                 {
+                    self.History.removeAll()
                     print("\n\nHISTORY LIST:--->\n",results as Any)
                     self.totalPage = totalpage
                     for result in results!
@@ -84,14 +79,14 @@ class AssessmentHistoryVC: UIViewController {
                     if error.contains("Token")
                     {
                         self.loadingHide()
-                        self.onHandleTokenInvalidAlert(autoLogin: autologin)
+                        self.onHandleTokenInvalidAlert()
                     }
                 }
                 
             }
             else
             {
-                print("\nERROR:---->",mess!)
+                print("\nERROR:---->",mess as Any)
                 DispatchQueue.main.async(execute: {
                     self.loadingHide()
                     self.dataTableView.reloadData()
@@ -105,6 +100,14 @@ class AssessmentHistoryVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if Connectivity.isConnectedToInternet
+        {
+            return
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
         NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleInitData), name: NSNotification.Name.available, object: nil)
     }
     deinit {

@@ -93,6 +93,11 @@
 			<key>orderHint</key>
 			<integer>12</integer>
 		</dict>
+		<key>ReachabilitySwift.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>16</integer>
+		</dict>
 		<key>SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -120,12 +125,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>04E68FFD82E3D706C040C2D9CEE07607</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>107A9565F9DF88517DFD3E28C05B2B96</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>2757DBC02FC92D1FAC83A6B4DABD9B13</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>434E938EE1BA97EF408D11170E474681</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>43BF1AE914F42B25B9DE064A2D04F449</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -151,6 +171,11 @@
 			<true/>
 		</dict>
 		<key>7335E9C9689F3B8A16F063A884748533</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8880587873835228012F7537FDA4A98A</key>
 		<dict>
 			<key>primary</key>
 			<true/>

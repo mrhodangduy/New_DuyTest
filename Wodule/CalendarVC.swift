@@ -109,7 +109,7 @@ class CalendarVC: UIViewController {
                     {
                         if error.contains("Token")
                         {
-                            self.onHandleTokenInvalidAlert(autoLogin: autologin)
+                            self.onHandleTokenInvalidAlert()
                         }
                     }
                     

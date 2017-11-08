@@ -142,7 +142,7 @@ extension MessagesVC : UITableViewDataSource, UITableViewDelegate
                                 if error.contains("Token")
                                 {
                                     DispatchQueue.main.async(execute: {
-                                        self.onHandleTokenInvalidAlert(autoLogin: autologin)
+                                        self.onHandleTokenInvalidAlert()
                                     })
                                 }
                             }

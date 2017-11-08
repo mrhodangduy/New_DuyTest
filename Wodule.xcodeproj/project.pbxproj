@@ -85,6 +85,7 @@
 		DAAD6B4D1F8530B700F45371 /* Assessor_Part3Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD6B4C1F8530B700F45371 /* Assessor_Part3Cell.swift */; };
 		DAAD6B4F1F8530C600F45371 /* Assessor_Part4Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD6B4E1F8530C600F45371 /* Assessor_Part4Cell.swift */; };
 		DAAD6B511F8530DD00F45371 /* Assessor_OverViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD6B501F8530DD00F45371 /* Assessor_OverViewCell.swift */; };
+		DAAF026F1FB355B900F08355 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAF026E1FB355B900F08355 /* MainNavigationController.swift */; };
 		EB3BF60C07214104201DE436 /* Pods_Wodule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE267463118FE2EB33379522 /* Pods_Wodule.framework */; };
 /* End PBXBuildFile section */
 
@@ -172,6 +173,7 @@
 		DAAD6B4C1F8530B700F45371 /* Assessor_Part3Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_Part3Cell.swift; sourceTree = "<group>"; };
 		DAAD6B4E1F8530C600F45371 /* Assessor_Part4Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_Part4Cell.swift; sourceTree = "<group>"; };
 		DAAD6B501F8530DD00F45371 /* Assessor_OverViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_OverViewCell.swift; sourceTree = "<group>"; };
+		DAAF026E1FB355B900F08355 /* MainNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		DE267463118FE2EB33379522 /* Pods_Wodule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wodule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF138C26099D0C0A9190BE19 /* Pods-Wodule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wodule.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Wodule/Pods-Wodule.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -251,6 +253,7 @@
 				63A36BF21F84A17A005857DE /* Login_Register */,
 				63A36BF41F84A1A5005857DE /* Assessor */,
 				63A36BF31F84A19B005857DE /* Examinee */,
+				DAAF026E1FB355B900F08355 /* MainNavigationController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -648,6 +651,7 @@
 				630335971F944BD5002CA356 /* Part3VC.swift in Sources */,
 				DA1620771F8D16200056D7D3 /* AudioRecorderManager.swift in Sources */,
 				DA7560971F83F85E008DB772 /* Instruction_GuideVC.swift in Sources */,
+				DAAF026F1FB355B900F08355 /* MainNavigationController.swift in Sources */,
 				63F1459D1F8721E500CD03BF /* Examinee_CategoriesCell.swift in Sources */,
 				DA7560951F83F84C008DB772 /* CalendarVC.swift in Sources */,
 				DA7517BC1F82923B00E96E56 /* ManageAPI.swift in Sources */,

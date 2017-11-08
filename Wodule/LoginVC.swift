@@ -30,7 +30,6 @@ class LoginVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        super.navigationController?.isNavigationBarHidden = true
         
         print(userDefault.object(forKey: TOKEN_STRING) as? String as Any)
         print(userDefault.object(forKey: SOCIALKEY) as? String as Any)
@@ -107,8 +106,12 @@ class LoginVC: UIViewController {
                                     userDefault.set(FACEBOOKLOGIN, forKey: SOCIALKEY)
                                     userDefault.synchronize()
                                     
-                                    self.navigationController?.pushViewController(assessor_homeVC, animated: true)
-                                }
+                                    let mainControler = MainNavigationController(rootViewController: assessor_homeVC)
+                                    let window = UIApplication.shared.delegate!.window!!
+                                    window.rootViewController = mainControler
+                                    window.makeKeyAndVisible()
+                                    
+                                    UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)                                }
                                 else if result!["type"] as? String == UserType.examinee.rawValue
                                 {
                                     let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
@@ -116,8 +119,12 @@ class LoginVC: UIViewController {
                                     examiner_homeVC.userInfomation = result
                                     userDefault.set(FACEBOOKLOGIN, forKey: SOCIALKEY)
                                     userDefault.synchronize()
-                                    self.navigationController?.pushViewController(examiner_homeVC, animated: true)
+                                    let mainControler = MainNavigationController(rootViewController: examiner_homeVC)
+                                    let window = UIApplication.shared.delegate!.window!!
+                                    window.rootViewController = mainControler
+                                    window.makeKeyAndVisible()
                                     
+                                    UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
                                 }
                                 else
                                 {
@@ -205,11 +212,14 @@ class LoginVC: UIViewController {
                                             let assessor_homeVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessor_homeVC") as! Assessor_HomeVC
                                             
                                             assessor_homeVC.userInfomation = result!
-                                            autologin = false
                                             userDefault.set(FACEBOOKLOGIN, forKey: SOCIALKEY)
                                             userDefault.synchronize()
-                                            self.navigationController?.pushViewController(assessor_homeVC, animated: true)
+                                            let mainControler = MainNavigationController(rootViewController: assessor_homeVC)
+                                            let window = UIApplication.shared.delegate!.window!!
+                                            window.rootViewController = mainControler
+                                            window.makeKeyAndVisible()
                                             
+                                            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
                                         }
                                         else
                                         {
@@ -217,11 +227,15 @@ class LoginVC: UIViewController {
                                             let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
                                             
                                             examiner_homeVC.userInfomation = result!
-                                            autologin = false
                                             userDefault.set(FACEBOOKLOGIN, forKey: SOCIALKEY)
                                             userDefault.synchronize()
                                             
-                                            self.navigationController?.pushViewController(examiner_homeVC, animated: true)
+                                            let mainControler = MainNavigationController(rootViewController: examiner_homeVC)
+                                            let window = UIApplication.shared.delegate!.window!!
+                                            window.rootViewController = mainControler
+                                            window.makeKeyAndVisible()
+                                            
+                                            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
                                         }
                                         DispatchQueue.main.async {
                                             self.loadingHide()
@@ -327,9 +341,12 @@ class LoginVC: UIViewController {
                                             }
                                             userDefault.set(INSTAGRAMLOGIN, forKey: SOCIALKEY)
                                             userDefault.synchronize()
-                                            autologin = false
-                                            self.navigationController?.pushViewController(assessor_homeVC, animated: true)
+                                            let mainControler = MainNavigationController(rootViewController: assessor_homeVC)
+                                            let window = UIApplication.shared.delegate!.window!!
+                                            window.rootViewController = mainControler
+                                            window.makeKeyAndVisible()
                                             
+                                            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
                                             DispatchQueue.main.async {
                                                 self.loadingHide()
                                             }
@@ -339,7 +356,6 @@ class LoginVC: UIViewController {
                                             let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
                                             
                                             examiner_homeVC.userInfomation = result
-                                            autologin = false
                                             if profile_picture != nil
                                             {
                                                 userDefault.set(profile_picture, forKey: SOCIALAVATAR)
@@ -347,8 +363,12 @@ class LoginVC: UIViewController {
                                             }
                                             userDefault.set(INSTAGRAMLOGIN, forKey: SOCIALKEY)
                                             userDefault.synchronize()
-                                            self.navigationController?.pushViewController(examiner_homeVC, animated: true)
+                                            let mainControler = MainNavigationController(rootViewController: examiner_homeVC)
+                                            let window = UIApplication.shared.delegate!.window!!
+                                            window.rootViewController = mainControler
+                                            window.makeKeyAndVisible()
                                             
+                                            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
                                             DispatchQueue.main.async {
                                                 self.loadingHide()
                                             }
@@ -454,17 +474,19 @@ class LoginVC: UIViewController {
                                                     userDefault.synchronize()
                                                 }
                                                 assessor_homeVC.socialAvatar = URL(string: avatarLink!)
-                                                autologin = false
                                                 userDefault.set(FACEBOOKLOGIN, forKey: SOCIALKEY)
                                                 userDefault.synchronize()
-                                                self.navigationController?.pushViewController(assessor_homeVC, animated: true)
+                                                let mainControler = MainNavigationController(rootViewController: assessor_homeVC)
+                                                let window = UIApplication.shared.delegate!.window!!
+                                                window.rootViewController = mainControler
+                                                window.makeKeyAndVisible()
                                                 
+                                                UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
                                             }
                                             else
                                             {
                                                 print(UserType.examinee.rawValue)
                                                 let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
-                                                autologin = false
                                                 examiner_homeVC.userInfomation = result!
                                                 if avatarLink != nil
                                                 {
@@ -474,8 +496,12 @@ class LoginVC: UIViewController {
                                                 userDefault.set(FACEBOOKLOGIN, forKey: SOCIALKEY)
                                                 userDefault.synchronize()
                                                 
-                                                self.navigationController?.pushViewController(examiner_homeVC, animated: true)
-                                            }
+                                                let mainControler = MainNavigationController(rootViewController: examiner_homeVC)
+                                                let window = UIApplication.shared.delegate!.window!!
+                                                window.rootViewController = mainControler
+                                                window.makeKeyAndVisible()
+                                                
+                                                UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)                                            }
                                             DispatchQueue.main.async {
                                                 self.loadingHide()
                                             }
@@ -565,6 +591,7 @@ class LoginVC: UIViewController {
                 if Connectivity.isConnectedToInternet
                 {
                     loadingShow()
+                    
                     DispatchQueue.global(qos: .default).async(execute: {
                         UserInfoAPI.LoginUser(username: self.tf_Username.text!, password: self.tf_Password.text!, completion: { (status) in
                             
@@ -581,17 +608,28 @@ class LoginVC: UIViewController {
                                     if userinfo!["type"] as? String == UserType.assessor.rawValue
                                     {
                                         let assessor_homeVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessor_homeVC") as! Assessor_HomeVC
-                                        autologin = false
                                         assessor_homeVC.userInfomation = userinfo!
-                                        self.navigationController?.pushViewController(assessor_homeVC, animated: true)
+                                        
+                                        let mainControler = MainNavigationController(rootViewController: assessor_homeVC)
+                                        let window = UIApplication.shared.delegate!.window!!
+                                        window.rootViewController = mainControler
+                                        window.makeKeyAndVisible()
+                                        
+                                        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                                        
+                                        
                                     }
                                     else
                                     {
                                         let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
                                         
                                         examiner_homeVC.userInfomation = userinfo!
-                                        autologin = false
-                                        self.navigationController?.pushViewController(examiner_homeVC, animated: true)
+                                        let mainControler = MainNavigationController(rootViewController: examiner_homeVC)
+                                        let window = UIApplication.shared.delegate!.window!!
+                                        window.rootViewController = mainControler
+                                        window.makeKeyAndVisible()
+                                        
+                                        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
                                     }
                                     print("-----> LOGIN SUCCESSFUL")
                                     DispatchQueue.main.async(execute: {

@@ -47,23 +47,29 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                             let assessor_homeVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessor_homeVC") as! Assessor_HomeVC
                             
                             assessor_homeVC.userInfomation = result
-                            autologin = false
                             userDefault.set(GOOGLELOGIN, forKey: SOCIALKEY)
                             userDefault.synchronize()
                             
-                            self.navigationController?.pushViewController(assessor_homeVC, animated: true)
-                        }
+                            let mainControler = MainNavigationController(rootViewController: assessor_homeVC)
+                            let window = UIApplication.shared.delegate!.window!!
+                            window.rootViewController = mainControler
+                            window.makeKeyAndVisible()
+                            
+                            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)                        }
                         else if result!["type"] as? String == UserType.examinee.rawValue
                         {
                             let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
                             
                             examiner_homeVC.userInfomation = result
-                            autologin = false
                             userDefault.set(GOOGLELOGIN, forKey: SOCIALKEY)
                             userDefault.synchronize()
                             
-                            self.navigationController?.pushViewController(examiner_homeVC, animated: true)
+                            let mainControler = MainNavigationController(rootViewController: examiner_homeVC)
+                            let window = UIApplication.shared.delegate!.window!!
+                            window.rootViewController = mainControler
+                            window.makeKeyAndVisible()
                             
+                            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
                         }
                         else
                         {
@@ -169,12 +175,15 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                                                 let assessor_homeVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessor_homeVC") as! Assessor_HomeVC
                                                 
                                                 assessor_homeVC.userInfomation = result!
-                                                autologin = false
                                                 userDefault.set(GOOGLELOGIN, forKey: SOCIALKEY)
                                                 userDefault.synchronize()
                                                 
-                                                self.navigationController?.pushViewController(assessor_homeVC, animated: true)
+                                                let mainControler = MainNavigationController(rootViewController: assessor_homeVC)
+                                                let window = UIApplication.shared.delegate!.window!!
+                                                window.rootViewController = mainControler
+                                                window.makeKeyAndVisible()
                                                 
+                                                UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
                                             }
                                             else
                                             {
@@ -182,12 +191,15 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                                                 let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
                                                 
                                                 examiner_homeVC.userInfomation = result!
-                                                autologin = false
                                                 userDefault.set(GOOGLELOGIN, forKey: SOCIALKEY)
                                                 userDefault.synchronize()
                                                 
-                                                self.navigationController?.pushViewController(examiner_homeVC, animated: true)
-                                            }
+                                                let mainControler = MainNavigationController(rootViewController: examiner_homeVC)
+                                                let window = UIApplication.shared.delegate!.window!!
+                                                window.rootViewController = mainControler
+                                                window.makeKeyAndVisible()
+                                                
+                                                UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)                                            }
                                             DispatchQueue.main.async {
                                                 self.loadingHide()
                                             }

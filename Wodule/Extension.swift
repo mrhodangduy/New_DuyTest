@@ -188,27 +188,19 @@ extension UIViewController
         }
     }
     
-    func onHandleTokenInvalidAlert(autoLogin: Bool)
+    func onHandleTokenInvalidAlert()
     {
         let alert = UIAlertController(title: "Wodule", message: "Your session has expired.\nPlease Login again.", preferredStyle: .alert)
         let btnOK = UIAlertAction(title: "OK", style: .default) { (action) in
             
-            if autoLogin
-            {
-                let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
-                self.navigationController?.pushViewController(loginVC, animated: false)
-
-            }
-            else
-            {
-                let viewControllers: [UIViewController] = self.navigationController!.viewControllers
-                for loginVC in viewControllers {
-                    if loginVC is LoginVC {
-                        self.navigationController!.popToViewController(loginVC, animated: false)
-                    }
-                }
-            }
-          
+            let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
+            let mainControler = MainNavigationController(rootViewController: loginVC)
+            let window = UIApplication.shared.delegate!.window!!
+            window.rootViewController = mainControler
+            window.makeKeyAndVisible()
+            
+            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+            
         }
         alert.addAction(btnOK)
         self.present(alert, animated: true, completion: nil)

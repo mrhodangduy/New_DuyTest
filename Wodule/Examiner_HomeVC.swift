@@ -37,7 +37,6 @@ class Examiner_HomeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("Autologin", autologin)
         
         if userDefault.object(forKey: SOCIALKEY) as? String != nil
         {
@@ -62,6 +61,7 @@ class Examiner_HomeVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         self.unreadLabel.isHidden = true
         if Connectivity.isConnectedToInternet
         {
@@ -84,7 +84,7 @@ class Examiner_HomeVC: UIViewController {
                     }
                     else if code == 401
                     {
-                        self.onHandleTokenInvalidAlert(autoLogin: autologin)
+                        self.onHandleTokenInvalidAlert()
                     }
 
                 })
@@ -278,16 +278,13 @@ class Examiner_HomeVC: UIViewController {
         
         let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
         
-        if autologin
-        {
-            self.navigationController?.pushViewController(loginVC, animated: false)
-            
-        }
-        else
-        {
-            self.navigationController?.popViewController(animated: false)
-        }
-        autologin = false
+        let mainControler = MainNavigationController(rootViewController: loginVC)
+        let window = UIApplication.shared.delegate!.window!!
+        window.rootViewController = mainControler
+        window.makeKeyAndVisible()
+        
+        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+        
         userDefault.removeObject(forKey: SOCIALKEY)
         userDefault.removeObject(forKey: SOCIALAVATAR)
         userDefault.removeObject(forKey: TOKEN_STRING)

@@ -18,21 +18,23 @@ class EndVC: UIViewController {
 
     @IBAction func backToHomeTap(_ sender: Any) {
         
-        let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+        guard let viewControllers: [UIViewController] = self.navigationController?.viewControllers else {return}
         for examinerVC in viewControllers {
             if examinerVC is Examiner_HomeVC {
                 self.navigationController!.popToViewController(examinerVC, animated: true)
+                break
             }
         }
-        
     }
     
     @IBAction func takeAnotherTap(_ sender: Any) {
         
-        let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+        guard let viewControllers: [UIViewController] = self.navigationController?.viewControllers else {return}
         for examinerVC in viewControllers {
             if examinerVC is Examiner_HomeVC {
                 self.navigationController!.popToViewController(examinerVC, animated: true)
+                break
+
             }
         }
         

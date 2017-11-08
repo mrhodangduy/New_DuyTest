@@ -340,8 +340,7 @@ struct UserInfoAPI
                         userDefault.set(token, forKey: TOKEN_STRING)
                         userDefault.synchronize()
                         
-                    }
-                    
+                    }                    
                 }
             }
             else
@@ -527,10 +526,12 @@ struct UserInfoAPI
         }
     }
     
-    static func getMessage(withToken token: String, completion: @escaping (_ status: Bool,_ code: Int,_ results:[NSDictionary]?,_ otalPage:Int?) -> ())
+    static func getMessage(completion: @escaping (_ status: Bool,_ code: Int,_ results:[NSDictionary]?,_ otalPage:Int?) -> ())
     {
         let url = URL(string: APIURL.messageURL)
+        let token = userDefault.object(forKey: TOKEN_STRING) as! String
         let httpHeader: HTTPHeaders = ["Authorization":"Bearer \(token)"]
+        print(token)
         
         Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
@@ -547,7 +548,11 @@ struct UserInfoAPI
                             completion(true, 200, data, total_pages)
 
                         }
-                                            }
+                        else
+                        {
+                            completion(true, 200, data, 1)
+                        }
+                    }
                 }
                 else
                 {
@@ -742,9 +747,9 @@ struct CategoriesExam
 struct AssesmentHistory
 {
     
-    static func getUserHistory(withToken token: String, userID: Int,page: Int, completion: @escaping (Bool?,_ code:Int?,AnyObject?,[NSDictionary]?,Int) -> ())
+    static func getUserHistory(type: String, withToken token: String, userID: Int,page: Int, completion: @escaping (Bool?,_ code:Int?,AnyObject?,[NSDictionary]?,Int) -> ())
     {
-        let url = URL(string: "http://wodule.io/api/users/\(userID)/records?page=\(page)")
+        let url = URL(string: "http://wodule.io/api/users/\(userID)/\(type)?page=\(page)")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
         Alamofire.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON { (response) in
@@ -773,11 +778,7 @@ struct AssesmentHistory
                     completion(false,response.response?.statusCode,response.result.value as? NSDictionary , nil, 1)
                 }
             }
-            else if response.response?.statusCode == 401
-            {
-                completion(false,response.response?.statusCode,response.result.value as? NSDictionary, nil, 1)
-                
-            }
+            
             else
             {
                 completion(false,response.response?.statusCode,response.result.value as? NSDictionary, nil, 1)
@@ -787,6 +788,8 @@ struct AssesmentHistory
         }
         
     }
+    
+    
 }
 
 

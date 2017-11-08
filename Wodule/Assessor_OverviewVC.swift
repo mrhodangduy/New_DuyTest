@@ -303,69 +303,76 @@ class Assessor_OverviewVC: UIViewController {
     
     @IBAction func submitTap(_ sender: Any) {
         
-        if self.currentAudioPlayer != nil
+        if Connectivity.isConnectedToInternet
         {
-            self.currentAudioPlayer?.stop()
-            self.currentAudioPlayer = nil
-        }
-        
-        let score_Part1 = userDefault.object(forKey: SCORE_PART1) as? Int
-        let score_Part2 = userDefault.object(forKey: SCORE_PART2) as? Int
-        let score_Part3 = userDefault.object(forKey: SCORE_PART3) as? Int
-        let score_Part4 = userDefault.object(forKey: SCORE_PART4) as? Int
-        let comment_Part1 = userDefault.object(forKey: COMMENT_PART1) as? String
-        let comment_Part2 = userDefault.object(forKey: COMMENT_PART2) as? String
-        let comment_Part3 = userDefault.object(forKey: COMMENT_PART3) as? String
-        let comment_Part4 = userDefault.object(forKey: COMMENT_PART4) as? String
-        
-        if score_Part1 == nil
-        {
-            self.alertMissingText(mess: "Part 1 must be assigned a score.", textField: nil)
-        }
-        else if score_Part2 == nil
-        {
-            self.alertMissingText(mess: "Part 2 must be assigned a score.", textField: nil)
-        }
-        else if score_Part3 == nil && numberOfQuestion > 2
-        {
-            self.alertMissingText(mess: "Part 3 must be assigned a score.", textField: nil)
-        }
-        else if score_Part4 == nil && numberOfQuestion > 3
-        {
-            self.alertMissingText(mess: "Part 4 must be assigned a score.", textField: nil)
+            if self.currentAudioPlayer != nil
+            {
+                self.currentAudioPlayer?.stop()
+                self.currentAudioPlayer = nil
+            }
+            
+            let score_Part1 = userDefault.object(forKey: SCORE_PART1) as? Int
+            let score_Part2 = userDefault.object(forKey: SCORE_PART2) as? Int
+            let score_Part3 = userDefault.object(forKey: SCORE_PART3) as? Int
+            let score_Part4 = userDefault.object(forKey: SCORE_PART4) as? Int
+            let comment_Part1 = userDefault.object(forKey: COMMENT_PART1) as? String
+            let comment_Part2 = userDefault.object(forKey: COMMENT_PART2) as? String
+            let comment_Part3 = userDefault.object(forKey: COMMENT_PART3) as? String
+            let comment_Part4 = userDefault.object(forKey: COMMENT_PART4) as? String
+            
+            if score_Part1 == nil
+            {
+                self.alertMissingText(mess: "Part 1 must be assigned a score.", textField: nil)
+            }
+            else if score_Part2 == nil
+            {
+                self.alertMissingText(mess: "Part 2 must be assigned a score.", textField: nil)
+            }
+            else if score_Part3 == nil && numberOfQuestion > 2
+            {
+                self.alertMissingText(mess: "Part 3 must be assigned a score.", textField: nil)
+            }
+            else if score_Part4 == nil && numberOfQuestion > 3
+            {
+                self.alertMissingText(mess: "Part 4 must be assigned a score.", textField: nil)
+            }
+            else
+            {
+                self.loadingShow()
+                let token = userDefault.object(forKey: TOKEN_STRING) as? String
+                let identifier = userDefault.integer(forKey: IDENTIFIER_KEY)
+                
+                ExamRecord.postGrade(withToken: token!, identifier: identifier, grade1: score_Part1!, comment1: comment_Part1!, grade2: score_Part2!, comment2: comment_Part2!, grade3: score_Part3, comment3: comment_Part3, grade4: score_Part4, comment4: comment_Part4, completion: { (status:Bool?, code:Int?, result:NSDictionary?) in
+                    print(status as Any, code as Any , result as Any)
+                    
+                    if status!
+                    {
+                        print("grade susscessful")
+                        self.loadingHide()
+                        let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
+                        self.navigationController?.pushViewController(accountingVC, animated: true)
+                        self.removeScoreObject()
+                    }
+                        
+                    else if code == 409
+                    {
+                        self.loadingHide()
+                        self.alertMissingText(mess: "The particular audio has already a grade.", textField: nil)
+                    }
+                    else
+                    {
+                        self.loadingHide()
+                        self.alertMissingText(mess: "Failed to grade exam.", textField: nil)
+                    }
+                })
+                
+            }
         }
         else
         {
-            self.loadingShow()
-            let token = userDefault.object(forKey: TOKEN_STRING) as? String
-            let identifier = userDefault.integer(forKey: IDENTIFIER_KEY)
-            
-            ExamRecord.postGrade(withToken: token!, identifier: identifier, grade1: score_Part1!, comment1: comment_Part1!, grade2: score_Part2!, comment2: comment_Part2!, grade3: score_Part3, comment3: comment_Part3, grade4: score_Part4, comment4: comment_Part4, completion: { (status:Bool?, code:Int?, result:NSDictionary?) in
-                print(status as Any, code as Any , result as Any)
-                
-                if status!
-                {
-                    print("grade susscessful")
-                    self.loadingHide()
-                    let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
-                    self.navigationController?.pushViewController(accountingVC, animated: true)
-                    self.removeScoreObject()
-                }
-                    
-                else if code == 409
-                {
-                    self.loadingHide()
-                    self.alertMissingText(mess: "The particular audio has already a grade.", textField: nil)
-                }
-                else
-                {
-                    self.loadingHide()
-                    self.alertMissingText(mess: "Failed to grade exam.", textField: nil)
-                }
-            })
-            
+            self.displayAlertNetWorkNotAvailable()
         }
-        
+                
     }
     
     func setupViewData(subView: UIView, height: CGFloat, width: CGFloat, x: CGFloat)

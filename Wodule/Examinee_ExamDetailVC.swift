@@ -349,6 +349,7 @@ class Examinee_ExamDetailVC: UIViewController {
             {
                 print("Cannot get data")
                 self.loadingHide()
+                self.displayAlertNetWorkNotAvailable()
             }
         }
 

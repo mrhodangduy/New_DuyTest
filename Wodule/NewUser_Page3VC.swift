@@ -239,58 +239,66 @@ class NewUser_Page3VC: UIViewController {
         case 5:
             self.alertMissingText(mess: "Code is required", textField: tf_Code)
         default:
-            getData()
-            createPara()
-            
-            self.loadingShow()
-            DispatchQueue.global().async {
-                UserInfoAPI.RegisterUser(para: self.para, completion: { (status) in
-                    
-                    if status
-                    {
-                        self.removeValueObject()
-                        let token = userDefault.object(forKey: TOKEN_STRING) as? String
-                        userDefault.set(self.username, forKey: USERNAMELOGIN)
-                        userDefault.set(self.password, forKey: PASSWORDLOGIN)
-                        userDefault.synchronize()
-
-                        UserInfoAPI.getUserInfo(withToken: token!, completion: { (userInfo) in
+            if Connectivity.isConnectedToInternet
+            {
+                getData()
+                createPara()
+                
+                self.loadingShow()
+                DispatchQueue.global().async {
+                    UserInfoAPI.RegisterUser(para: self.para, completion: { (status) in
+                        
+                        if status
+                        {
+                            self.removeValueObject()
+                            let token = userDefault.object(forKey: TOKEN_STRING) as? String
+                            userDefault.set(self.username, forKey: USERNAMELOGIN)
+                            userDefault.set(self.password, forKey: PASSWORDLOGIN)
+                            userDefault.synchronize()
                             
-                            if userInfo?["type"] as? String == UserType.assessor.rawValue
-                            {
-                                let assessor_homeVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessor_homeVC") as! Assessor_HomeVC
+                            UserInfoAPI.getUserInfo(withToken: token!, completion: { (userInfo) in
                                 
-                                assessor_homeVC.userInfomation = userInfo
+                                if userInfo?["type"] as? String == UserType.assessor.rawValue
+                                {
+                                    let assessor_homeVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessor_homeVC") as! Assessor_HomeVC
+                                    
+                                    assessor_homeVC.userInfomation = userInfo
+                                    
+                                    self.navigationController?.pushViewController(assessor_homeVC, animated: true)
+                                }
+                                else
+                                {
+                                    let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
+                                    
+                                    examiner_homeVC.userInfomation = userInfo
+                                    
+                                    self.navigationController?.pushViewController(examiner_homeVC, animated: true)
+                                }
                                 
-                                self.navigationController?.pushViewController(assessor_homeVC, animated: true)
-                            }
-                            else
-                            {
-                                let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
+                                DispatchQueue.main.async(execute: {
+                                    self.loadingHide()
+                                    print("REGISTER AND LOGIN SUCCESSFUL, REDIRECT TO:-->", (userInfo?["type"] as? String)?.uppercased() as Any)
+                                })
                                 
-                                examiner_homeVC.userInfomation = userInfo
-                                
-                                self.navigationController?.pushViewController(examiner_homeVC, animated: true)
-                            }
-                            
+                            })
+                        }
+                        else
+                        {
                             DispatchQueue.main.async(execute: {
                                 self.loadingHide()
-                                print("REGISTER AND LOGIN SUCCESSFUL, REDIRECT TO:-->", (userInfo?["type"] as? String)?.uppercased() as Any)
+                                self.alertMissingText(mess: userDefault.object(forKey: NOTIFI_ERROR) as! String, textField: nil)
                             })
-                            
-                        })
-                    }
-                    else
-                    {
-                        DispatchQueue.main.async(execute: {
-                            self.loadingHide()
-                            self.alertMissingText(mess: userDefault.object(forKey: NOTIFI_ERROR) as! String, textField: nil)
-                        })
-                    }
-                    
-                })
-            }
+                        }
+                        
+                    })
+                }
 
+            }
+            else
+            {
+                self.displayAlertNetWorkNotAvailable()
+            }
+            
             
         }
         

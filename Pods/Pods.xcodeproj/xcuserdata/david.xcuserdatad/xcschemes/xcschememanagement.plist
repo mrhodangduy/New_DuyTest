@@ -69,6 +69,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>ReachabilitySwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -87,12 +92,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>009107BDB6E3CF9525C974E82FE2D87E</key>
+		<key>04E68FFD82E3D706C040C2D9CEE07607</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>107A9565F9DF88517DFD3E28C05B2B96</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>434E938EE1BA97EF408D11170E474681</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>43BF1AE914F42B25B9DE064A2D04F449</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -122,12 +137,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>88E9EC28B8B46C3631E6B242B50F4442</key>
+		<key>8880587873835228012F7537FDA4A98A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>894429357ECFB0E5A214791C04F4CAB7</key>
+		<key>88E9EC28B8B46C3631E6B242B50F4442</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -148,11 +163,6 @@
 			<true/>
 		</dict>
 		<key>DDBCFDE490CDFDABF6F16A26F346932D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DF0E988A0F674B5F745D9E0CF0CB96E3</key>
 		<dict>
 			<key>primary</key>
 			<true/>

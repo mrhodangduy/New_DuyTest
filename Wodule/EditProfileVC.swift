@@ -132,9 +132,11 @@ class EditProfileVC: UIViewController {
             
         case GOOGLELOGIN, FACEBOOKLOGIN, INSTAGRAMLOGIN:
             
-            if userInfo["picture"] as! String == "http://wodule.io/user/default.jpg"
+            let avatar = userDefault.object(forKey: SOCIALAVATAR) as? String
+
+            if userInfo["picture"] as! String == "http://wodule.io/user/default.jpg" && avatar != nil
             {
-                img_Avatar.sd_setImageWithPreviousCachedImage(with: socialAvatar, placeholderImage: nil, options: [], progress: nil, completed: nil)
+                img_Avatar.sd_setImageWithPreviousCachedImage(with: URL(string: avatar!), placeholderImage: nil, options: [], progress: nil, completed: nil)
             }
             else
             {
@@ -467,62 +469,70 @@ class EditProfileVC: UIViewController {
         
         self.view.endEditing(true)
         
-        createPara_Header()
-        loadingShow()
-        DispatchQueue.global(qos: .default).async {
-            UserInfoAPI.updateUserProfile(para: self.para, header: self.header, picture: self.imgData, completion: { (status:Bool, code: Int?, result:NSDictionary?) in
-                
-                print(code!)
-                
-                if status
-                {
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NOTIFI_UPDATED), object: self)
-                    DispatchQueue.main.async(execute: {
-                        print("\n----> UPDATE SUCCESSFUL")
-                        self.loadingHide()
-                        self.navigationController?.popViewController(animated: true)
-                    })
-                }
-                else
-                {
+        if Connectivity.isConnectedToInternet
+        {
+            createPara_Header()
+            loadingShow()
+            DispatchQueue.global(qos: .default).async {
+                UserInfoAPI.updateUserProfile(para: self.para, header: self.header, picture: self.imgData, completion: { (status:Bool, code: Int?, result:NSDictionary?) in
                     
-                    if code! == 422
+                    print(code!)
+                    
+                    if status
+                    {
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: NOTIFI_UPDATED), object: self)
+                        DispatchQueue.main.async(execute: {
+                            print("\n----> UPDATE SUCCESSFUL")
+                            self.loadingHide()
+                            self.navigationController?.popViewController(animated: true)
+                        })
+                    }
+                    else
                     {
                         
-                        let errorMess = result?["error"] as? String
-                        if errorMess != nil
+                        if code! == 422
                         {
-                            DispatchQueue.main.async(execute: {
-                                print("UPDATE FAILED")
-                                self.loadingHide()
-                                self.alertMissingText(mess: "You need to specify a different value to update", textField: nil)
-                            })
-
+                            
+                            let errorMess = result?["error"] as? String
+                            if errorMess != nil
+                            {
+                                DispatchQueue.main.async(execute: {
+                                    print("UPDATE FAILED")
+                                    self.loadingHide()
+                                    self.alertMissingText(mess: "You need to specify a different value to update", textField: nil)
+                                })
+                                
+                            }
+                            else
+                            {
+                                DispatchQueue.main.async(execute: {
+                                    print("UPDATE FAILED")
+                                    self.loadingHide()
+                                    self.alertMissingText(mess: "The email has already been taken.", textField: self.tf_Email)
+                                })
+                            }
+                            
                         }
                         else
                         {
                             DispatchQueue.main.async(execute: {
                                 print("UPDATE FAILED")
                                 self.loadingHide()
-                                self.alertMissingText(mess: "The email has already been taken.", textField: self.tf_Email)
+                                self.alertMissingText(mess: "Failure while updating your profile. Try again.", textField: nil)
+                                self.perform(#selector(self.backBtnTap(_:)), with: self, afterDelay: 3)
                             })
                         }
                         
+                        
                     }
-                    else
-                    {
-                        DispatchQueue.main.async(execute: {
-                            print("UPDATE FAILED")
-                            self.loadingHide()
-                            self.alertMissingText(mess: "Failure while updating your profile. Try again.", textField: nil)
-                            self.perform(#selector(self.backBtnTap(_:)), with: self, afterDelay: 3)
-                        })
-                    }
-                    
-                    
-                }
-            })
+                })
+            }
         }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
+        
         
     }
     

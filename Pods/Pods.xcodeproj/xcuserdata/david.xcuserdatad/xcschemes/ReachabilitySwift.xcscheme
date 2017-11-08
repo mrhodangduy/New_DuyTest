@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43BF1AE914F42B25B9DE064A2D04F449"
-               BuildableName = "Pods_Wodule.framework"
-               BlueprintName = "Pods-Wodule"
+               BlueprintIdentifier = "8880587873835228012F7537FDA4A98A"
+               BuildableName = "Reachability.framework"
+               BlueprintName = "ReachabilitySwift"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "43BF1AE914F42B25B9DE064A2D04F449"
-            BuildableName = "Pods_Wodule.framework"
-            BlueprintName = "Pods-Wodule"
+            BlueprintIdentifier = "8880587873835228012F7537FDA4A98A"
+            BuildableName = "Reachability.framework"
+            BlueprintName = "ReachabilitySwift"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

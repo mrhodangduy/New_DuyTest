@@ -36,7 +36,7 @@ class AudioPlayerManager: NSObject {
                         self.currentPlayer?.play()
                         self.currentPlayer?.delegate = self
                         self.isPlaying = true
-                        print("TOTAL TIME:",self.currentPlayer?.duration)
+                        print("TOTAL TIME:",self.currentPlayer?.duration as Any)
                         print("Playing")
                     })
                 }
@@ -65,7 +65,7 @@ class AudioPlayerManager: NSObject {
         isPlaying = true
         self.currentPlayer?.play()
         print("Resume")
-        print(self.currentPlayer?.currentTime)
+        print(self.currentPlayer?.currentTime as Any)
 
     }
     

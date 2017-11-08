@@ -32,16 +32,19 @@ class Assessor_AssessmentVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getData()
-
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleInitData), name: NSNotification.Name.available, object: nil)
     }
     
-    func getData()
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func onHandleInitData()
     {
-        
         AllRecord.removeAll()
         currentpage = 1
         loadingShow()
-        DispatchQueue.global(qos: .default).async { 
+        DispatchQueue.global(qos: .default).async {
             
             ExamRecord.getAllRecord(page: self.currentpage, completion: { (result:[NSDictionary]?, totalPage:Int?,code:Int?, json:NSDictionary?) in
                 
@@ -60,7 +63,7 @@ class Assessor_AssessmentVC: UIViewController {
                         self.dataTableView.reloadData()
                     })
                 }
-                
+                    
                 else if json?["code"] as! Int == 429
                 {
                     
@@ -89,12 +92,22 @@ class Assessor_AssessmentVC: UIViewController {
                         self.dataTableView.reloadData()
                         self.loadingHide()
                     })
-
                 }
-                
             })
-            
         }
+    }
+    
+    func getData()
+    {
+        if Connectivity.isConnectedToInternet
+        {
+            self.onHandleInitData()
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
+        
     }
     
     @IBAction func backBtnTap(_ sender: Any) {
@@ -167,52 +180,59 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
     
     func loadMore(currentpage: Int)
     {
-        ExamRecord.getAllRecord(page: currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?,code: Int?, json: NSDictionary?) in
-            
-            if var data = result
-            {
-                data = data.filter { $0["status"] as! String == "pending" }
+        if Connectivity.isConnectedToInternet
+        {
+            ExamRecord.getAllRecord(page: currentpage, completion: { (result: [NSDictionary]?, totalPage: Int?,code: Int?, json: NSDictionary?) in
                 
-                if data.count > 0
+                if var data = result
                 {
-                    for item in data
+                    data = data.filter { $0["status"] as! String == "pending" }
+                    
+                    if data.count > 0
                     {
-                        self.AllRecord.append(item)
+                        for item in data
+                        {
+                            self.AllRecord.append(item)
+                            
+                        }
+                        DispatchQueue.main.async(execute: {
+                            self.dataTableView.reloadData()
+                            self.loadingHide()
+                            
+                        })
                         
                     }
-                    DispatchQueue.main.async(execute: {
-                        self.dataTableView.reloadData()
-                        self.loadingHide()
+                    else
+                    {
                         
-                    })
+                        print("Current page",self.currentpage)
+                        DispatchQueue.main.async(execute: {
+                            self.dataTableView.reloadData()
+                            self.loadingHide()
+                            
+                        })
+                    }
                     
+                }
+                else if json?["code"] as! Int == 429
+                {
+                    
+                    let errorMess = json?["error"] as? String
+                    DispatchQueue.main.async(execute: {
+                        self.loadingHide()
+                        self.alertMissingText(mess: "\(errorMess!)\n(Code:-\(json?["code"] as! Int)-)", textField: nil)
+                    })
                 }
                 else
                 {
-                    
-                    print("Current page",self.currentpage)
-                    DispatchQueue.main.async(execute: {
-                        self.dataTableView.reloadData()
-                        self.loadingHide()
-                        
-                    })
+                    print("ERROR:\n--->",json!)
                 }
-                
-            }
-            else if json?["code"] as! Int == 429
-            {
-                
-                let errorMess = json?["error"] as? String
-                DispatchQueue.main.async(execute: {
-                    self.loadingHide()
-                    self.alertMissingText(mess: "\(errorMess!)\n(Code:-\(json?["code"] as! Int)-)", textField: nil)
-                })
-            }
-            else
-            {
-                print("ERROR:\n--->",json!)
-            }
-        })
+            })
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
         
     }
     

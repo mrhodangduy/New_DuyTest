@@ -24,33 +24,37 @@ class Examinee_InstructionVC: UIViewController {
         circleView.circleColor = .white
 
         instroductionTextView.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
-
-        loadingShow()
-        Categories.getCategory { (status:Bool, results:NSDictionary?) in
-            
-            if status
-            {
-                if let result = results
+        if Connectivity.isConnectedToInternet
+        {
+            loadingShow()
+            Categories.getCategory { (status:Bool, results:NSDictionary?) in
+                
+                if status
                 {
-                    print("Result:", result)
-                    self.Exam = result
-                    DispatchQueue.main.async(execute: { 
-                        self.instroductionTextView.text = result["instruction"] as? String
-                        self.loadingHide()
-                    })
+                    if let result = results
+                    {
+                        print("Result:", result)
+                        self.Exam = result
+                        DispatchQueue.main.async(execute: {
+                            self.instroductionTextView.text = result["instruction"] as? String
+                            self.loadingHide()
+                        })
+                    }
                 }
+                else
+                {
+                    self.loadingHide()
+                    self.alertMissingText(mess: "Something went wrong", textField: nil)
+                    print(results as Any)
+                }
+                
             }
-            else
-            {
-                self.loadingHide()
-                self.alertMissingText(mess: "Something went wrong", textField: nil)
-                print(results as Any)
-            }
-            
         }
-        
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
 
-        // Do any additional setup after loading the view.
     }
     @IBAction func onClickNext(_ sender: Any) {
         
@@ -66,7 +70,6 @@ class Examinee_InstructionVC: UIViewController {
     @IBAction func onClickIncrease(_ sender: Any) {
         
         instroductionTextView.font = UIFont.systemFont(ofSize: (instroductionTextView.font?.pointSize)! + 1)
-
         
     }
     

@@ -111,22 +111,47 @@ class Part1VC: UIViewController {
         
         if Exam?["image_1"] as? String != nil
         {
-            let promt_1 = Exam?["promt1_1"] as? String
-            let promt_2 = Exam?["promt1_2"] as? String
-            let promt_3 = Exam?["promt1_3"] as? String
-            self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
+            let button = sender as! UIButton
+            switch button.tag {
+            case 1:
+                let promt_1 = Exam?["promt1_1"] as? String
+                self.alert_PromtQuestion(title: "", mess: promt_1)
+                button.setTitle("", for: .normal)
+                button.isEnabled = false
+            case 2:
+                let promt_2 = Exam?["promt1_2"] as? String
+                self.alert_PromtQuestion(title: "", mess: promt_2)
+                button.setTitle("", for: .normal)
+                button.isEnabled = false
+            case 3:
+                let promt_3 = Exam?["promt1_3"] as? String
+                self.alert_PromtQuestion(title: "", mess: promt_3)
+                button.setTitle("", for: .normal)
+                button.isEnabled = false
+            default:
+                return
+            }
         }
     }
     
     
     @IBAction func nextBtnTap(_ sender: Any) {
-        let part2VC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part2VC") as! Part2VC
         
-        part2VC.Exam = self.Exam
-        part2VC.examID = self.examID
-        part2VC.audio1_Data = self.audio1_Data
+        if Connectivity.isConnectedToInternet
+        {
+            let part2VC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part2VC") as! Part2VC
+            
+            part2VC.Exam = self.Exam
+            part2VC.examID = self.examID
+            part2VC.audio1_Data = self.audio1_Data
+            
+            self.navigationController?.pushViewController(part2VC, animated: true)
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
         
-        self.navigationController?.pushViewController(part2VC, animated: true)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

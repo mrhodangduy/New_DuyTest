@@ -39,7 +39,6 @@
 		630BD8C11F8237AB00B24CA5 /* Define.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630BD8C01F8237AB00B24CA5 /* Define.swift */; };
 		630BD8C51F8244A200B24CA5 /* NewUser2_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630BD8C41F8244A200B24CA5 /* NewUser2_TableViewCell.swift */; };
 		630BD8C71F82450600B24CA5 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630BD8C61F82450600B24CA5 /* Extension.swift */; };
-		630C092C1FB162E600DCF7A5 /* iOSDevCenters+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630C092B1FB162E600DCF7A5 /* iOSDevCenters+GIF.swift */; };
 		630C09451FB194CB00DCF7A5 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630C09431FB194CB00DCF7A5 /* EventCell.swift */; };
 		630C09461FB194CB00DCF7A5 /* EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630C09441FB194CB00DCF7A5 /* EventCell.xib */; };
 		6347CF081F8C6819009D717D /* InstagramLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6347CF071F8C6819009D717D /* InstagramLoginVC.swift */; };
@@ -57,6 +56,7 @@
 		63C57BF01FA2F1F600DC3B40 /* Assessor_Part2VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C57BED1FA2F1F600DC3B40 /* Assessor_Part2VC.swift */; };
 		63C57BF11FA2F1F600DC3B40 /* Assessor_Part3VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C57BEE1FA2F1F600DC3B40 /* Assessor_Part3VC.swift */; };
 		63C57BF21FA2F1F600DC3B40 /* Assessor_Part4VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C57BEF1FA2F1F600DC3B40 /* Assessor_Part4VC.swift */; };
+		63CCBE211FB2A5F8005FD1AE /* ReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CCBE201FB2A5F8005FD1AE /* ReachabilityManager.swift */; };
 		63D0FCCD1F85F2D6006347B0 /* EditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D0FCCC1F85F2D6006347B0 /* EditProfileVC.swift */; };
 		63D0FCCF1F85F2F8006347B0 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63D0FCCE1F85F2F8006347B0 /* Profile.storyboard */; };
 		63D0FCD21F861AC2006347B0 /* EditProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D0FCD11F861AC2006347B0 /* EditProfileCell.swift */; };
@@ -123,7 +123,6 @@
 		630BD8C01F8237AB00B24CA5 /* Define.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Define.swift; sourceTree = "<group>"; };
 		630BD8C41F8244A200B24CA5 /* NewUser2_TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewUser2_TableViewCell.swift; sourceTree = "<group>"; };
 		630BD8C61F82450600B24CA5 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
-		630C092B1FB162E600DCF7A5 /* iOSDevCenters+GIF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "iOSDevCenters+GIF.swift"; sourceTree = "<group>"; };
 		630C09431FB194CB00DCF7A5 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		630C09441FB194CB00DCF7A5 /* EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
 		6347CF071F8C6819009D717D /* InstagramLoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstagramLoginVC.swift; sourceTree = "<group>"; };
@@ -141,6 +140,7 @@
 		63C57BED1FA2F1F600DC3B40 /* Assessor_Part2VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_Part2VC.swift; sourceTree = "<group>"; };
 		63C57BEE1FA2F1F600DC3B40 /* Assessor_Part3VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_Part3VC.swift; sourceTree = "<group>"; };
 		63C57BEF1FA2F1F600DC3B40 /* Assessor_Part4VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_Part4VC.swift; sourceTree = "<group>"; };
+		63CCBE201FB2A5F8005FD1AE /* ReachabilityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityManager.swift; sourceTree = "<group>"; };
 		63D0FCCC1F85F2D6006347B0 /* EditProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileVC.swift; sourceTree = "<group>"; };
 		63D0FCCE1F85F2F8006347B0 /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		63D0FCD11F861AC2006347B0 /* EditProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileCell.swift; sourceTree = "<group>"; };
@@ -232,7 +232,6 @@
 				630BD8911F81DC8700B24CA5 /* TextFieldMaxLength.swift */,
 				630BD8921F81DC8700B24CA5 /* UIButtonX.swift */,
 				630BD8931F81DC8700B24CA5 /* UIImageViewX.swift */,
-				630C092B1FB162E600DCF7A5 /* iOSDevCenters+GIF.swift */,
 				630BD8941F81DC8700B24CA5 /* UILabelX.swift */,
 				630BD8951F81DC8700B24CA5 /* UISliderX.swift */,
 				630BD8961F81DC8700B24CA5 /* UITextFieldX.swift */,
@@ -279,6 +278,7 @@
 				630335981F9472F1002CA356 /* AudioPlayerManager.swift */,
 				63F145A41F8772E900CD03BF /* Wodule-Bridging-Header.h */,
 				63D6FB581F9F447900E7985D /* ManageAPI_Accounting.swift */,
+				63CCBE201FB2A5F8005FD1AE /* ReachabilityManager.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -554,6 +554,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/JWGCircleCounter/JWGCircleCounter.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 			);
@@ -571,6 +572,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JWGCircleCounter.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 			);
@@ -607,7 +609,6 @@
 				63A36C021F84CEE4005857DE /* Assessor_AssessmentVC.swift in Sources */,
 				63A36BF61F84A1DA005857DE /* Assessor_GradeVC.swift in Sources */,
 				63F43A561FA72B080070DEDD /* SplashScreenVC.swift in Sources */,
-				630C092C1FB162E600DCF7A5 /* iOSDevCenters+GIF.swift in Sources */,
 				DAAD6B491F85309600F45371 /* Assessor_Part1Cell.swift in Sources */,
 				63C57BF01FA2F1F600DC3B40 /* Assessor_Part2VC.swift in Sources */,
 				630BD8B51F821D8000B24CA5 /* ForgotPasswordVC.swift in Sources */,
@@ -630,6 +631,7 @@
 				630BD8A21F81DC8700B24CA5 /* UIViewAnchorPoint.swift in Sources */,
 				DAAD6B4B1F8530A500F45371 /* Assessor_Part2Cell.swift in Sources */,
 				630C09451FB194CB00DCF7A5 /* EventCell.swift in Sources */,
+				63CCBE211FB2A5F8005FD1AE /* ReachabilityManager.swift in Sources */,
 				630335991F9472F1002CA356 /* AudioPlayerManager.swift in Sources */,
 				63C57BF21FA2F1F600DC3B40 /* Assessor_Part4VC.swift in Sources */,
 				630BD89F1F81DC8700B24CA5 /* UILabelX.swift in Sources */,

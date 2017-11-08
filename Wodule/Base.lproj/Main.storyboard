@@ -1890,32 +1890,28 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loading.gif" translatesAutoresizingMaskIntoConstraints="NO" id="axG-82-c5w">
-                                <rect key="frame" x="143" y="387" width="35" height="35"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="35" id="B1v-eu-Ooq"/>
-                                    <constraint firstAttribute="height" constant="35" id="y8r-jh-otb"/>
-                                </constraints>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fetching your account infomation..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fc3-ca-r5m">
-                                <rect key="frame" x="53" y="432" width="214" height="16"/>
+                                <rect key="frame" x="53" y="441" width="214" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="qrw-nG-2X9">
+                                <rect key="frame" x="142" y="396" width="37" height="37"/>
+                                <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="fc3-ca-r5m" firstAttribute="top" secondItem="axG-82-c5w" secondAttribute="bottom" constant="10" id="Ego-TR-h7u"/>
-                            <constraint firstItem="fc3-ca-r5m" firstAttribute="centerX" secondItem="axG-82-c5w" secondAttribute="centerX" id="EwX-HQ-vbg"/>
-                            <constraint firstItem="axG-82-c5w" firstAttribute="centerX" secondItem="0eJ-sa-UQc" secondAttribute="centerX" id="SUm-gJ-FdR"/>
-                            <constraint firstItem="axG-82-c5w" firstAttribute="centerY" secondItem="0eJ-sa-UQc" secondAttribute="centerY" constant="120" id="anF-Bq-M3R"/>
+                            <constraint firstItem="fc3-ca-r5m" firstAttribute="top" secondItem="qrw-nG-2X9" secondAttribute="bottom" constant="8" id="5jV-gR-nYH"/>
+                            <constraint firstItem="fc3-ca-r5m" firstAttribute="centerX" secondItem="qrw-nG-2X9" secondAttribute="centerX" id="KZQ-xc-vmM"/>
+                            <constraint firstItem="qrw-nG-2X9" firstAttribute="centerY" secondItem="0eJ-sa-UQc" secondAttribute="centerY" constant="130" id="P6c-SP-2gN"/>
+                            <constraint firstItem="qrw-nG-2X9" firstAttribute="centerX" secondItem="0eJ-sa-UQc" secondAttribute="centerX" id="QLe-av-9Pg"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="tuz-JT-dXj"/>
                     <connections>
-                        <outlet property="loadingImageView" destination="axG-82-c5w" id="H9o-XH-rXg"/>
+                        <outlet property="loadingIndicator" destination="qrw-nG-2X9" id="9rJ-DE-pwp"/>
                         <outlet property="notifiLabel" destination="fc3-ca-r5m" id="71C-aP-BlS"/>
                     </connections>
                 </viewController>
@@ -1961,7 +1957,6 @@
         <image name="ic_newuser" width="15" height="15"/>
         <image name="ic_tick" width="15" height="15"/>
         <image name="line_login" width="193" height="6"/>
-        <image name="loading.gif" width="100" height="100"/>
         <image name="splash_ip6" width="750" height="1334"/>
     </resources>
 </document>

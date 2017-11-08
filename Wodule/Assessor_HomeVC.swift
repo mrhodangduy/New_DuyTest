@@ -39,7 +39,6 @@ class Assessor_HomeVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.unreadLabel.isHidden = true
         
         if userDefault.object(forKey: SOCIALKEY) as? String != nil
         {
@@ -62,27 +61,41 @@ class Assessor_HomeVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.loadingShow()
-        DispatchQueue.global(qos: .background).async { 
-            UserInfoAPI.getMessage(withToken: self.token!) { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
-                
-                if status
-                {
-                    self.messagesList = results!
-                    self.messagesList = self.messagesList.filter({$0["read"] as? String == ""})
-                    self.unreadLabel.text = "\(self.messagesList.count)"
-                    self.unreadLabel.isHidden = false
-                    DispatchQueue.main.async(execute: {
-                        self.loadingHide()
-                        print(self.messagesList)
-                        
-                    })
-                }
-                else
-                {
-                    self.loadingHide()
-                }
+        self.unreadLabel.isHidden = true
+        if Connectivity.isConnectedToInternet
+        {
+            DispatchQueue.global(qos: .background).async {
+                UserInfoAPI.getMessage(completion: { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
+                    if status
+                    {
+                        self.messagesList.removeAll()
+                        self.messagesList = results!
+                        self.messagesList = self.messagesList.filter({$0["read"] as? String == ""})
+                        DispatchQueue.main.async(execute: {
+                            self.unreadLabel.text = "\(self.messagesList.count)"
+                            if self.messagesList.count > 0
+                            {
+                                self.unreadLabel.isHidden = false
+                                
+                            }
+                            print(self.messagesList)
+                            
+                        })
+                    }
+                    else if code == 401
+                    {
+                        self.onHandleTokenInvalidAlert(autoLogin: autologin)
+                    }
+                    else
+                    {
+                    }
+                })
+           
             }
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
         }
         
     }
@@ -101,9 +114,11 @@ class Assessor_HomeVC: UIViewController {
             
         case GOOGLELOGIN,FACEBOOKLOGIN, INSTAGRAMLOGIN:
             
-            if userInfomation["picture"] as! String == "http://wodule.io/user/default.jpg"
+            let avatar = userDefault.object(forKey: SOCIALAVATAR) as? String
+
+            if userInfomation["picture"] as! String == "http://wodule.io/user/default.jpg" && avatar != nil
             {
-                img_Avatar.sd_setImage(with: socialAvatar, placeholderImage: nil, options: SDWebImageOptions.continueInBackground, completed: nil)
+                img_Avatar.sd_setImage(with: URL(string: avatar!), placeholderImage: nil, options: SDWebImageOptions.continueInBackground, completed: nil)
             }
             else
             {
@@ -143,69 +158,121 @@ class Assessor_HomeVC: UIViewController {
     
     func loadNewData()
     {
-        loadingShow()
-        DispatchQueue.global(qos: .default).async {
-            UserInfoAPI.getUserInfo(withToken: self.token!, completion: { (users) in
-                
-                self.userInfomation = users!
-                DispatchQueue.main.async(execute: {
-                    self.asignDataInView()
-                    self.loadingHide()
-                    print("\nCURRENT USER INFO AFTER UPDATED: ------>\n",self.userInfomation)
+        if Connectivity.isConnectedToInternet
+        {
+            loadingShow()
+            DispatchQueue.global(qos: .default).async {
+                UserInfoAPI.getUserInfo(withToken: self.token!, completion: { (users) in
+                    
+                    self.userInfomation = users!
+                    DispatchQueue.main.async(execute: {
+                        self.asignDataInView()
+                        self.loadingHide()
+                        print("\nCURRENT USER INFO AFTER UPDATED: ------>\n",self.userInfomation)
+                        
+                    })
                     
                 })
-                
-            })
+            }
+ 
         }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
+        
     }
     
     @IBAction func assessmentHistoryTap(_ sender: Any) {
-        
+        if Connectivity.isConnectedToInternet
+        {
+            let assessmenthistory = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessmenthistoryVC") as! AssessmentHistoryVC
+            assessmenthistory.type = "grades"
+            assessmenthistory.userID = userInfomation["id"] as? Int
+            self.navigationController?.pushViewController(assessmenthistory, animated: true)
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
         
     }
     
     @IBAction func accountingTap(_ sender: Any) {
+        if Connectivity.isConnectedToInternet
+        {
+            let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
+            self.navigationController?.pushViewController(accountingVC, animated: true)
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
         
-        let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
-        self.navigationController?.pushViewController(accountingVC, animated: true)
         
     }
     
     @IBAction func calendarTap(_ sender: Any) {
+        if Connectivity.isConnectedToInternet
+        {
+            let calendarVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "calendarVC") as! CalendarVC
+            self.navigationController?.pushViewController(calendarVC, animated: true)        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
         
-        let calendarVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "calendarVC") as! CalendarVC
-        self.navigationController?.pushViewController(calendarVC, animated: true)
-        
-//        let calendarVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "calendarVC") as! Assessor_CalendarVC
-//        self.navigationController?.pushViewController(calendarVC, animated: true)
         
     }
     @IBAction func startAssessmentTap(_ sender: Any) {
         
-        let allrecordVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "allrecordVC") as! Assessor_AssessmentVC
+        if Connectivity.isConnectedToInternet
+        {
+            let allrecordVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "allrecordVC") as! Assessor_AssessmentVC
+            self.navigationController?.pushViewController(allrecordVC, animated: true)
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
         
-        self.navigationController?.pushViewController(allrecordVC, animated: true)
 
         
     }
     
     @IBAction func onClickMessage(_ sender: Any) {
         
-        let messageVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "messageVC") as! MessagesVC
-        self.navigationController?.pushViewController(messageVC, animated: true)
+        if Connectivity.isConnectedToInternet
+        {
+            let messageVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "messageVC") as! MessagesVC
+            self.navigationController?.pushViewController(messageVC, animated: true)
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
+        
 
     }
     
     
     @IBAction func editProfile(_ sender: Any) {
         
-        let editprofileVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "editprofileVC") as! EditProfileVC
+        if Connectivity.isConnectedToInternet
+        {
+            let editprofileVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "editprofileVC") as! EditProfileVC
+            
+            editprofileVC.socialAvatar = self.socialAvatar
+            editprofileVC.socialIdentifier = self.socialIdentifier
+            editprofileVC.userInfo = self.userInfomation
+            
+            self.navigationController?.pushViewController(editprofileVC, animated: true)
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
         
-        editprofileVC.socialAvatar = self.socialAvatar
-        editprofileVC.socialIdentifier = self.socialIdentifier
-        editprofileVC.userInfo = self.userInfomation
-        
-        self.navigationController?.pushViewController(editprofileVC, animated: true)
     }
     @IBAction func onClickLogOut(_ sender: Any) {
         
@@ -253,6 +320,7 @@ class Assessor_HomeVC: UIViewController {
         autologin = false
         userDefault.removeObject(forKey: TOKEN_STRING)
         userDefault.removeObject(forKey: SOCIALKEY)
+        userDefault.removeObject(forKey: SOCIALAVATAR)
         userDefault.removeObject(forKey: USERNAMELOGIN)
         userDefault.removeObject(forKey: PASSWORDLOGIN)
         AppDelegate.share.removeAllValueObject()

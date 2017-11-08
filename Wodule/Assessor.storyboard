@@ -385,7 +385,7 @@
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sGi-Al-hFV" customClass="UILabelX" customModule="Wodule" customModuleProvider="target">
                                 <rect key="frame" x="251" y="28" width="18" height="18"/>
-                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="04K-Qi-DnR"/>
                                     <constraint firstAttribute="width" constant="18" id="u2q-xr-hQG"/>
@@ -987,7 +987,8 @@
                                                             <constraint firstAttribute="width" constant="30" id="Qyx-RX-JZj"/>
                                                             <constraint firstAttribute="height" constant="30" id="lrA-aN-9Fn"/>
                                                         </constraints>
-                                                        <state key="normal">
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <state key="normal" title="?">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -1019,7 +1020,8 @@
                                                             <constraint firstAttribute="height" constant="30" id="ous-6y-o8M"/>
                                                             <constraint firstAttribute="width" constant="30" id="qDf-Mr-IUx"/>
                                                         </constraints>
-                                                        <state key="normal">
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <state key="normal" title="?">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -1053,6 +1055,11 @@
                                             <constraint firstAttribute="trailing" secondItem="jWk-x9-uft" secondAttribute="trailing" id="zJJ-fX-dch"/>
                                             <constraint firstItem="4mN-Ea-ajO" firstAttribute="top" secondItem="X4P-rh-Jcq" secondAttribute="top" id="zRs-vW-ybZ"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="subviews">
+                                                <exclude reference="4mN-Ea-ajO"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RVt-sI-0Dz" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="320" height="338"/>
@@ -2433,7 +2440,8 @@
                                                             <constraint firstAttribute="height" constant="30" id="D3o-o0-ogq"/>
                                                             <constraint firstAttribute="width" constant="30" id="i5y-vh-U2g"/>
                                                         </constraints>
-                                                        <state key="normal">
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <state key="normal" title="?">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -2465,7 +2473,8 @@
                                                             <constraint firstAttribute="width" constant="30" id="7ev-b6-vpz"/>
                                                             <constraint firstAttribute="height" constant="30" id="iAs-ld-xxX"/>
                                                         </constraints>
-                                                        <state key="normal">
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <state key="normal" title="?">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -2499,6 +2508,11 @@
                                             <constraint firstItem="KvT-me-v1j" firstAttribute="centerY" secondItem="P9c-yP-mOy" secondAttribute="centerY" id="gWk-cx-ub4"/>
                                             <constraint firstItem="hV1-Ny-uZt" firstAttribute="leading" secondItem="P9c-yP-mOy" secondAttribute="leading" constant="15" id="sqM-Um-0Us"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="subviews">
+                                                <exclude reference="P3a-dF-GDq"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ceG-NR-DfA" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="320" height="338"/>
@@ -2880,7 +2894,8 @@
                                                             <constraint firstAttribute="height" constant="30" id="ABa-al-RxH"/>
                                                             <constraint firstAttribute="width" constant="30" id="BzX-9K-1Bv"/>
                                                         </constraints>
-                                                        <state key="normal">
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <state key="normal" title="?">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -2912,7 +2927,8 @@
                                                             <constraint firstAttribute="height" constant="30" id="OaJ-sB-GlU"/>
                                                             <constraint firstAttribute="width" constant="30" id="wxg-Ph-ndA"/>
                                                         </constraints>
-                                                        <state key="normal">
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <state key="normal" title="?">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -2946,6 +2962,11 @@
                                             <constraint firstAttribute="trailing" secondItem="P9Y-hV-Eem" secondAttribute="trailing" id="czt-3B-Zux"/>
                                             <constraint firstItem="FeI-AI-0c3" firstAttribute="centerY" secondItem="eQ2-ps-v0D" secondAttribute="centerY" id="eHq-Hm-vaE"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="subviews">
+                                                <exclude reference="P9Y-hV-Eem"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ccq-yn-lUk" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="320" height="338"/>
@@ -3325,7 +3346,8 @@
                                                             <constraint firstAttribute="height" constant="30" id="CGf-Hj-dHy"/>
                                                             <constraint firstAttribute="width" constant="30" id="ujl-8r-zUc"/>
                                                         </constraints>
-                                                        <state key="normal">
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <state key="normal" title="?">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -3357,7 +3379,8 @@
                                                             <constraint firstAttribute="width" constant="30" id="6Ms-IP-ki3"/>
                                                             <constraint firstAttribute="height" constant="30" id="Y1R-PP-ZDO"/>
                                                         </constraints>
-                                                        <state key="normal">
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <state key="normal" title="?">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -3391,6 +3414,11 @@
                                             <constraint firstAttribute="trailing" secondItem="vT8-a5-g1C" secondAttribute="trailing" id="uVW-DA-NXK"/>
                                             <constraint firstAttribute="bottom" secondItem="vT8-a5-g1C" secondAttribute="bottom" id="y8V-bQ-PSJ"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="subviews">
+                                                <exclude reference="vT8-a5-g1C"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0eK-Q3-A2s" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="320" height="338"/>

@@ -27,9 +27,28 @@ class MessagesVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if Connectivity.isConnectedToInternet
+        {
+            self.onHandleInitData()
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleInitData), name: NSNotification.Name.available, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+ 
+    
+    func onHandleInitData()
+    {
+        self.messagesList.removeAll()
         self.loadingShow()
-        UserInfoAPI.getMessage(withToken: self.token!) { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
-            
+        UserInfoAPI.getMessage(completion: { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
             if status
             {
                 self.messagesList = results!
@@ -39,7 +58,13 @@ class MessagesVC: UIViewController {
                     print(self.messagesList)
                 })
             }
-        }
+            else
+            {
+                self.loadingHide()
+            }
+            
+        })
+
     }
 
     @IBAction func onClickBack(_ sender: Any) {
@@ -88,43 +113,65 @@ extension MessagesVC : UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = messagesList[indexPath.row]
-        if item["read"] as? String == ""
+        if Connectivity.isConnectedToInternet
         {
-            self.loadingShow()
-            DispatchQueue.global(qos: .default).async {
-                UserInfoAPI.readMessage(withToken: self.token!, identifier: self.messagesList[indexPath.row]["identifier"] as! Int) { (status:Bool, code:Int, results: NSDictionary?) in
-                    
-                    print(status,code,results as Any)
-                    
-                    if status
-                    {
-                        let messagedetailVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "messagedetailVC") as! MessageDetailsVC
-                        messagedetailVC.messageDetail = self.messagesList[indexPath.row]
-                        self.navigationController?.pushViewController(messagedetailVC, animated: true)
-                        DispatchQueue.main.async(execute: {
-                            self.loadingHide()
+            if item["read"] as? String == ""
+            {
+                self.loadingShow()
+                DispatchQueue.global(qos: .default).async {
+                    UserInfoAPI.readMessage(withToken: self.token!, identifier: self.messagesList[indexPath.row]["identifier"] as! Int) { (status:Bool, code:Int, results: NSDictionary?) in
+                        
+                        print(status,code,results as Any)
+                        
+                        if status
+                        {
+                            let messagedetailVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "messagedetailVC") as! MessageDetailsVC
+                            messagedetailVC.messageDetail = self.messagesList[indexPath.row]
+                            self.navigationController?.pushViewController(messagedetailVC, animated: true)
+                            DispatchQueue.main.async(execute: {
+                                self.loadingHide()
+                                
+                            })
                             
-                        })
+                        }
+                        else if code == 401
+                        {
+                            self.loadingHide()
+                            if let error = results?["error"] as? String
+                            {
+                                if error.contains("Token")
+                                {
+                                    DispatchQueue.main.async(execute: {
+                                        self.onHandleTokenInvalidAlert(autoLogin: autologin)
+                                    })
+                                }
+                            }
+                            
+                        }
+                        else
+                        {
+                            DispatchQueue.main.async(execute: {
+                                self.loadingHide()
+                                
+                            })
+                        }
                         
                     }
-                    else
-                    {
-                        DispatchQueue.main.async(execute: {
-                            self.loadingHide()
-                            
-                        })
-                    }
-                    
                 }
+                
+            }
+            else
+            {
+                let messagedetailVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "messagedetailVC") as! MessageDetailsVC
+                messagedetailVC.messageDetail = item
+                self.navigationController?.pushViewController(messagedetailVC, animated: true)
+                
             }
 
         }
         else
         {
-            let messagedetailVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "messagedetailVC") as! MessageDetailsVC
-            messagedetailVC.messageDetail = item
-            self.navigationController?.pushViewController(messagedetailVC, animated: true)
-
+            self.displayAlertNetWorkNotAvailable()
         }
         
         

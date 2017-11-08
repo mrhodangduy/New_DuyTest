@@ -24,9 +24,9 @@ class Assessor_CalendarVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
     }
+    
 
     @IBAction func backBtnTap(_ sender: Any) {
         

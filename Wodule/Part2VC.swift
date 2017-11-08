@@ -75,6 +75,11 @@ class Part2VC: UIViewController {
             
         }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleUploadAfterConnectAgain), name: NSNotification.Name.available, object: nil)
+        
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -101,33 +106,56 @@ class Part2VC: UIViewController {
         
         if Exam?["image_2"] as? String != nil
         {
-            guard let promt_1 = Exam?["promt2_1"] as? String else { return }
-            guard let promt_2 = Exam?["promt2_2"] as? String else { return }
-            guard let promt_3 = Exam?["promt2_3"] as? String else { return }
-            
-            self.alert_PromtQuestion(title: "Question", mess: promt_1 + "----------------\n" + promt_2 + "----------------\n" + promt_3)
+            let button = sender as! UIButton
+            switch button.tag {
+            case 1:
+                let promt_1 = Exam?["promt2_1"] as? String
+                self.alert_PromtQuestion(title: "", mess: promt_1)
+                button.setTitle("", for: .normal)
+                button.isEnabled = false
+            case 2:
+                let promt_2 = Exam?["promt2_2"] as? String
+                self.alert_PromtQuestion(title: "", mess: promt_2)
+                button.setTitle("", for: .normal)
+                button.isEnabled = false
+            case 3:
+                let promt_3 = Exam?["promt2_3"] as? String
+                self.alert_PromtQuestion(title: "", mess: promt_3)
+                button.setTitle("", for: .normal)
+                button.isEnabled = false
+            default:
+                return
+            }
             
         }
     }
     
     @IBAction func nextBtnTap(_ sender: Any) {
         
-        if Exam?["question_3"] as? String == nil && Exam?["image_3"] as? String == nil
+        if Connectivity.isConnectedToInternet
         {
-            let endVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "endassessmentVC") as! EndVC
-            self.navigationController?.pushViewController(endVC, animated: true)
-        }
+            if Exam?["question_3"] as? String == nil && Exam?["image_3"] as? String == nil
+            {
+                let endVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "endassessmentVC") as! EndVC
+                self.navigationController?.pushViewController(endVC, animated: true)
+            }
+            else
+            {
+                let part3_tempVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part3_tempVC") as! Part3VC
+                
+                part3_tempVC.Exam = self.Exam
+                part3_tempVC.examID = self.examID
+                part3_tempVC.audio1_Data = self.audio1_Data
+                part3_tempVC.audio2_Data = self.audio2_Data
+                
+                self.navigationController?.pushViewController(part3_tempVC, animated: true)
+            }        }
         else
         {
-            let part3_tempVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part3_tempVC") as! Part3VC
-            
-            part3_tempVC.Exam = self.Exam
-            part3_tempVC.examID = self.examID
-            part3_tempVC.audio1_Data = self.audio1_Data
-            part3_tempVC.audio2_Data = self.audio2_Data
-            
-            self.navigationController?.pushViewController(part3_tempVC, animated: true)
+            self.displayAlertNetWorkNotAvailable()
         }
+        
+
     }
     
     func onHandleUploadSuccessful(mess: String?)
@@ -135,7 +163,6 @@ class Part2VC: UIViewController {
         let alert = UIAlertController(title: "Wodule", message: mess, preferredStyle: .alert)
         let btnOK = UIAlertAction(title: "OK", style: .default) { (action) in
             print("OK")
-            self.nextBtn.isHidden = false
         }
         
         alert.addAction(btnOK)
@@ -155,14 +182,57 @@ class Part2VC: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func onHandleUploadExam(audio2data: Data?)
+    
+    
+    @objc func onHandleUploadExam(audio2data: Data?)
     {
         if self.presentedViewController != nil {
             self.dismiss(animated: false, completion: nil)
         }
+        if Connectivity.isConnectedToInternet
+        {
+            self.loadingShowwithStatus(status: "Uploading...")
+            DispatchQueue.global(qos: .default).async {
+                ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2:audio2data, audiofile3: nil, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
+                    
+                    let message = result?["message"] as? String
+                    
+                    if status == true
+                    {
+                        self.nextBtn.isHidden = false
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            self.onHandleUploadSuccessful(mess: message)
+                            
+                        })
+                    }
+                    else if status == false
+                    {
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            self.onHandleUploadError(mess: message, audio2data: audio2data)
+                        })
+                    }
+                    else
+                    {
+                        print("Uploading")
+                    }
+                })
+            }
+
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
+        
+    }
+    
+    func onHandleUploadAfterConnectAgain()
+    {
         self.loadingShowwithStatus(status: "Uploading your Exam.")
         DispatchQueue.global(qos: .default).async {
-            ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2:audio2data, audiofile3: nil, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
+            ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2:self.audio2_Data, audiofile3: nil, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
                 
                 let message = result?["message"] as? String
                 
@@ -178,7 +248,7 @@ class Part2VC: UIViewController {
                 {
                     DispatchQueue.main.async(execute: {
                         self.loadingHide()
-                        self.onHandleUploadError(mess: message, audio2data: audio2data)
+                        self.onHandleUploadError(mess: message, audio2data: self.audio2_Data)
                     })
                 }
                 else
@@ -187,6 +257,7 @@ class Part2VC: UIViewController {
                 }
             })
         }
+
     }
     
     

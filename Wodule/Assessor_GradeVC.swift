@@ -42,34 +42,43 @@ class Assessor_GradeVC: UIViewController {
     
     func onHandleSetupAudio()
     {
-        currentPlayer = AVAudioPlayer()
-        let url = URL(string: Exam["audio_1"] as! String)
-        play_pauseBtn.isHidden = true
-        self.loadingShow()
-        DispatchQueue.global(qos: .background).async {
-            do
-            {
-                self.data = try Data(contentsOf: url!)
-                do {
-                    self.currentPlayer = try AVAudioPlayer(data: self.data!)
-                    DispatchQueue.main.async(execute: {
-                        self.currentPlayer?.play()
-                        self.currentPlayer?.pause()
-                        self.currentPlayer?.delegate = self
-                        self.loadingHide()
-                        self.play_pauseBtn.isHidden = false
-                        print("TOTAL TIME:",self.currentPlayer?.duration as Any)
-                    })
+        if Connectivity.isConnectedToInternet
+        {
+            currentPlayer = AVAudioPlayer()
+            let url = URL(string: Exam["audio_1"] as! String)
+            play_pauseBtn.isHidden = true
+            self.loadingShow()
+            DispatchQueue.global(qos: .background).async {
+                do
+                {
+                    self.data = try Data(contentsOf: url!)
+                    do {
+                        self.currentPlayer = try AVAudioPlayer(data: self.data!)
+                        DispatchQueue.main.async(execute: {
+                            self.currentPlayer?.play()
+                            self.currentPlayer?.pause()
+                            self.currentPlayer?.delegate = self
+                            self.loadingHide()
+                            self.play_pauseBtn.isHidden = false
+                            print("TOTAL TIME:",self.currentPlayer?.duration as Any)
+                        })
+                    }
+                    catch
+                    {
+                        print("cannot play")
+                    }
                 }
                 catch
                 {
-                    print("cannot play")
+                    print("Cannot get data")
                 }
             }
-            catch
-            {
-                print("Cannot get data")
-            }
+            
+        }
+        else
+        {
+            play_pauseBtn.isHidden = true
+            self.displayAlertNetWorkNotAvailable()
         }
     }
     

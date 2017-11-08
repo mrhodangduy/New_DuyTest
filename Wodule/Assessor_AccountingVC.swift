@@ -27,7 +27,24 @@ class Assessor_AccountingVC: UIViewController {
         totalLBL.isHidden = true
         balanceLBL.isHidden = true
         availabelLBL.isHidden = true
+        if Connectivity.isConnectedToInternet
+        {
+            self.onHandleInitData()
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleInitData), name: NSNotification.Name.available, object: nil)
         
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    
+    func onHandleInitData()
+    {
         self.loadingShow()
         ManageAPI_Accounting.getAccounting(witkToken: token!) { (status: Bool,code:Int?, result:NSDictionary?) in
             
@@ -63,8 +80,7 @@ class Assessor_AccountingVC: UIViewController {
             
             
         }
-        
-        // Do any additional setup after loading the view.
+
     }
     
     func onHandleAssignData()
@@ -111,10 +127,12 @@ class Assessor_AccountingVC: UIViewController {
     
     @IBAction func backtoHomeTap(_ sender: Any) {
         
-        let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+        guard let viewControllers: [UIViewController] = self.navigationController?.viewControllers else {return}
+        print(viewControllers)
         for assessor_homeVC in viewControllers {
             if assessor_homeVC is Assessor_HomeVC {
                 self.navigationController!.popToViewController(assessor_homeVC, animated: true)
+                break
             }
         }
         

@@ -29,7 +29,7 @@ class Part4VC: UIViewController {
     var audio1_Data: Data?
     var audio2_Data: Data?
     var audio3_Data: Data?
-
+    var audio4_Data: Data?
     
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
     
@@ -78,6 +78,8 @@ class Part4VC: UIViewController {
             
         }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleUploadAfterConnectAgain), name: NSNotification.Name.available, object: nil)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,7 +91,6 @@ class Part4VC: UIViewController {
         tv_Data.isScrollEnabled = true
         
     }
-
     @IBAction func decreaseSizeTap(_ sender: Any) {
         
         tv_Data.decreaseFontSize()
@@ -106,10 +107,27 @@ class Part4VC: UIViewController {
         
         if Exam?["image_4"] as? String != nil
         {
-            let promt_1 = Exam?["promt4_1"] as? String
-            let promt_2 = Exam?["promt4_2"] as? String
-            let promt_3 = Exam?["promt4_3"] as? String
-            self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
+            let button = sender as! UIButton
+            switch button.tag {
+            case 1:
+                let promt_1 = Exam?["promt4_1"] as? String
+                self.alert_PromtQuestion(title: "", mess: promt_1)
+                button.setTitle("", for: .normal)
+                button.isEnabled = false
+            case 2:
+                let promt_2 = Exam?["promt4_2"] as? String
+                self.alert_PromtQuestion(title: "", mess: promt_2)
+                button.setTitle("", for: .normal)
+                button.isEnabled = false
+            case 3:
+                let promt_3 = Exam?["promt4_3"] as? String
+                self.alert_PromtQuestion(title: "", mess: promt_3)
+                button.setTitle("", for: .normal)
+                button.isEnabled = false
+            default:
+                return
+            }
+
         }
         
         
@@ -149,13 +167,28 @@ class Part4VC: UIViewController {
     
     func onHandleUploadExam(audio4data: Data?)
     {
-        self.view.endEditing(true)
-        self.loadingShowwithStatus(status: "Uploading your Exam.")
-        DispatchQueue.global(qos: .default).async { 
-            ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: self.audio3_Data, audiofile4: audio4data, completion: { (status:Bool?, result:NSDictionary?) in
+        
+        if self.presentedViewController != nil {
+            self.dismiss(animated: false, completion: nil)
+        }
+        if Connectivity.isConnectedToInternet
+        {
+            self.onHandleUploadAfterConnectAgain()
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
+    }
+    
+    func onHandleUploadAfterConnectAgain()
+    {
+        self.loadingShowwithStatus(status: "Uploading...")
+        DispatchQueue.global(qos: .default).async {
+            ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: self.audio3_Data, audiofile4: self.audio4_Data, completion: { (status:Bool?, result:NSDictionary?) in
                 
                 let message = result?["message"] as? String
-
+                
                 if status == true
                 {
                     DispatchQueue.main.async(execute: {
@@ -167,7 +200,7 @@ class Part4VC: UIViewController {
                 {
                     DispatchQueue.main.async(execute: {
                         self.loadingHide()
-                        self.onHandleUploadError(mess: message, audio4data: audio4data)
+                        self.onHandleUploadError(mess: message, audio4data: self.audio4_Data)
                     })
                 }
                 else
@@ -177,7 +210,6 @@ class Part4VC: UIViewController {
             })
         }
     }
-    
 }
 
 extension Part4VC: JWGCircleCounterDelegate
@@ -198,8 +230,8 @@ extension Part4VC: JWGCircleCounterDelegate
             self.stopRecord()
             do
             {
-                let data4 = try? Data(contentsOf: audioURL! as URL)
-                self.onHandleUploadExam(audio4data: data4)
+                self.audio4_Data = try? Data(contentsOf: audioURL! as URL)
+                self.onHandleUploadExam(audio4data: self.audio4_Data)
             }
         })
         

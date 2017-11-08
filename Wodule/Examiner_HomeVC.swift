@@ -11,6 +11,7 @@ import SDWebImage
 import FBSDKLoginKit
 import FacebookLogin
 import SVProgressHUD
+import Reachability
 
 class Examiner_HomeVC: UIViewController {
     
@@ -37,7 +38,6 @@ class Examiner_HomeVC: UIViewController {
         super.viewDidLoad()
         
         print("Autologin", autologin)
-        self.unreadLabel.isHidden = true
         
         if userDefault.object(forKey: SOCIALKEY) as? String != nil
         {
@@ -53,8 +53,6 @@ class Examiner_HomeVC: UIViewController {
         
         asignDataInView()
         
-        
-        
         userDefault.set(userInfomation["id"] as! Int, forKey: USERID_STRING)
         userDefault.synchronize()
         
@@ -64,31 +62,42 @@ class Examiner_HomeVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.loadingShow()
-        DispatchQueue.global(qos: .background).async { 
-            UserInfoAPI.getMessage(withToken: self.token!) { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
-                
-                if status
-                {
-                    self.messagesList = results!
-                    self.messagesList = self.messagesList.filter({$0["read"] as? String == ""})
-                    self.unreadLabel.text = "\(self.messagesList.count)"
-                    self.unreadLabel.isHidden = false
-                    DispatchQueue.main.async(execute: {
-                        self.loadingHide()
-                        print(self.messagesList)
-                        
-                    })
-                }
-                else
-                {
-                    self.loadingHide()
-                }
-            }
-        }
+        self.unreadLabel.isHidden = true
+        if Connectivity.isConnectedToInternet
+        {
+            DispatchQueue.global(qos: .default).async {
+                UserInfoAPI.getMessage(completion: { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
+                    if status
+                    {
+                        self.messagesList.removeAll()
+                        self.messagesList = results!
+                        self.messagesList = self.messagesList.filter({$0["read"] as? String == ""})
+                        DispatchQueue.main.async(execute: {
+                            self.unreadLabel.text = "\(self.messagesList.count)"
+                            if self.messagesList.count > 0
+                            {
+                                self.unreadLabel.isHidden = false
+                            }
+                            print(self.messagesList)
+                            
+                        })
+                    }
+                    else if code == 401
+                    {
+                        self.onHandleTokenInvalidAlert(autoLogin: autologin)
+                    }
 
+                })
+                
+            }
+        
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
     }
-    
+   
     func asignDataInView()
     {        
         
@@ -101,25 +110,22 @@ class Examiner_HomeVC: UIViewController {
 
         switch socialIdentifier {
         case GOOGLELOGIN,FACEBOOKLOGIN,INSTAGRAMLOGIN:
+            let avatar = userDefault.object(forKey: SOCIALAVATAR) as? String
             
-            if userInfomation["picture"] as! String == "http://wodule.io/user/default.jpg"
+            if userInfomation["picture"] as! String == "http://wodule.io/user/default.jpg" && avatar != nil
             {
-                img_Avatar.sd_setImage(with: socialAvatar, placeholderImage: nil, options: SDWebImageOptions.continueInBackground, completed: nil)
+                img_Avatar.sd_setImage(with: URL(string: avatar!), placeholderImage: nil, options: SDWebImageOptions.continueInBackground, completed: nil)
             }
             else
             {
                 img_Avatar.sd_setImage(with: URL(string: userInfomation["picture"] as! String), placeholderImage: nil, options: SDWebImageOptions.continueInBackground, completed: nil)
             }
             
-        case INSTAGRAMLOGIN:
-            print("INSTAGRAM LOGIN")
-            
         case NORMALLOGIN:
             img_Avatar.sd_setImage(with: URL(string: userInfomation["picture"] as! String), placeholderImage: nil, options: SDWebImageOptions.continueInBackground, completed: nil)
         default:
             return
         }
-        
         
         if userInfomation["ln_first"] as? String == "Yes"
         {
@@ -141,28 +147,35 @@ class Examiner_HomeVC: UIViewController {
         {
             lbl_Age.text = nil
         }
-        
-        
     }
     
     func loadNewData()
     {
-        loadingShow()
-        DispatchQueue.global(qos: .default).async {
-            UserInfoAPI.getUserInfo(withToken: self.token!, completion: { (users) in
-                
-                self.userInfomation = users!
-                DispatchQueue.main.async(execute: {
+        if Connectivity.isConnectedToInternet
+        {
+            loadingShow()
+            DispatchQueue.global(qos: .default).async {
+                UserInfoAPI.getUserInfo(withToken: self.token!, completion: { (users) in
                     
-                    self.asignDataInView()
-                    self.loadingHide()
-                    
-                    print("\nCURRENT USER INFO AFTER UPDATED:\n------>",self.userInfomation)
+                    self.userInfomation = users!
+                    DispatchQueue.main.async(execute: {
+                        
+                        self.asignDataInView()
+                        self.loadingHide()
+                        
+                        print("\nCURRENT USER INFO AFTER UPDATED:\n------>",self.userInfomation)
+                        
+                    })
                     
                 })
-                
-            })
+            }
+
         }
+        else
+        {
+//            self.displayAlertNetWorkNotAvailable()
+        }
+        
     }
     
     @IBAction func onClickMessage(_ sender: Any) {
@@ -187,25 +200,48 @@ class Examiner_HomeVC: UIViewController {
     
     @IBAction func assessmentHistoryTap(_ sender: Any) {
         
-        let assessmenthistory = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessmenthistoryVC") as! AssessmentHistoryVC
+        if Connectivity.isConnectedToInternet
+        {
+            let assessmenthistory = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessmenthistoryVC") as! AssessmentHistoryVC
+            
+            assessmenthistory.type = "records"
+            assessmenthistory.userID = userInfomation["id"] as? Int
+            
+            self.navigationController?.pushViewController(assessmenthistory, animated: true)
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
         
-        assessmenthistory.userID = userInfomation["id"] as? Int
-        
-        self.navigationController?.pushViewController(assessmenthistory, animated: true)
         
     }
     
     @IBAction func calendarTap(_ sender: Any) {
+        if Connectivity.isConnectedToInternet
+        {
+            let calendarVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "calendarVC") as! CalendarVC
+            self.navigationController?.pushViewController(calendarVC, animated: true)
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
         
-        let calendarVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "calendarVC") as! CalendarVC
-        self.navigationController?.pushViewController(calendarVC, animated: true)
         
     }
     
     @IBAction func startAssessmentTap(_ sender: Any) {
+        if Connectivity.isConnectedToInternet
+        {
+            let instruction_guideVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "instruction_guideVC") as! Instruction_GuideVC
+            self.navigationController?.pushViewController(instruction_guideVC, animated: true)
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
         
-        let instruction_guideVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "instruction_guideVC") as! Instruction_GuideVC
-        self.navigationController?.pushViewController(instruction_guideVC, animated: true)
     }
     
     @IBAction func onClickLogOut(_ sender: Any) {
@@ -250,10 +286,10 @@ class Examiner_HomeVC: UIViewController {
         else
         {
             self.navigationController?.popViewController(animated: false)
-            
         }
         autologin = false
         userDefault.removeObject(forKey: SOCIALKEY)
+        userDefault.removeObject(forKey: SOCIALAVATAR)
         userDefault.removeObject(forKey: TOKEN_STRING)
         AppDelegate.share.removeAllValueObject()
         userDefault.removeObject(forKey: USERNAMELOGIN)
@@ -263,6 +299,8 @@ class Examiner_HomeVC: UIViewController {
     }
     
 }
+
+
 
 
 

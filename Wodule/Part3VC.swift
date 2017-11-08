@@ -106,10 +106,27 @@
             
             if Exam?["image_3"] as? String != nil
             {
-                let promt_1 = Exam?["promt3_1"] as? String
-                let promt_2 = Exam?["promt3_2"] as? String
-                let promt_3 = Exam?["promt3_3"] as? String
-                self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
+                let button = sender as! UIButton
+                switch button.tag {
+                case 1:
+                    let promt_1 = Exam?["promt3_1"] as? String
+                    self.alert_PromtQuestion(title: "", mess: promt_1)
+                    button.setTitle("", for: .normal)
+                    button.isEnabled = false
+                case 2:
+                    let promt_2 = Exam?["promt3_2"] as? String
+                    self.alert_PromtQuestion(title: "", mess: promt_2)
+                    button.setTitle("", for: .normal)
+                    button.isEnabled = false
+                case 3:
+                    let promt_3 = Exam?["promt3_3"] as? String
+                    self.alert_PromtQuestion(title: "", mess: promt_3)
+                    button.setTitle("", for: .normal)
+                    button.isEnabled = false
+                default:
+                    return
+                }
+
             }
             
         }
@@ -117,22 +134,31 @@
         
         @IBAction func nextBtnTap(_ sender: Any) {
             
-            if Exam?["question_4"] as? String == nil && Exam?["image_4"] as? String == nil
+            if Connectivity.isConnectedToInternet
             {
-                let endVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "endassessmentVC") as! EndVC
-                self.navigationController?.pushViewController(endVC, animated: true)
+                if Exam?["question_4"] as? String == nil && Exam?["image_4"] as? String == nil
+                {
+                    let endVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "endassessmentVC") as! EndVC
+                    self.navigationController?.pushViewController(endVC, animated: true)
+                }
+                else
+                {
+                    let part4_tempVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part4_tempVC") as! Part4VC
+                    
+                    part4_tempVC.Exam = self.Exam
+                    part4_tempVC.examID = self.examID
+                    part4_tempVC.audio1_Data = self.audio1_Data
+                    part4_tempVC.audio2_Data = self.audio2_Data
+                    part4_tempVC.audio3_Data = self.audio3_Data
+                    
+                    self.navigationController?.pushViewController(part4_tempVC, animated: true)
+                }
+                
+            
             }
             else
             {
-                let part4_tempVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part4_tempVC") as! Part4VC
-                
-                part4_tempVC.Exam = self.Exam
-                part4_tempVC.examID = self.examID
-                part4_tempVC.audio1_Data = self.audio1_Data
-                part4_tempVC.audio2_Data = self.audio2_Data
-                part4_tempVC.audio3_Data = self.audio3_Data
-                
-                self.navigationController?.pushViewController(part4_tempVC, animated: true)
+                self.displayAlertNetWorkNotAvailable()
             }
             
         }

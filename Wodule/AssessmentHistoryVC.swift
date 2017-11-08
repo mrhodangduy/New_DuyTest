@@ -17,6 +17,7 @@ class AssessmentHistoryVC: UIViewController {
     var userID:Int!
     var currentpage:Int!
     var totalPage:Int!
+    var type:String?
     
     
     @IBOutlet weak var dataTableView: UITableView!
@@ -31,10 +32,22 @@ class AssessmentHistoryVC: UIViewController {
         dataTableView.dataSource = self
         dataTableView.delegate = self
         
-        currentpage = 1
+        if Connectivity.isConnectedToInternet
+        {
+            self.onHandleInitData()
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
         
+        
+    }
+    func onHandleInitData()
+    {
+        currentpage = 1
         loadingShow()
-        AssesmentHistory.getUserHistory(withToken: token!, userID: userID, page: currentpage) { (status,code,mess, results, totalpage) in
+        AssesmentHistory.getUserHistory(type: type!, withToken: token!, userID: userID, page: currentpage) { (status,code,mess, results, totalpage) in
             
             if status!
             {
@@ -74,7 +87,7 @@ class AssessmentHistoryVC: UIViewController {
                         self.onHandleTokenInvalidAlert(autoLogin: autologin)
                     }
                 }
-
+                
             }
             else
             {
@@ -88,8 +101,14 @@ class AssessmentHistoryVC: UIViewController {
             }
             
         }
-        
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleInitData), name: NSNotification.Name.available, object: nil)
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     
@@ -166,7 +185,7 @@ extension AssessmentHistoryVC: UITableViewDataSource,UITableViewDelegate
     
     func loadmore(page:Int)
     {
-        AssesmentHistory.getUserHistory(withToken: token!, userID: userID, page: page) { (status,code, data, results, totolPage) in
+        AssesmentHistory.getUserHistory(type: type!, withToken: token!, userID: userID, page: page) { (status,code, data, results, totolPage) in
             
             if results != nil
             {

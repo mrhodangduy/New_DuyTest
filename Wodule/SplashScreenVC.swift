@@ -10,7 +10,7 @@ import UIKit
 
 class SplashScreenVC: UIViewController {
     
-    @IBOutlet weak var loadingImageView: UIImageView!
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet weak var notifiLabel: UILabel!
     
     let username = userDefault.object(forKey: USERNAMELOGIN) as? String
@@ -19,25 +19,39 @@ class SplashScreenVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadingImageView.image = UIImage.gifImageWithName("loading")
-        loadingImageView.isHidden = true
+        self.loadingIndicator.hidesWhenStopped = true
         notifiLabel.isHidden = true
+        self.loadingIndicator.startAnimating()
         
-        print("username:", username as Any, "password:", password as Any)
         
-        if username != nil && password != nil
+        if Connectivity.isConnectedToInternet
         {
-            self.loadingImageView.isHidden = false
-            self.notifiLabel.isHidden = false
+            if username != nil && password != nil
+            {
+                self.notifiLabel.isHidden = false
+            }
+            
+            self.perform(#selector(self.onHanldeAutoLogin), with: self, afterDelay: 1)
+            
+        }
+        else
+        {
+            self.loadingIndicator.stopAnimating()
+            displayAlertNetWorkNotAvailable()
+            NotificationCenter.default.addObserver(self, selector: #selector(self.onHanldeAutoLogin), name: NSNotification.Name.available, object: nil)
         }
         
-        self.perform(#selector(self.onHanldeAutoLogin), with: self, afterDelay: 1)
+        print("username:", username as Any, "password:", password as Any)
         
     }
     
     func onHanldeAutoLogin()
     {
         
+        if self.loadingIndicator.isAnimating == false
+        {
+            self.loadingIndicator.startAnimating()
+        }
         if username == nil && password == nil
         {
             let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
@@ -46,17 +60,30 @@ class SplashScreenVC: UIViewController {
         }
         else
         {
+            self.notifiLabel.isHidden = false
             self.onHandleLogin()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        print("WILL APPEAR..........")
         super.viewWillAppear(animated)
         super.navigationController?.isNavigationBarHidden = true
         
         print(userDefault.object(forKey: TOKEN_STRING) as? String as Any)
         print(userDefault.object(forKey: SOCIALKEY) as? String as Any)
         
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.loadingIndicator.stopAnimating()
+        NotificationCenter.default.removeObserver(self)
     }
     
     func onHandleLogin()

@@ -50,6 +50,7 @@ class CalendarVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleInitData), name: NSNotification.Name.available, object: nil)
         
         eventDetailsViewHeight.constant = 0
         eventDetailView.alpha = 0
@@ -57,7 +58,22 @@ class CalendarVC: UIViewController {
         eventTableView.register(UINib(nibName: "EventCell", bundle: nil), forCellReuseIdentifier: "EventCell")
         eventTableView.dataSource = self
         eventTableView.delegate = self
+        if Connectivity.isConnectedToInternet
+        {
+            self.onHandleInitData()
+        }
+        else
+        {
+            self.displayAlertNetWorkNotAvailable()
+        }
         
+        self.calendarView.dataSource = self
+        self.calendarView.delegate = self
+    
+    }
+    
+    func onHandleInitData()
+    {
         self.loadingShow()
         DispatchQueue.global(qos: .background).async {
             
@@ -77,23 +93,35 @@ class CalendarVC: UIViewController {
                             self.dateWithEvent.updateValue(time, forKey: day!)
                         }
                         self.eventTableHeight.constant = self.cellHeight * CGFloat(self.calendarList.count)
-                        DispatchQueue.main.async(execute: { 
+                        DispatchQueue.main.async(execute: {
                             self.loadingHide()
                             self.eventTableView.reloadData()
                             self.calendarView.reloadData()
                             print(self.dateWithEventDetails)
-
+                            
                         })
                     }
+                }
+                else if code == 401
+                {
+                    self.loadingHide()
+                    if let error = results?["error"] as? String
+                    {
+                        if error.contains("Token")
+                        {
+                            self.onHandleTokenInvalidAlert(autoLogin: autologin)
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    self.loadingHide()
                 }
                 
             })
             
         }
-        
-        self.calendarView.dataSource = self
-        self.calendarView.delegate = self
-    
     }
     
     func onHandleSubDate(string: String?) -> String?
@@ -111,8 +139,7 @@ class CalendarVC: UIViewController {
         
         print("Back")
         if  let prePage = self.gregorian.date(byAdding: .month, value: -1, to: calendarView.currentPage, options: .init(rawValue: 0)) {
-            calendarView.setCurrentPage(prePage, animated: true)
-            
+            calendarView.setCurrentPage(prePage, animated: true)            
         }
     }
     @IBAction func calendaNextTap(_ sender: Any) {
@@ -121,6 +148,10 @@ class CalendarVC: UIViewController {
             calendarView.setCurrentPage(nextPage, animated: true)
             
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

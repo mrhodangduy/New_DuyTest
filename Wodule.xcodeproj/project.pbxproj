@@ -787,7 +787,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Wayne QTS (SJM24HW4QR)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wayne QTS (SJM24HW4QR)";
 				DEVELOPMENT_TEAM = LHVP2U4FAG;
 				INFOPLIST_FILE = Wodule/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -811,7 +811,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Wayne QTS (SJM24HW4QR)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wayne QTS (SJM24HW4QR)";
 				DEVELOPMENT_TEAM = LHVP2U4FAG;
 				INFOPLIST_FILE = Wodule/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;

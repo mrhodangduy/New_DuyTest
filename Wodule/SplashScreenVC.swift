@@ -23,7 +23,6 @@ class SplashScreenVC: UIViewController {
         notifiLabel.isHidden = true
         self.loadingIndicator.startAnimating()
         
-        
         if Connectivity.isConnectedToInternet
         {
             if username != nil && password != nil

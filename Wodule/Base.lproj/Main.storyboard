@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ExK-xS-xVp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ExK-xS-xVp">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -1891,21 +1891,21 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fetching your account infomation..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fc3-ca-r5m">
-                                <rect key="frame" x="53" y="441" width="214" height="16"/>
+                                <rect key="frame" x="53" y="502" width="214" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="qrw-nG-2X9">
-                                <rect key="frame" x="142" y="396" width="37" height="37"/>
+                                <rect key="frame" x="142" y="457" width="37" height="37"/>
                                 <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="fc3-ca-r5m" firstAttribute="top" secondItem="qrw-nG-2X9" secondAttribute="bottom" constant="8" id="5jV-gR-nYH"/>
+                            <constraint firstItem="N3A-nZ-Sut" firstAttribute="top" secondItem="fc3-ca-r5m" secondAttribute="bottom" constant="50" id="6og-82-leH"/>
                             <constraint firstItem="fc3-ca-r5m" firstAttribute="centerX" secondItem="qrw-nG-2X9" secondAttribute="centerX" id="KZQ-xc-vmM"/>
-                            <constraint firstItem="qrw-nG-2X9" firstAttribute="centerY" secondItem="0eJ-sa-UQc" secondAttribute="centerY" constant="130" id="P6c-SP-2gN"/>
                             <constraint firstItem="qrw-nG-2X9" firstAttribute="centerX" secondItem="0eJ-sa-UQc" secondAttribute="centerX" id="QLe-av-9Pg"/>
                         </constraints>
                     </view>

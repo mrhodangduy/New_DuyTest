@@ -106,7 +106,6 @@ class Part1VC: UIViewController {
         
     }
     
-    
     @IBAction func onClickPromt(_ sender: Any) {
         
         if Exam?["image_1"] as? String != nil

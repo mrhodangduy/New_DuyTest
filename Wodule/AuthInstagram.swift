@@ -14,9 +14,13 @@ struct InstagramAPI
 {
     static let INSTAGRAM_AUTHURL = "https://api.instagram.com/oauth/authorize/"
     static let INSTAGRAM_APIURl = "https://api.instagram.com/v1/users/"
-    static let INSTAGRAM_CLIENT_ID = "c241ecb5bd874465ad80deb0398fb828"
-    static let INSTAGRAM_CLIENTSERCRET = "9561f1054d27482dbd73aa3e7c60b0f4"
-    static let INSTAGRAM_REDIRECT_URI = "http://wodule.io/api/redirectIG"
+//    static let INSTAGRAM_CLIENT_ID = "c241ecb5bd874465ad80deb0398fb828"
+//    static let INSTAGRAM_CLIENTSERCRET = "9561f1054d27482dbd73aa3e7c60b0f4"
+    static let INSTAGRAM_CLIENT_ID = "3f5a6511534648aaa92503a837b97a45"
+    static let INSTAGRAM_CLIENTSERCRET = "09c62d954d9941189b8563f1a3684d25"
+//    static let INSTAGRAM_REDIRECT_URI = "http://wodule.io/api/redirectIG"
+    static let INSTAGRAM_REDIRECT_URI = "http://wodule.io/instagram"
+
     static let INSTAGRAM_ACCESS_TOKEN = "access_token"
     static let INSTAGRAM_SCOPE = "public_content" /* add whatever scope you need https://www.instagram.com/developer/authorization/ */
     
@@ -91,7 +95,7 @@ struct AuthInstagram {
         
         
         static let baseURLString = "https://api.instagram.com"
-        static let clientID = InstagramAPI.INSTAGRAM_CLIENTSERCRET
+        static let clientID = InstagramAPI.INSTAGRAM_CLIENT_ID
         static let redirectURI = InstagramAPI.INSTAGRAM_REDIRECT_URI
         static let clientSecret = InstagramAPI.INSTAGRAM_CLIENTSERCRET
         static let authorizationURL = URL(string: Router.baseURLString + "/oauth/authorize/?client_id=" + Router.clientID + "&redirect_uri=" + Router.redirectURI + "&response_type=code")!

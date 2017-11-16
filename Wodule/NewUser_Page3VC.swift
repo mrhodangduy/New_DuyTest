@@ -323,6 +323,7 @@ class NewUser_Page3VC: UIViewController {
     func handleCloseView()
     {
         UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
+            self.dataTableView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
             self.backgroundView.alpha = 0
             self.dataTableView.alpha = 0
         }, completion: { (true) in
@@ -335,6 +336,8 @@ class NewUser_Page3VC: UIViewController {
     {
         self.backgroundView.removeFromSuperview()
         self.dataTableView.removeFromSuperview()
+        self.dataTableView.transform = .identity
+
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

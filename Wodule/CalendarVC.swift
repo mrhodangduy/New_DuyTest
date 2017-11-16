@@ -71,6 +71,9 @@ class CalendarVC: UIViewController {
         self.calendarView.delegate = self
     
     }
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     func onHandleInitData()
     {

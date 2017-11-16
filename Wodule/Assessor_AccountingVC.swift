@@ -38,10 +38,9 @@ class Assessor_AccountingVC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleInitData), name: NSNotification.Name.available, object: nil)
         
     }
-    deinit {
+    override func viewDidDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
     }
-
     
     func onHandleInitData()
     {

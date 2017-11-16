@@ -41,52 +41,59 @@ class ForgotPasswordVC: UIViewController {
             }
             else
             {
-                self.loadingShow()
-                DispatchQueue.global(qos: .default).async(execute: {
-                    
-                    UserInfoAPI.ResetPassword(email: self.tf_Username.text!, completion: { (status:Bool?, result:NSDictionary?) in
+                if Connectivity.isConnectedToInternet
+                {
+                    self.loadingShow()
+                    DispatchQueue.global(qos: .default).async(execute: {
                         
-                        if status!
-                        {
-                            if let data = result?["data"] as? NSDictionary
+                        UserInfoAPI.ResetPassword(email: self.tf_Username.text!, completion: { (status:Bool?, result:NSDictionary?) in
+                            
+                            if status!
                             {
-                                let mess = data.object(forKey: "success") as? String
-                                DispatchQueue.main.async(execute: {
-                                    self.loadingHide()
-                                    self.alertSuccessful(mess: mess!)
-                                })
-                            }
-                                
-                            else
-                            {
-                                DispatchQueue.main.async {
-                                    self.loadingHide()
-                                    print("ERROR", result as Any)
+                                if let data = result?["data"] as? NSDictionary
+                                {
+                                    let mess = data.object(forKey: "success") as? String
+                                    DispatchQueue.main.async(execute: {
+                                        self.loadingHide()
+                                        self.alertSuccessful(mess: mess!)
+                                    })
                                 }
-                            }
-                        }
-                        else
-                        {
-                            if let error = result?.object(forKey: "message") as? String
-                            {
-                                DispatchQueue.main.async(execute: {
-                                    self.loadingHide()
-                                    self.alertMissingText(mess: error, textField: self.tf_Username)
-                                })
+                                    
+                                else
+                                {
+                                    DispatchQueue.main.async {
+                                        self.loadingHide()
+                                        print("ERROR", result as Any)
+                                    }
+                                }
                             }
                             else
                             {
-                                DispatchQueue.main.async {
-                                    self.loadingHide()
-                                    print("ERROR", result as Any)
+                                if let error = result?.object(forKey: "message") as? String
+                                {
+                                    DispatchQueue.main.async(execute: {
+                                        self.loadingHide()
+                                        self.alertMissingText(mess: error, textField: self.tf_Username)
+                                    })
                                 }
-                                
+                                else
+                                {
+                                    DispatchQueue.main.async {
+                                        self.loadingHide()
+                                        print("ERROR", result as Any)
+                                    }
+                                    
+                                }
                             }
-                        }
+                            
+                        })
                         
                     })
-                    
-                })
+                }
+                else{
+                    self.displayAlertNetWorkNotAvailable()
+                }
+                
             }
         }
         

@@ -35,7 +35,7 @@ class Assessor_AssessmentVC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleInitData), name: NSNotification.Name.available, object: nil)
     }
     
-    deinit {
+    override func viewDidDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -48,9 +48,8 @@ class Assessor_AssessmentVC: UIViewController {
             
             ExamRecord.getAllRecord(page: self.currentpage, completion: { (result:[NSDictionary]?, totalPage:Int?,code:Int?, json:NSDictionary?) in
                 
-                if result != nil
+                if result?.count != 0
                 {
-                    
                     for item in result!
                     {
                         if item["status"] as! String == "pending"
@@ -58,9 +57,14 @@ class Assessor_AssessmentVC: UIViewController {
                             self.AllRecord.append(item)
                         }
                     }
+                    if self.AllRecord.count == 0
+                    {
+                        self.currentpage = self.currentpage + 1
+                        self.loadMore(currentpage: self.currentpage)
+                    }
                     self.totalPage = totalPage
                     DispatchQueue.main.async(execute: {
-//                        self.dataTableView.reloadData()
+                        self.dataTableView.reloadData()
                     })
                 }
                     
@@ -197,8 +201,7 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
                         }
                         DispatchQueue.main.async(execute: {
                             self.dataTableView.reloadData()
-                            self.loadingHide()
-                            
+                            self.loadingHide()                            
                         })
                         
                     }
@@ -225,6 +228,7 @@ extension Assessor_AssessmentVC: UITableViewDataSource,UITableViewDelegate
                 }
                 else
                 {
+                    self.loadingHide()
                     print("ERROR:\n--->",json!)
                 }
             })

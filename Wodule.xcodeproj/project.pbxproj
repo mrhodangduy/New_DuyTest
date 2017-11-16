@@ -44,7 +44,6 @@
 		6347CF081F8C6819009D717D /* InstagramLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6347CF071F8C6819009D717D /* InstagramLoginVC.swift */; };
 		6347CF0A1F8C6FA5009D717D /* AuthInstagram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6347CF091F8C6FA5009D717D /* AuthInstagram.swift */; };
 		6347CF0C1F8CB687009D717D /* ManageAPI_Exam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6347CF0B1F8CB687009D717D /* ManageAPI_Exam.swift */; };
-		6352A0681F8B347600B13CC1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6352A0671F8B347600B13CC1 /* GoogleService-Info.plist */; };
 		6362081B1F8B659C005D800F /* LoginWithGooglePlusDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6362081A1F8B659C005D800F /* LoginWithGooglePlusDelegate.swift */; };
 		63A36BF11F849F1A005857DE /* RoundTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36BF01F849F1A005857DE /* RoundTextView.swift */; };
 		63A36BF61F84A1DA005857DE /* Assessor_GradeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36BF51F84A1DA005857DE /* Assessor_GradeVC.swift */; };
@@ -52,6 +51,7 @@
 		63A36C041F84CEF4005857DE /* Assessor_CalendarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36C031F84CEF4005857DE /* Assessor_CalendarVC.swift */; };
 		63A36C061F84D21D005857DE /* Assessor_OverviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36C051F84D21D005857DE /* Assessor_OverviewVC.swift */; };
 		63A36C081F84D230005857DE /* Assessor_AccountingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36C071F84D230005857DE /* Assessor_AccountingVC.swift */; };
+		63B018201FBD335E002F9308 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63B0181F1FBD335E002F9308 /* GoogleService-Info.plist */; };
 		63C57BEC1FA2CCFE00DC3B40 /* Examinee_InstructionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C57BEB1FA2CCFE00DC3B40 /* Examinee_InstructionVC.swift */; };
 		63C57BF01FA2F1F600DC3B40 /* Assessor_Part2VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C57BED1FA2F1F600DC3B40 /* Assessor_Part2VC.swift */; };
 		63C57BF11FA2F1F600DC3B40 /* Assessor_Part3VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C57BEE1FA2F1F600DC3B40 /* Assessor_Part3VC.swift */; };
@@ -129,7 +129,6 @@
 		6347CF071F8C6819009D717D /* InstagramLoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstagramLoginVC.swift; sourceTree = "<group>"; };
 		6347CF091F8C6FA5009D717D /* AuthInstagram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthInstagram.swift; sourceTree = "<group>"; };
 		6347CF0B1F8CB687009D717D /* ManageAPI_Exam.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageAPI_Exam.swift; sourceTree = "<group>"; };
-		6352A0671F8B347600B13CC1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6362081A1F8B659C005D800F /* LoginWithGooglePlusDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWithGooglePlusDelegate.swift; sourceTree = "<group>"; };
 		63A36BF01F849F1A005857DE /* RoundTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundTextView.swift; sourceTree = "<group>"; };
 		63A36BF51F84A1DA005857DE /* Assessor_GradeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_GradeVC.swift; sourceTree = "<group>"; };
@@ -137,6 +136,7 @@
 		63A36C031F84CEF4005857DE /* Assessor_CalendarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_CalendarVC.swift; sourceTree = "<group>"; };
 		63A36C051F84D21D005857DE /* Assessor_OverviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_OverviewVC.swift; sourceTree = "<group>"; };
 		63A36C071F84D230005857DE /* Assessor_AccountingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_AccountingVC.swift; sourceTree = "<group>"; };
+		63B0181F1FBD335E002F9308 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		63C57BEB1FA2CCFE00DC3B40 /* Examinee_InstructionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Examinee_InstructionVC.swift; sourceTree = "<group>"; };
 		63C57BED1FA2F1F600DC3B40 /* Assessor_Part2VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_Part2VC.swift; sourceTree = "<group>"; };
 		63C57BEE1FA2F1F600DC3B40 /* Assessor_Part3VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_Part3VC.swift; sourceTree = "<group>"; };
@@ -212,7 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				DA1620711F8D0B5E0056D7D3 /* Wodule.entitlements */,
-				6352A0671F8B347600B13CC1 /* GoogleService-Info.plist */,
+				63B0181F1FBD335E002F9308 /* GoogleService-Info.plist */,
 				630BD8BF1F82379900B24CA5 /* Model */,
 				630BD8BC1F82350300B24CA5 /* View */,
 				630BD8A91F821D0800B24CA5 /* Controller */,
@@ -289,6 +289,7 @@
 		63A36BF21F84A17A005857DE /* Login_Register */ = {
 			isa = PBXGroup;
 			children = (
+				63F43A551FA72B080070DEDD /* SplashScreenVC.swift */,
 				630BD8801F81D72100B24CA5 /* LoginVC.swift */,
 				630BD8AA1F821D3000B24CA5 /* LicenseVC.swift */,
 				630BD8AC1F821D4C00B24CA5 /* NewUser_Page1VC.swift */,
@@ -297,7 +298,6 @@
 				630BD8B41F821D8000B24CA5 /* ForgotPasswordVC.swift */,
 				6362081A1F8B659C005D800F /* LoginWithGooglePlusDelegate.swift */,
 				6347CF071F8C6819009D717D /* InstagramLoginVC.swift */,
-				63F43A551FA72B080070DEDD /* SplashScreenVC.swift */,
 			);
 			name = Login_Register;
 			sourceTree = "<group>";
@@ -489,13 +489,13 @@
 			files = (
 				63D0FCCF1F85F2F8006347B0 /* Profile.storyboard in Resources */,
 				630BD8891F81D72100B24CA5 /* LaunchScreen.storyboard in Resources */,
+				63B018201FBD335E002F9308 /* GoogleService-Info.plist in Resources */,
 				630BD8A81F81FC9300B24CA5 /* Assessor.storyboard in Resources */,
 				63F8CDB21FB1AED300B9341D /* loading.gif in Resources */,
 				630BD8861F81D72100B24CA5 /* Assets.xcassets in Resources */,
 				630BD8BB1F82293500B24CA5 /* Examinee.storyboard in Resources */,
 				630BD8841F81D72100B24CA5 /* Main.storyboard in Resources */,
 				630C09461FB194CB00DCF7A5 /* EventCell.xib in Resources */,
-				6352A0681F8B347600B13CC1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

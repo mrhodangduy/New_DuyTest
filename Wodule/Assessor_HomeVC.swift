@@ -58,6 +58,10 @@ class Assessor_HomeVC: UIViewController {
         
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -65,22 +69,27 @@ class Assessor_HomeVC: UIViewController {
         if Connectivity.isConnectedToInternet
         {
             DispatchQueue.global(qos: .background).async {
-                UserInfoAPI.getMessage(completion: { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
+                UserInfoAPI.getMessage(completion: { (status:Bool, code:Int, results: NSDictionary?, totalPage:Int?) in
                     if status
                     {
-                        self.messagesList.removeAll()
-                        self.messagesList = results!
-                        self.messagesList = self.messagesList.filter({$0["read"] as? String == ""})
-                        DispatchQueue.main.async(execute: {
-                            self.unreadLabel.text = "\(self.messagesList.count)"
-                            if self.messagesList.count > 0
-                            {
-                                self.unreadLabel.isHidden = false
+                        if let data = results?["data"] as? [NSDictionary]
+                        {
+                            self.messagesList.removeAll()
+                            self.messagesList = data
+                            self.messagesList = self.messagesList.filter({$0["read"] as? String == ""})
+                            DispatchQueue.main.async(execute: {
+                                self.unreadLabel.text = "\(self.messagesList.count)"
+                                if self.messagesList.count > 0
+                                {
+                                    self.unreadLabel.isHidden = false
+                                    
+                                }
+                                print(self.messagesList)
                                 
-                            }
-                            print(self.messagesList)
-                            
-                        })
+                            })
+
+                        }
+                        
                     }
                     else if code == 401
                     {

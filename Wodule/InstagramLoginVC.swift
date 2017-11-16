@@ -14,6 +14,10 @@ class InstagramLoginVC: UIViewController {
     
     var tokencallback: ((_ token: String)->())?
     
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .default
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

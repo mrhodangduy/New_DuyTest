@@ -23,21 +23,21 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.345033009304-vnotc5p5mvt7b6baug4cgcbjr6veee90</string>
-				<string>fb1989544367997799</string>
+				<string>com.googleusercontent.apps.44783226629-np8gn68401tg049j85ihbmcgs1qevn3a</string>
+				<string>fb168106590594737</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>6</string>
 	<key>FacebookAppID</key>
-	<string>1989544367997799</string>
+	<string>168106590594737</string>
 	<key>FacebookDisplayName</key>
 	<string>Wodule</string>
 	<key>InstagramAppClientId</key>
-	<string>88ff5198ac1a4959ae6213874f806fd0</string>
+	<string>3f5a6511534648aaa92503a837b97a45</string>
 	<key>InstagramAppRedirectURL</key>
-	<string>http://wodule.io/api/redirectIG</string>
+	<string>http://wodule.io/instagram</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

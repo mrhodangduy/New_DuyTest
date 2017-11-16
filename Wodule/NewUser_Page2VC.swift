@@ -134,10 +134,18 @@ class NewUser_Page2VC: UIViewController {
             self.alertMissingText(mess: "Nationality is required", textField: nil)	
         default:
             
-            saveData()
+            if !isValidEmail(testStr: tf_Email.text!)
+            {
+                self.alertMissingText(mess: "The email must be a valid email address.", textField: tf_Email)
+            }
+            else
+            {
+                saveData()
+                
+                let newuser = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "newuser_page3VC") as! NewUser_Page3VC
+                self.navigationController?.pushViewController(newuser, animated: true)
+            }
             
-            let newuser = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "newuser_page3VC") as! NewUser_Page3VC
-            self.navigationController?.pushViewController(newuser, animated: true)
         }
         
         
@@ -166,6 +174,8 @@ class NewUser_Page2VC: UIViewController {
     func handleCloseView()
     {
         UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
+            self.dataTableView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
+
             self.backgroundView.alpha = 0
             self.dataTableView.alpha = 0
         }, completion: { (true) in
@@ -178,7 +188,10 @@ class NewUser_Page2VC: UIViewController {
     {
         self.backgroundView.removeFromSuperview()
         self.dataTableView.removeFromSuperview()
+        self.dataTableView.transform = .identity
+
     }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }

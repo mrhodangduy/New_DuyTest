@@ -976,12 +976,19 @@
                                             </tableViewCell>
                                         </prototypes>
                                     </tableView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Messages Found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fsh-5P-b7t">
+                                        <rect key="frame" x="95.5" y="231.5" width="184" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="fsh-5P-b7t" firstAttribute="centerY" secondItem="tXS-4o-wdi" secondAttribute="centerY" id="8OY-D1-4Kb"/>
                                     <constraint firstAttribute="trailing" secondItem="aHN-rO-yaF" secondAttribute="trailing" id="K1D-Yb-Z81"/>
                                     <constraint firstAttribute="bottom" secondItem="aHN-rO-yaF" secondAttribute="bottom" id="KEI-GG-KAZ"/>
                                     <constraint firstItem="aHN-rO-yaF" firstAttribute="top" secondItem="tXS-4o-wdi" secondAttribute="top" id="a8Y-sU-v99"/>
+                                    <constraint firstItem="fsh-5P-b7t" firstAttribute="centerX" secondItem="tXS-4o-wdi" secondAttribute="centerX" id="gak-oQ-lRP"/>
                                     <constraint firstItem="aHN-rO-yaF" firstAttribute="leading" secondItem="tXS-4o-wdi" secondAttribute="leading" id="ka9-Tf-3Zo"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -1022,6 +1029,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="emptyLabel" destination="fsh-5P-b7t" id="TSj-z6-eab"/>
                         <outlet property="messageTableView" destination="aHN-rO-yaF" id="48r-qK-tei"/>
                     </connections>
                 </viewController>

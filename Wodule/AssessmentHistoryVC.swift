@@ -36,6 +36,9 @@ class AssessmentHistoryVC: UIViewController {
 
         
     }
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     func onHandleInitData()
     {
@@ -110,10 +113,6 @@ class AssessmentHistoryVC: UIViewController {
         }
         NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleInitData), name: NSNotification.Name.available, object: nil)
     }
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     
     @IBAction func backBtnTap(_ sender: Any) {
         

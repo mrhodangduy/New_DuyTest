@@ -113,6 +113,7 @@ class NewUser_Page1VC: UIViewController {
     func handleCloseView()
     {
         UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
+            self.dataTableview.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
             self.backgroundView.alpha = 0
             self.dataTableview.alpha = 0
         }, completion: { (true) in
@@ -125,6 +126,8 @@ class NewUser_Page1VC: UIViewController {
     {
         self.backgroundView.removeFromSuperview()
         self.dataTableview.removeFromSuperview()
+        self.dataTableview.transform = .identity
+
     }
     
     func showDatePicker()

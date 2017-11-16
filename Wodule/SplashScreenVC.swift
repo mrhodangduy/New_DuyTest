@@ -112,10 +112,11 @@ class SplashScreenVC: UIViewController {
                             let window = UIApplication.shared.delegate!.window!!
                             window.rootViewController = mainControler
                             window.makeKeyAndVisible()
-                            
+                            print("-----> LOGIN SUCCESSFUL")
+
                             UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
                         }
-                        else
+                        else if userinfo!["type"] as? String == UserType.examinee.rawValue
                         {
                             let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
                             
@@ -124,10 +125,20 @@ class SplashScreenVC: UIViewController {
                             let window = UIApplication.shared.delegate!.window!!
                             window.rootViewController = mainControler
                             window.makeKeyAndVisible()
+                            print("-----> LOGIN SUCCESSFUL")
+
+                            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                        }
+                        else
+                        {
+                            let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
+                            let mainControler = MainNavigationController(rootViewController: loginVC)
+                            let window = UIApplication.shared.delegate!.window!!
+                            window.rootViewController = mainControler
+                            window.makeKeyAndVisible()
                             
                             UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
                         }
-                        print("-----> LOGIN SUCCESSFUL")
                     })
                     
                 }

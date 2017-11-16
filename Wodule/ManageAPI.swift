@@ -526,7 +526,7 @@ struct UserInfoAPI
         }
     }
     
-    static func getMessage(completion: @escaping (_ status: Bool,_ code: Int,_ results:[NSDictionary]?,_ otalPage:Int?) -> ())
+    static func getMessage(completion: @escaping (_ status: Bool,_ code: Int,_ results:NSDictionary?,_ otalPage:Int?) -> ())
     {
         let url = URL(string: APIURL.messageURL)
         let token = userDefault.object(forKey: TOKEN_STRING) as! String
@@ -545,23 +545,23 @@ struct UserInfoAPI
                         if data.count > 0
                         {
                             guard let meta = json?["meta"] as? NSDictionary, let pagination = meta["pagination"] as? NSDictionary, let total_pages = pagination["total_pages"] as? Int else {return}
-                            completion(true, 200, data, total_pages)
+                            completion(true, 200, json, total_pages)
 
                         }
                         else
                         {
-                            completion(true, 200, data, 1)
+                            completion(true, 200, json, 1)
                         }
                     }
                 }
                 else
                 {
-                    completion(false, (response.response?.statusCode)!, nil,1)
+                    completion(false, (response.response?.statusCode)!, response.result.value as? NSDictionary,1)
                 }
             }
             else
             {
-                completion(false, (response.response?.statusCode)!, nil,1)
+                completion(false, (response.response?.statusCode)!, response.result.value as? NSDictionary,1)
             }
             
         }

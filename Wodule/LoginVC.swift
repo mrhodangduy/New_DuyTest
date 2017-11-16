@@ -619,7 +619,7 @@ class LoginVC: UIViewController {
                                         
                                         
                                     }
-                                    else
+                                    else if userinfo!["type"] as? String == UserType.examinee.rawValue
                                     {
                                         let examiner_homeVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "examiner_homeVC") as! Examiner_HomeVC
                                         
@@ -631,6 +631,11 @@ class LoginVC: UIViewController {
                                         
                                         UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
                                     }
+                                    else
+                                    {
+                                        self.alertMissingText(mess: "User doesnot exist", textField: nil)
+                                    }
+                                    
                                     print("-----> LOGIN SUCCESSFUL")
                                     DispatchQueue.main.async(execute: {
                                         self.loadingHide()
@@ -662,6 +667,8 @@ class LoginVC: UIViewController {
             
         }
     }
+    
+    
     
     //MARK: - Handle Register
     

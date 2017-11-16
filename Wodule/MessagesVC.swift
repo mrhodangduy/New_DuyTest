@@ -11,6 +11,7 @@ import UIKit
 class MessagesVC: UIViewController {
 
     @IBOutlet weak var messageTableView: UITableView!
+    @IBOutlet weak var emptyLabel: UILabel!
     
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
     
@@ -18,7 +19,7 @@ class MessagesVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        emptyLabel.isHidden = true
         messageTableView.delegate = self
         messageTableView.dataSource = self
         messageTableView.layer.cornerRadius = 10
@@ -48,19 +49,48 @@ class MessagesVC: UIViewController {
     {
         self.messagesList.removeAll()
         self.loadingShow()
-        UserInfoAPI.getMessage(completion: { (status:Bool, code:Int, results: [NSDictionary]?, totalPage:Int?) in
+        UserInfoAPI.getMessage(completion: { (status:Bool, code:Int, results: NSDictionary?, totalPage:Int?) in
             if status
             {
-                self.messagesList = results!
+                if let data = results?["data"] as? [NSDictionary]
+                {
+                    self.messagesList = data
+                    DispatchQueue.main.async(execute: {
+                        if self.messagesList.count == 0
+                        {
+                            self.emptyLabel.isHidden = false
+                        }
+                        self.loadingHide()
+                        self.messageTableView.reloadData()
+                        print(self.messagesList)
+                    })
+                }
+                
+            }
+            else if results?["code"] as! Int == 429
+            {
+                
+                guard let errorMess = results?["error"] as? String else {return}
                 DispatchQueue.main.async(execute: {
                     self.loadingHide()
-                    self.messageTableView.reloadData()
-                    print(self.messagesList)
+                    self.alertMissingText(mess: "\(errorMess)\n(ErrorCode:\(results?["code"] as! Int))", textField: nil)
                 })
+            }
+            else if code == 401
+            {
+                if let error = results?["error"] as? String
+                {
+                    if error.contains("Token")
+                    {
+                        self.loadingHide()
+                        self.onHandleTokenInvalidAlert()
+                    }
+                }
             }
             else
             {
                 self.loadingHide()
+                self.emptyLabel.isHidden = false
             }
             
         })

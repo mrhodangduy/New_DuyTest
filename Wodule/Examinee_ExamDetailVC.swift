@@ -262,6 +262,8 @@ class Examinee_ExamDetailVC: UIViewController {
     func handleCloseView()
     {
         UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
+            self.questionImage.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
+            self.questionTextView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
             self.backgroundView.alpha = 0
             self.questionImage.alpha = 0
             self.questionTextView.alpha = 0
@@ -276,7 +278,8 @@ class Examinee_ExamDetailVC: UIViewController {
         self.questionImage.removeFromSuperview()
         self.questionTextView.removeFromSuperview()
         self.backgroundView.removeFromSuperview()
-
+        self.questionImage.transform = .identity
+        self.questionTextView.transform = .identity
     }
     
     func onHandleDisplayView(type:Int, question: String, tvHeight: CGFloat)

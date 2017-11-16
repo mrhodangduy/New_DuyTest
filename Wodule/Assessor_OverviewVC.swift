@@ -396,6 +396,10 @@ class Assessor_OverviewVC: UIViewController {
     func handleCloseView()
     {
         UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
+            self.dataTableView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
+            self.contentTextView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
+            self.contentImageView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
+
             self.backgroundView.alpha = 0
             self.dataTableView.alpha = 0
             self.contentTextView.alpha = 0
@@ -412,6 +416,10 @@ class Assessor_OverviewVC: UIViewController {
         self.dataTableView.removeFromSuperview()
         self.contentTextView.removeFromSuperview()
         self.contentImageView.removeFromSuperview()
+        self.dataTableView.transform = .identity
+        self.contentTextView.transform = .identity
+        self.contentImageView.transform = .identity
+
     }
     
     func configView()

@@ -78,7 +78,7 @@ class Part2VC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleUploadAfterConnectAgain), name: NSNotification.Name.available, object: nil)
         
     }
-    deinit {
+    override func viewDidDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -238,6 +238,7 @@ class Part2VC: UIViewController {
                 
                 if status == true
                 {
+                    self.nextBtn.isHidden = false
                     DispatchQueue.main.async(execute: {
                         self.loadingHide()
                         self.onHandleUploadSuccessful(mess: message)

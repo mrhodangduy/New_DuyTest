@@ -34,7 +34,7 @@ enum UserType: String
     case assessor = "examiner"
 }
 
-let timeCoutdown: TimeInterval = 15
+let timeCoutdown: TimeInterval = 300
 let timeInitial = 4
 
 let SOCIALKEY = "socialKey"

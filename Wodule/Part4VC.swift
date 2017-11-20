@@ -30,6 +30,9 @@ class Part4VC: UIViewController {
     var audio2_Data: Data?
     var audio3_Data: Data?
     var audio4_Data: Data?
+    var audioURL:NSURL?
+
+    var isUpload = false
     
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
     
@@ -140,8 +143,18 @@ class Part4VC: UIViewController {
     
     @IBAction func nextBtnTap(_ sender: Any) {
         
-        let endVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "endassessmentVC") as! EndVC                
-        self.navigationController?.pushViewController(endVC, animated: true)
+        self.stopRecord()
+        self.viewBackground.frame.size.width = self.containerView.frame.size.width
+        self.view.layoutIfNeeded()
+        do
+        {
+            self.audio4_Data = try? Data(contentsOf: self.audioURL! as URL)
+            print("audio4_Data",self.audio4_Data as Any)
+        }
+                
+        isUpload = true
+        self.onHandleUploadExam(audio4data: self.audio4_Data)
+        
     }
     
     func onHandleUploadSuccessful(mess: String?)
@@ -149,7 +162,8 @@ class Part4VC: UIViewController {
         let alert = UIAlertController(title: "Wodule", message: mess, preferredStyle: .alert)
         let btnOK = UIAlertAction(title: "OK", style: .default) { (action) in
             print("OK")
-            self.nextBtn.isHidden = false
+            let endVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "endassessmentVC") as! EndVC
+            self.navigationController?.pushViewController(endVC, animated: true)
         }
         
         alert.addAction(btnOK)
@@ -221,22 +235,25 @@ extension Part4VC: JWGCircleCounterDelegate
 {
     func circleCounterTimeDidExpire(_ circleCounter: JWGCircleCounter!) {
         
-        var audioURL:NSURL?
         self.StarRecording(userID: userID!, examID: examID, audio: 4) { (audioURLs:NSURL?) in
             audioURL = audioURLs
         }
         
         self.recordingMess.isHidden = false
+        self.nextBtn.isHidden = false
         UIView.animate(withDuration: expectTime, animations: {
             self.viewBackground.frame.size.width = self.containerView.frame.size.width
             self.view.layoutIfNeeded()
         }, completion: { (done) in
-            self.recordingMess.text = "Time Out"
-            self.stopRecord()
-            do
+            if self.isUpload == false
             {
-                self.audio4_Data = try? Data(contentsOf: audioURL! as URL)
-                self.onHandleUploadExam(audio4data: self.audio4_Data)
+                self.recordingMess.text = "Time Out"
+                self.stopRecord()
+                do
+                {
+                    self.audio4_Data = try? Data(contentsOf: self.audioURL! as URL)
+                    self.onHandleUploadExam(audio4data: self.audio4_Data)
+                }
             }
         })
         

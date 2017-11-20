@@ -29,7 +29,8 @@
         var audio1_Data: Data?
         var audio2_Data: Data?
         var audio3_Data: Data?
-        
+        var audioURL:NSURL?
+        var isNext = false
         let token = userDefault.object(forKey: TOKEN_STRING) as? String
         
         
@@ -133,6 +134,22 @@
         
         
         @IBAction func nextBtnTap(_ sender: Any) {
+            if isNext == false
+            {
+                self.stopRecord()
+                self.viewBackground.frame.size.width = self.containerView.frame.size.width
+                self.view.layoutIfNeeded()
+                do
+                {
+                    self.audio3_Data = try? Data(contentsOf: self.audioURL! as URL)
+                    print("audio3_Data",self.audio3_Data as Any)
+                    
+                }
+                
+                
+                isNext = true
+            }
+            
             
             if Connectivity.isConnectedToInternet
             {
@@ -169,47 +186,49 @@
     {
         func circleCounterTimeDidExpire(_ circleCounter: JWGCircleCounter!) {
             
-            var audioURL:NSURL?
             self.StarRecording(userID: userID!, examID: examID, audio: 3) { (audioURLs:NSURL?) in
                 audioURL = audioURLs
             }
             
             self.recordingMess.isHidden = false
+            self.nextBtn.isHidden = false
             UIView.animate(withDuration: expectTime, animations: {
                 self.viewBackground.frame.size.width = self.containerView.frame.size.width
                 self.view.layoutIfNeeded()
             }, completion: { (done) in
-                self.recordingMess.text = "Time Out"
-                self.nextBtn.isHidden = false
-                self.stopRecord()
-                do
+                if self.isNext == false
                 {
-                    self.audio3_Data = try Data(contentsOf: audioURL! as URL)
-                    if self.Exam?["question_4"] as? String == nil && self.Exam?["image_4"] as? String == nil
+                    self.isNext = true
+                    self.recordingMess.text = "Time Out"
+                    self.nextBtn.isHidden = false
+                    self.stopRecord()
+                    do
                     {
-                        self.loadingShowwithStatus(status: "Uploading your Exam.")
-                        ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: self.audio3_Data, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
-                            if status!
-                            {
-                                DispatchQueue.main.async(execute: {
-                                    self.loadingHide()
-                                    self.nextBtn.isHidden = false
-                                })
-                            }
-                        })
+                        self.audio3_Data = try Data(contentsOf: self.audioURL! as URL)
+                        if self.Exam?["question_4"] as? String == nil && self.Exam?["image_4"] as? String == nil
+                        {
+                            self.loadingShowwithStatus(status: "Uploading your Exam.")
+                            ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: self.audio3_Data, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
+                                if status!
+                                {
+                                    DispatchQueue.main.async(execute: {
+                                        self.loadingHide()
+                                        self.nextBtn.isHidden = false
+                                    })
+                                }
+                            })
+                            
+                        }
+                        
                         
                     }
-                    else
+                    catch
                     {
-                        self.nextBtn.isHidden = false
+                        
                     }
                     
+
                 }
-                catch
-                {
-                    
-                }
-                
             })
         }
         

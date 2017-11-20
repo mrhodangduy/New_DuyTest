@@ -28,7 +28,8 @@ class Part1VC: UIViewController {
     
     var Exam:NSDictionary?
     var audio1_Data: Data?
-    
+    var audioURL:NSURL?
+    var isNext = false
     var time:Timer!
     var expectTime:TimeInterval = timeCoutdown
     var minutes:Int!
@@ -136,6 +137,23 @@ class Part1VC: UIViewController {
     
     @IBAction func nextBtnTap(_ sender: Any) {
         
+        if isNext == false
+        {
+            self.stopRecord()
+            self.viewbackground.frame.size.width = self.containerView.frame.size.width
+            self.view.layoutIfNeeded()
+            do
+            {
+                self.audio1_Data = try? Data(contentsOf: self.audioURL! as URL)
+                print("audio1_Data",self.audio1_Data as Any)
+                
+            }
+            
+            isNext = true
+        }
+        
+        
+        
         if Connectivity.isConnectedToInternet
         {
             let part2VC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part2VC") as! Part2VC
@@ -157,16 +175,10 @@ class Part1VC: UIViewController {
         self.view.endEditing(true)
     }
     
-    
-}
-
-extension Part1VC: JWGCircleCounterDelegate
-{
-    func circleCounterTimeDidExpire(_ circleCounter: JWGCircleCounter!) {
-        
-        var audioURL:NSURL?
+    func onHandleRecordAudio()
+    {
         self.StarRecording(userID: userID!, examID: examID, audio: 1) { (audioURLs:NSURL?) in
-            audioURL = audioURLs
+            self.audioURL = audioURLs
         }
         
         self.recordingMess.isHidden = false
@@ -174,20 +186,33 @@ extension Part1VC: JWGCircleCounterDelegate
             self.viewbackground.frame.size.width = self.containerView.frame.size.width
             self.view.layoutIfNeeded()
         }) { (done) in
-            self.nextBtn.isHidden = false
-            self.recordingMess.text = "Time Out"
-            self.stopRecord()
-            do
+            if self.isNext == false
             {
-                self.audio1_Data = try Data(contentsOf: audioURL! as URL)
-                print("audio1_Data",self.audio1_Data as Any)
-            }
-        
-            catch
-            {
-                
+                self.isNext = true
+                self.recordingMess.text = "Time Out"
+                self.stopRecord()
+                do
+                {
+                    self.audio1_Data = try Data(contentsOf: self.audioURL! as URL)
+                    print("audio1_Data",self.audio1_Data as Any)
+                }
+                catch
+                {
+                    
+                }
+
             }
         }
+
+    }
+    
+}
+
+extension Part1VC: JWGCircleCounterDelegate
+{
+    func circleCounterTimeDidExpire(_ circleCounter: JWGCircleCounter!) {
+        self.nextBtn.isHidden = false
+        self.onHandleRecordAudio()
         
     }
 }

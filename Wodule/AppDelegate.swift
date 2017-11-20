@@ -10,12 +10,15 @@ import UIKit
 import GoogleSignIn
 import FBSDKCoreKit
 import IQKeyboardManagerSwift
+import Alamofire
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     static var share = AppDelegate()
+
 
     func removeAllValueObject()
     {

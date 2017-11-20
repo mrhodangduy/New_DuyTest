@@ -28,7 +28,9 @@ class Part2VC: UIViewController {
     var Exam:NSDictionary?
     var audio1_Data: Data?
     var audio2_Data: Data?
-    
+    var audioURL:NSURL?
+    var isUpload = false
+
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
     
     let userID = userDefault.object(forKey: USERID_STRING) as? Int
@@ -132,12 +134,23 @@ class Part2VC: UIViewController {
     
     @IBAction func nextBtnTap(_ sender: Any) {
         
+        self.stopRecord()
+        self.viewBackground.frame.size.width = self.containerView.frame.size.width
+        self.view.layoutIfNeeded()
+        do
+        {
+            self.audio2_Data = try? Data(contentsOf: self.audioURL! as URL)
+            print("audio2_Data",self.audio2_Data as Any)
+            
+        }
+        
         if Connectivity.isConnectedToInternet
         {
             if Exam?["question_3"] as? String == nil && Exam?["image_3"] as? String == nil
             {
-                let endVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "endassessmentVC") as! EndVC
-                self.navigationController?.pushViewController(endVC, animated: true)
+                self.isUpload = true
+                self.onHandleUploadExam(audio2data: self.audio2_Data)
+                
             }
             else
             {
@@ -149,12 +162,12 @@ class Part2VC: UIViewController {
                 part3_tempVC.audio2_Data = self.audio2_Data
                 
                 self.navigationController?.pushViewController(part3_tempVC, animated: true)
-            }        }
+            }
+        }
         else
         {
             self.displayAlertNetWorkNotAvailable()
-        }
-        
+        }        
 
     }
     
@@ -163,6 +176,9 @@ class Part2VC: UIViewController {
         let alert = UIAlertController(title: "Wodule", message: mess, preferredStyle: .alert)
         let btnOK = UIAlertAction(title: "OK", style: .default) { (action) in
             print("OK")
+            let endVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "endassessmentVC") as! EndVC
+            self.navigationController?.pushViewController(endVC, animated: true)
+
         }
         
         alert.addAction(btnOK)
@@ -181,8 +197,6 @@ class Part2VC: UIViewController {
         alert.addAction(btnTryagain)
         self.present(alert, animated: true, completion: nil)
     }
-    
-    
     
     @objc func onHandleUploadExam(audio2data: Data?)
     {
@@ -267,29 +281,31 @@ class Part2VC: UIViewController {
 extension Part2VC: JWGCircleCounterDelegate
 {
     func circleCounterTimeDidExpire(_ circleCounter: JWGCircleCounter!) {
+        self.recordingMess.isHidden = false
+        self.nextBtn.isHidden = false
         
-        var audioURL:NSURL?
         self.StarRecording(userID: userID!, examID: examID, audio: 2) { (audioURLs:NSURL?) in
-            audioURL = audioURLs
+            self.audioURL = audioURLs
         }
         
-        self.recordingMess.isHidden = false
         UIView.animate(withDuration: expectTime, animations: {
             self.viewBackground.frame.size.width = self.containerView.frame.size.width
             self.view.layoutIfNeeded()
         }, completion: { (done) in
             self.recordingMess.text = "Time Out"
-            self.stopRecord()
-            do
+            if self.isUpload == false
             {
-                self.audio2_Data = try? Data(contentsOf: audioURL! as URL)
-                if self.Exam?["question_3"] as? String == nil && self.Exam?["image_3"] as? String == nil
+                self.stopRecord()
+                do
                 {
-                    self.onHandleUploadExam(audio2data: self.audio2_Data)
-                }
-                else
-                {
-                    self.nextBtn.isHidden = false
+                    self.audio2_Data = try? Data(contentsOf: self.audioURL! as URL)
+                    print("audio2_Data",self.audio2_Data as Any)
+
+                    if self.Exam?["question_3"] as? String == nil && self.Exam?["image_3"] as? String == nil
+                    {
+                        self.onHandleUploadExam(audio2data: self.audio2_Data)
+                    }
+                    
                 }
             }
         })

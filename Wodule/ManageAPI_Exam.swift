@@ -95,9 +95,9 @@ struct ExamRecord
         
     }
     
-    static func getAllRecord(page: Int, completion: @escaping ([NSDictionary]?, _ totalPage: Int?,_ code: Int? ,NSDictionary?) -> ())
+    static func getAllRecord(completion: @escaping (_ records: [NSDictionary]?, _ code: Int? ,NSDictionary?) -> ())
     {
-        let url = URL(string: APIURL.getAllrecordURL + "\(page)")
+        let url = URL(string: APIURL.getAllrecordURL)
         
         Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
             
@@ -109,9 +109,14 @@ struct ExamRecord
                 
                 if let data = json?["data"] as? [NSDictionary]
                 {
-                    guard let meta = json?["meta"] as? NSDictionary, let pagination = meta["pagination"] as? NSDictionary, let total_pages = pagination["total_pages"] as? Int else {return}
-                    
-                    completion(data, total_pages,code,json)
+                    if data.count > 0
+                    {
+                        completion(data, code, json)
+
+                    } else
+                    {
+                        completion(nil, code, nil)
+                    }
                     
                 }
                 else
@@ -120,7 +125,7 @@ struct ExamRecord
                     {
                         
                         print(error, json?["code"] as! Int)
-                        completion(nil, nil,code, json)
+                        completion(nil, code, json)
                     }
                     
                     
@@ -128,11 +133,52 @@ struct ExamRecord
             }
             else
             {
-                completion(nil, nil,code,json)
+                completion(nil, code,json)
             }
             
         }
         
+    }
+    
+    
+    static func getUniqueRecord(token: String, id: Int, completion: @escaping (_ status: Bool,_ code: Int, _ result: NSDictionary?) -> ())
+    {
+        let url = URL(string: APIURL.getAllrecordURL + "/\(id)")
+        let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
+        
+        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+            
+            if response.result.isSuccess {
+                if response.response?.statusCode == 201 {
+                    completion(true, 201, response.result.value as? NSDictionary)
+                } else {
+                    completion(false, response.response!.statusCode, response.result.value as? NSDictionary)
+                }
+            } else {
+                completion(false, response.response!.statusCode, response.result.value as? NSDictionary)
+            }
+        }
+
+    }
+    
+    static func downloadRecord(token: String, completion: @escaping (_ status: Bool,_ code: Int, _ result: [NSDictionary]?) -> ())
+    {
+        let url = URL(string: APIURL.downloadURL)
+        let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
+        
+        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+            
+            if response.result.isSuccess {
+                let data = (response.result.value as? NSDictionary)?["data"] as? [NSDictionary]
+                if response.response?.statusCode == 200 {
+                    completion(true, 200, data)
+                } else {
+                    completion(false, response.response!.statusCode, nil)
+                }
+            } else {
+                completion(false, response.response!.statusCode, nil)
+            }
+        }
     }
     
     static func postGrade(withToken token: String, identifier:Int, grade1: Int,comment1:String, grade2: Int, comment2:String, grade3: Int?,comment3:String?,grade4: Int?,comment4:String?, completion: @escaping (Bool?, Int?, NSDictionary?) -> ())

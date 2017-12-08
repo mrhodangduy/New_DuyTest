@@ -67,12 +67,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Initialize sign-in  FB
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
+        
+        // Handle Audio record
         print("\n\nSimulator path",FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0])
-        AudioRecorderManager.shared.setup()
+        
         
         
         // Active IQKeyboardManager
-        
         IQKeyboardManager.sharedManager().enable = true
         
         return true

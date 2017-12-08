@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="AssessmentRecordCell" customModule="Wodule" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="32"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="31.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1536-AF-0048" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bb5-Rr-rvC">
+                        <rect key="frame" x="36" y="7.5" width="108" height="18"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vhS-Rd-vEU" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
+                        <rect key="frame" x="190" y="4" width="80" height="25"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F7H-sM-hN1" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="80" height="25"/>
+                                <color key="backgroundColor" red="0.050676546990871429" green="0.19164103269577026" blue="0.087919391691684723" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                                <state key="normal" title="Start">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onClickStart:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="O85-lc-53B"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.53973293304443359" green="0.67717641592025757" blue="0.58983045816421509" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="F7H-sM-hN1" firstAttribute="leading" secondItem="vhS-Rd-vEU" secondAttribute="leading" id="0tr-Ha-G0U"/>
+                            <constraint firstAttribute="trailing" secondItem="F7H-sM-hN1" secondAttribute="trailing" id="5Dd-7N-5er"/>
+                            <constraint firstItem="F7H-sM-hN1" firstAttribute="top" secondItem="vhS-Rd-vEU" secondAttribute="top" id="K8R-jd-DBK"/>
+                            <constraint firstAttribute="height" constant="25" id="TVa-d2-5Lo"/>
+                            <constraint firstAttribute="bottom" secondItem="F7H-sM-hN1" secondAttribute="bottom" id="iap-6c-Bnw"/>
+                            <constraint firstAttribute="width" constant="80" id="jsA-64-reP"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="bb5-Rr-rvC" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="7Pa-TC-JpU"/>
+                    <constraint firstItem="bb5-Rr-rvC" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" constant="-70" id="JoY-p2-Fgl"/>
+                    <constraint firstItem="vhS-Rd-vEU" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="RcB-9a-XXO"/>
+                </constraints>
+            </tableViewCellContentView>
+            <constraints>
+                <constraint firstItem="vhS-Rd-vEU" firstAttribute="centerX" secondItem="KGk-i7-Jjw" secondAttribute="centerX" constant="70" id="Adg-Nm-Rsl"/>
+            </constraints>
+            <connections>
+                <outlet property="examIDLabel" destination="bb5-Rr-rvC" id="0tz-zE-NmU"/>
+                <outlet property="startButton" destination="F7H-sM-hN1" id="LTP-Vd-c0v"/>
+            </connections>
+            <point key="canvasLocation" x="-111" y="52"/>
+        </tableViewCell>
+    </objects>
+</document>

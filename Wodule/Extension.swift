@@ -328,4 +328,36 @@ extension UIViewController
         self.present(alert, animated: true, completion: nil)
     }
     
+    func openLocationSettings(){
+        let scheme:String = UIApplicationOpenSettingsURLString
+        if let url = URL(string: scheme) {
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url, options: [:],
+                                          completionHandler: {
+                                            (success) in
+                                            print("Open \(scheme): \(success)")
+                })
+            } else {
+                let success = UIApplication.shared.openURL(url)
+                print("Open \(scheme): \(success)")
+            }
+        }
+    }
+    
+    func displayAlertMicroPermission()
+    {
+        let alert = UIAlertController(title: "Wodule", message: "You need to grant Microphone permission to record exam.\n(Settings > Wodule > Microphone) ", preferredStyle: .alert)
+        let openSettingBtn = UIAlertAction(title: "Settings", style: .default) { (action) in
+            
+            self.openLocationSettings()
+            
+        }
+        let OKbtn = UIAlertAction(title: "Cancel", style: .default) { (okAction) in
+            
+        }
+        alert.addAction(openSettingBtn)
+        alert.addAction(OKbtn)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
 }

@@ -13,9 +13,9 @@ import Alamofire
 struct ManageAPI_Accounting
 {
     
-    static func getAccounting(witkToken token: String, completion: @escaping (Bool,Int?,NSDictionary?) -> ())
+    static func getAccounting(witkToken token: String,type: String, completion: @escaping (Bool,Int?,NSDictionary?) -> ())
     {
-        let url = URL(string: APIURL.accountingURL)
+        let url = URL(string: APIURL.baseURL + "/\(type)")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
 
         Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in

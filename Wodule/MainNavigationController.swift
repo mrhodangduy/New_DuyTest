@@ -2,7 +2,7 @@
 //  MainNavigationController.swift
 //  Wodule
 //
-//  Created by Paul on 11/8/17.
+//  Created by QTS Coder on 11/8/17.
 //  Copyright © 2017 QTS. All rights reserved.
 //
 

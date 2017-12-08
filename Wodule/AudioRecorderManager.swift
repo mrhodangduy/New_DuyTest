@@ -18,7 +18,7 @@ class AudioRecorderManager: NSObject {
     
     func setup(){
         
-         recordingSession = AVAudioSession.sharedInstance()
+        recordingSession = AVAudioSession.sharedInstance()
         
         do {
             
@@ -28,15 +28,13 @@ class AudioRecorderManager: NSObject {
             recordingSession.requestRecordPermission() {[weak self] (allowed: Bool) -> Void  in
                 
                 if allowed {
+                    
                     print("Recording Allowed")
                     
                 } else {
                     print("Recording Allowed Faild")
-                    
                 }
-                
             }
-
             
         } catch {
             print("Faild to setCategory",error.localizedDescription)
@@ -46,10 +44,7 @@ class AudioRecorderManager: NSObject {
             print("Error session is nil")
             return
         }
-        
-        
     }
-    
     
     func getUserDocumentsPath()->URL{
         
@@ -65,14 +60,13 @@ class AudioRecorderManager: NSObject {
         let path = getUserDocumentsPath().appendingPathComponent(fileName+".m4a")
         
         let audioURL = NSURL(fileURLWithPath: path.path)
-
        
         let recoredSt:[String:Any] = [
-            AVFormatIDKey:NSNumber(value: kAudioFormatAppleLossless),
+            AVFormatIDKey: Int(kAudioFormatAppleLossless),
             AVEncoderAudioQualityKey : AVAudioQuality.max.rawValue,
-            AVEncoderBitRateKey : 12000.0,
-            AVNumberOfChannelsKey: 1,
-            AVSampleRateKey : 44100.0
+            AVNumberOfChannelsKey: 2,
+            AVEncoderBitRateKey: 48000,
+            AVSampleRateKey : 44100
         ]
         
         do {
@@ -98,7 +92,6 @@ class AudioRecorderManager: NSObject {
         }
     }
     
-    
     var recorderTime: String?
     var recorderApc0: Float?
     var recorderPeak0:Float?
@@ -117,29 +110,21 @@ class AudioRecorderManager: NSObject {
             recorderApc0 = recorder.averagePower(forChannel: 0)
             recorderPeak0 = recorder.peakPower(forChannel: 0)
             
-            
         }
     }
-   
     
     func finishRecording()
     {
-        
         self.recorder?.stop()
         self.meterTimer?.invalidate()
-        
-        
-
     }
    
-    
-    
-
 }
 
 extension AudioRecorderManager:AVAudioRecorderDelegate{
     
     // Audio Recorder Delegate
+    
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         
         print("Audio Recorder did finish",flag)
@@ -148,6 +133,7 @@ extension AudioRecorderManager:AVAudioRecorderDelegate{
     func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder,error: Error?) {
         print("\(String(describing: error?.localizedDescription))")
     }
+    
     
 }
 

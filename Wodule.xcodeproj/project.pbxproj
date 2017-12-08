@@ -47,11 +47,18 @@
 		6362081B1F8B659C005D800F /* LoginWithGooglePlusDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6362081A1F8B659C005D800F /* LoginWithGooglePlusDelegate.swift */; };
 		63A36BF11F849F1A005857DE /* RoundTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36BF01F849F1A005857DE /* RoundTextView.swift */; };
 		63A36BF61F84A1DA005857DE /* Assessor_GradeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36BF51F84A1DA005857DE /* Assessor_GradeVC.swift */; };
-		63A36C021F84CEE4005857DE /* Assessor_AssessmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36C011F84CEE4005857DE /* Assessor_AssessmentVC.swift */; };
 		63A36C041F84CEF4005857DE /* Assessor_CalendarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36C031F84CEF4005857DE /* Assessor_CalendarVC.swift */; };
 		63A36C061F84D21D005857DE /* Assessor_OverviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36C051F84D21D005857DE /* Assessor_OverviewVC.swift */; };
 		63A36C081F84D230005857DE /* Assessor_AccountingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36C071F84D230005857DE /* Assessor_AccountingVC.swift */; };
 		63B018201FBD335E002F9308 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63B0181F1FBD335E002F9308 /* GoogleService-Info.plist */; };
+		63B0EF141FC7F8C9008A7ED1 /* AccountingWeeklyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B0EF121FC7F8C9008A7ED1 /* AccountingWeeklyCell.swift */; };
+		63B0EF151FC7F8C9008A7ED1 /* AccountingWeeklyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63B0EF131FC7F8C9008A7ED1 /* AccountingWeeklyCell.xib */; };
+		63B0EF191FC7F8F0008A7ED1 /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B0EF171FC7F8F0008A7ED1 /* HeaderCell.swift */; };
+		63B0EF1A1FC7F8F0008A7ED1 /* HeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63B0EF181FC7F8F0008A7ED1 /* HeaderCell.xib */; };
+		63B0EF1C1FC7FBF0008A7ED1 /* Assessor_Accounting_Month.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B0EF1B1FC7FBF0008A7ED1 /* Assessor_Accounting_Month.swift */; };
+		63BCC6731FDA88570014C5BA /* AssessmentRecordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BCC6711FDA88560014C5BA /* AssessmentRecordCell.swift */; };
+		63BCC6741FDA88570014C5BA /* AssessmentRecordCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63BCC6721FDA88570014C5BA /* AssessmentRecordCell.xib */; };
+		63BCC6761FDA8A4F0014C5BA /* Assessor_AssessmentRecordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BCC6751FDA8A4F0014C5BA /* Assessor_AssessmentRecordVC.swift */; };
 		63C57BEC1FA2CCFE00DC3B40 /* Examinee_InstructionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C57BEB1FA2CCFE00DC3B40 /* Examinee_InstructionVC.swift */; };
 		63C57BF01FA2F1F600DC3B40 /* Assessor_Part2VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C57BED1FA2F1F600DC3B40 /* Assessor_Part2VC.swift */; };
 		63C57BF11FA2F1F600DC3B40 /* Assessor_Part3VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C57BEE1FA2F1F600DC3B40 /* Assessor_Part3VC.swift */; };
@@ -132,11 +139,18 @@
 		6362081A1F8B659C005D800F /* LoginWithGooglePlusDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWithGooglePlusDelegate.swift; sourceTree = "<group>"; };
 		63A36BF01F849F1A005857DE /* RoundTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundTextView.swift; sourceTree = "<group>"; };
 		63A36BF51F84A1DA005857DE /* Assessor_GradeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_GradeVC.swift; sourceTree = "<group>"; };
-		63A36C011F84CEE4005857DE /* Assessor_AssessmentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_AssessmentVC.swift; sourceTree = "<group>"; };
 		63A36C031F84CEF4005857DE /* Assessor_CalendarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_CalendarVC.swift; sourceTree = "<group>"; };
 		63A36C051F84D21D005857DE /* Assessor_OverviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_OverviewVC.swift; sourceTree = "<group>"; };
 		63A36C071F84D230005857DE /* Assessor_AccountingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_AccountingVC.swift; sourceTree = "<group>"; };
 		63B0181F1FBD335E002F9308 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		63B0EF121FC7F8C9008A7ED1 /* AccountingWeeklyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountingWeeklyCell.swift; sourceTree = "<group>"; };
+		63B0EF131FC7F8C9008A7ED1 /* AccountingWeeklyCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountingWeeklyCell.xib; sourceTree = "<group>"; };
+		63B0EF171FC7F8F0008A7ED1 /* HeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
+		63B0EF181FC7F8F0008A7ED1 /* HeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderCell.xib; sourceTree = "<group>"; };
+		63B0EF1B1FC7FBF0008A7ED1 /* Assessor_Accounting_Month.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_Accounting_Month.swift; sourceTree = "<group>"; };
+		63BCC6711FDA88560014C5BA /* AssessmentRecordCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssessmentRecordCell.swift; sourceTree = "<group>"; };
+		63BCC6721FDA88570014C5BA /* AssessmentRecordCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AssessmentRecordCell.xib; sourceTree = "<group>"; };
+		63BCC6751FDA8A4F0014C5BA /* Assessor_AssessmentRecordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_AssessmentRecordVC.swift; sourceTree = "<group>"; };
 		63C57BEB1FA2CCFE00DC3B40 /* Examinee_InstructionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Examinee_InstructionVC.swift; sourceTree = "<group>"; };
 		63C57BED1FA2F1F600DC3B40 /* Assessor_Part2VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_Part2VC.swift; sourceTree = "<group>"; };
 		63C57BEE1FA2F1F600DC3B40 /* Assessor_Part3VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_Part3VC.swift; sourceTree = "<group>"; };
@@ -306,9 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				630BD8B61F821D9C00B24CA5 /* Examiner_HomeVC.swift */,
-				DA7560921F83F83B008DB772 /* AssessmentHistoryVC.swift */,
 				6306CEC31FA192630016A585 /* Examinee_ExamDetailVC.swift */,
-				DA7560941F83F84C008DB772 /* CalendarVC.swift */,
 				63F1459E1F8721FA00CD03BF /* Examinee_CategoriesVC.swift */,
 				DA7560961F83F85E008DB772 /* Instruction_GuideVC.swift */,
 				63C57BEB1FA2CCFE00DC3B40 /* Examinee_InstructionVC.swift */,
@@ -327,19 +339,35 @@
 				630BD8B81F821DAA00B24CA5 /* Assessor_HomeVC.swift */,
 				63A36C031F84CEF4005857DE /* Assessor_CalendarVC.swift */,
 				63A36C071F84D230005857DE /* Assessor_AccountingVC.swift */,
-				63A36C011F84CEE4005857DE /* Assessor_AssessmentVC.swift */,
+				63B0EF1B1FC7FBF0008A7ED1 /* Assessor_Accounting_Month.swift */,
 				63A36BF51F84A1DA005857DE /* Assessor_GradeVC.swift */,
 				63C57BED1FA2F1F600DC3B40 /* Assessor_Part2VC.swift */,
 				63C57BEE1FA2F1F600DC3B40 /* Assessor_Part3VC.swift */,
 				63C57BEF1FA2F1F600DC3B40 /* Assessor_Part4VC.swift */,
 				63A36C051F84D21D005857DE /* Assessor_OverviewVC.swift */,
+				63BCC6751FDA8A4F0014C5BA /* Assessor_AssessmentRecordVC.swift */,
 			);
 			name = Assessor;
+			sourceTree = "<group>";
+		};
+		63B0EF161FC7F8D7008A7ED1 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				63BCC6711FDA88560014C5BA /* AssessmentRecordCell.swift */,
+				63BCC6721FDA88570014C5BA /* AssessmentRecordCell.xib */,
+				63B0EF121FC7F8C9008A7ED1 /* AccountingWeeklyCell.swift */,
+				63B0EF131FC7F8C9008A7ED1 /* AccountingWeeklyCell.xib */,
+				63B0EF171FC7F8F0008A7ED1 /* HeaderCell.swift */,
+				63B0EF181FC7F8F0008A7ED1 /* HeaderCell.xib */,
+			);
+			name = Cell;
 			sourceTree = "<group>";
 		};
 		63D0FCCB1F85F2BE006347B0 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				DA7560921F83F83B008DB772 /* AssessmentHistoryVC.swift */,
+				DA7560941F83F84C008DB772 /* CalendarVC.swift */,
 				63D0FCCC1F85F2D6006347B0 /* EditProfileVC.swift */,
 				63F07F9E1FB06AF50088B860 /* MessagesCell.swift */,
 				63F07F9C1FB06AD90088B860 /* MessagesVC.swift */,
@@ -406,6 +434,7 @@
 				DAAD6B4E1F8530C600F45371 /* Assessor_Part4Cell.swift */,
 				DAAD6B501F8530DD00F45371 /* Assessor_OverViewCell.swift */,
 				63F06ADB1F8E24FF00DDC7E2 /* Assessor_HistoryCell.swift */,
+				63B0EF161FC7F8D7008A7ED1 /* Cell */,
 			);
 			name = Assessor;
 			sourceTree = "<group>";
@@ -491,14 +520,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				63D0FCCF1F85F2F8006347B0 /* Profile.storyboard in Resources */,
+				63B0EF151FC7F8C9008A7ED1 /* AccountingWeeklyCell.xib in Resources */,
 				630BD8891F81D72100B24CA5 /* LaunchScreen.storyboard in Resources */,
 				63B018201FBD335E002F9308 /* GoogleService-Info.plist in Resources */,
 				630BD8A81F81FC9300B24CA5 /* Assessor.storyboard in Resources */,
 				63F8CDB21FB1AED300B9341D /* loading.gif in Resources */,
+				63BCC6741FDA88570014C5BA /* AssessmentRecordCell.xib in Resources */,
 				630BD8861F81D72100B24CA5 /* Assets.xcassets in Resources */,
 				630BD8BB1F82293500B24CA5 /* Examinee.storyboard in Resources */,
 				630BD8841F81D72100B24CA5 /* Main.storyboard in Resources */,
 				630C09461FB194CB00DCF7A5 /* EventCell.xib in Resources */,
+				63B0EF1A1FC7F8F0008A7ED1 /* HeaderCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -550,6 +582,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Wodule/Pods-Wodule-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework",
@@ -568,6 +601,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSCalendar.framework",
@@ -598,6 +632,7 @@
 				630BD8AF1F821D5500B24CA5 /* NewUser_Page2VC.swift in Sources */,
 				63A36BF11F849F1A005857DE /* RoundTextView.swift in Sources */,
 				DAAD6B4D1F8530B700F45371 /* Assessor_Part3Cell.swift in Sources */,
+				63B0EF191FC7F8F0008A7ED1 /* HeaderCell.swift in Sources */,
 				63D6FB591F9F447900E7985D /* ManageAPI_Accounting.swift in Sources */,
 				630BD8A61F81DC8700B24CA5 /* UIVisualEffectViewX.swift in Sources */,
 				630BD8B71F821D9C00B24CA5 /* Examiner_HomeVC.swift in Sources */,
@@ -612,13 +647,14 @@
 				630BD8A51F81DC8700B24CA5 /* UIViewXRadialGradient.swift in Sources */,
 				6362081B1F8B659C005D800F /* LoginWithGooglePlusDelegate.swift in Sources */,
 				63A36C081F84D230005857DE /* Assessor_AccountingVC.swift in Sources */,
-				63A36C021F84CEE4005857DE /* Assessor_AssessmentVC.swift in Sources */,
 				63A36BF61F84A1DA005857DE /* Assessor_GradeVC.swift in Sources */,
 				63F43A561FA72B080070DEDD /* SplashScreenVC.swift in Sources */,
 				DAAD6B491F85309600F45371 /* Assessor_Part1Cell.swift in Sources */,
 				63C57BF01FA2F1F600DC3B40 /* Assessor_Part2VC.swift in Sources */,
 				630BD8B51F821D8000B24CA5 /* ForgotPasswordVC.swift in Sources */,
+				63BCC6761FDA8A4F0014C5BA /* Assessor_AssessmentRecordVC.swift in Sources */,
 				63C57BEC1FA2CCFE00DC3B40 /* Examinee_InstructionVC.swift in Sources */,
+				63B0EF1C1FC7FBF0008A7ED1 /* Assessor_Accounting_Month.swift in Sources */,
 				63F145A31F87330600CD03BF /* Part4VC.swift in Sources */,
 				63D0FCCD1F85F2D6006347B0 /* EditProfileVC.swift in Sources */,
 				DA75609B1F83F87F008DB772 /* Part1VC.swift in Sources */,
@@ -626,6 +662,7 @@
 				63D0FCD21F861AC2006347B0 /* EditProfileCell.swift in Sources */,
 				63C57BF11FA2F1F600DC3B40 /* Assessor_Part3VC.swift in Sources */,
 				DA7560991F83F874008DB772 /* Part2VC.swift in Sources */,
+				63BCC6731FDA88570014C5BA /* AssessmentRecordCell.swift in Sources */,
 				6347CF0A1F8C6FA5009D717D /* AuthInstagram.swift in Sources */,
 				DA7560A11F83F8A5008DB772 /* EndVC.swift in Sources */,
 				63F07F9D1FB06AD90088B860 /* MessagesVC.swift in Sources */,
@@ -650,6 +687,7 @@
 				63D0FCD51F864A47006347B0 /* Examinee_HistoryCell.swift in Sources */,
 				630BD8AB1F821D3000B24CA5 /* LicenseVC.swift in Sources */,
 				630BD8811F81D72100B24CA5 /* LoginVC.swift in Sources */,
+				63B0EF141FC7F8C9008A7ED1 /* AccountingWeeklyCell.swift in Sources */,
 				630BD8A01F81DC8700B24CA5 /* UISliderX.swift in Sources */,
 				630335971F944BD5002CA356 /* Part3VC.swift in Sources */,
 				DA1620771F8D16200056D7D3 /* AudioRecorderManager.swift in Sources */,

@@ -16,5 +16,7 @@ target 'Wodule' do
     pod 'FacebookCore'
     pod 'FacebookLogin'
     pod 'IQKeyboardManagerSwift'
-    pod 'ReachabilitySwift'    
+    pod 'ReachabilitySwift'
+    pod 'Charts', '3.0.1'
+
 end

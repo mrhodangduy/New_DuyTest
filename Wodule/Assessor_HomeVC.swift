@@ -54,13 +54,8 @@ class Assessor_HomeVC: UIViewController {
         
         asignDataInView()        
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.loadNewData), name: NSNotification.Name(rawValue: NOTIFI_UPDATED), object: nil)
         
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self)
-    }
+    }    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -169,25 +164,18 @@ class Assessor_HomeVC: UIViewController {
     {
         if Connectivity.isConnectedToInternet
         {
-            loadingShow()
             DispatchQueue.global(qos: .default).async {
                 UserInfoAPI.getUserInfo(withToken: self.token!, completion: { (users) in
                     
                     self.userInfomation = users!
                     DispatchQueue.main.async(execute: {
                         self.asignDataInView()
-                        self.loadingHide()
                         print("\nCURRENT USER INFO AFTER UPDATED: ------>\n",self.userInfomation)
                         
                     })
                     
                 })
             }
- 
-        }
-        else
-        {
-            self.displayAlertNetWorkNotAvailable()
         }
         
     }
@@ -195,10 +183,16 @@ class Assessor_HomeVC: UIViewController {
     @IBAction func assessmentHistoryTap(_ sender: Any) {
         if Connectivity.isConnectedToInternet
         {
-            let assessmenthistory = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessmenthistoryVC") as! AssessmentHistoryVC
-            assessmenthistory.type = "grades"
-            assessmenthistory.userID = userInfomation["id"] as? Int
-            self.navigationController?.pushViewController(assessmenthistory, animated: true)
+            let assessmentrecordVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessmentrecordVC") as! Assessor_AssessmentRecordVC
+            self.navigationController?.pushViewController(assessmentrecordVC, animated: true)
+            
+            
+            
+//            let assessmenthistory = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessmenthistoryVC") as! AssessmentHistoryVC
+//            assessmenthistory.type = "grades"
+//            assessmenthistory.userID = userInfomation["id"] as? Int
+//            self.navigationController?.pushViewController(assessmenthistory, animated: true)
+
         }
         else
         {
@@ -211,6 +205,7 @@ class Assessor_HomeVC: UIViewController {
         if Connectivity.isConnectedToInternet
         {
             let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
+
             self.navigationController?.pushViewController(accountingVC, animated: true)
         }
         else
@@ -225,7 +220,8 @@ class Assessor_HomeVC: UIViewController {
         if Connectivity.isConnectedToInternet
         {
             let calendarVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "calendarVC") as! CalendarVC
-            self.navigationController?.pushViewController(calendarVC, animated: true)        }
+            self.navigationController?.pushViewController(calendarVC, animated: true)
+        }
         else
         {
             self.displayAlertNetWorkNotAvailable()
@@ -237,15 +233,60 @@ class Assessor_HomeVC: UIViewController {
         
         if Connectivity.isConnectedToInternet
         {
-            let allrecordVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "allrecordVC") as! Assessor_AssessmentVC
-            self.navigationController?.pushViewController(allrecordVC, animated: true)
+            self.loadingShow()
+            ExamRecord.getAllRecord(completion: { (records: [NSDictionary]?, code: Int?, error: NSDictionary?) in
+                print(records as Any)
+                if let exams = records
+                {
+                    let exam = exams[0]
+                    DispatchQueue.main.async {
+                        let part1VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "gradeVC") as! Assessor_GradeVC
+                        
+                        part1VC.Exam = exam
+                        print(exam)
+                        let identifier = exam["identifier"] as? Int
+                        userDefault.set(identifier, forKey: IDENTIFIER_KEY)
+                        userDefault.synchronize()
+                        self.navigationController?.pushViewController(part1VC, animated: true)
+                    }
+                } else if code == 200
+                {
+                    DispatchQueue.main.async {
+                        self.alertMissingText(mess: "No exam to grade.", textField: nil)
+                    }
+                } else if error?["code"] as! Int == 429
+                {
+                    if let errorMess = (error?["error"] as? String)
+                    {
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            self.alertMissingText(mess: "\(errorMess)\n(ErrorCode:\(error?["code"] as! Int))", textField: nil)
+                        })
+                    } else {
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            self.alertMissingText(mess: "Server error. Try again later.", textField: nil)
+                        })
+
+                    }
+                }
+                else if code == 401
+                {
+                    if let error = error?["error"] as? String
+                    {
+                        if error.contains("Token")
+                        {
+                            self.loadingHide()
+                            self.onHandleTokenInvalidAlert()
+                        }
+                    }
+                }
+            })
         }
         else
         {
             self.displayAlertNetWorkNotAvailable()
         }
-        
-
         
     }
     
@@ -261,7 +302,6 @@ class Assessor_HomeVC: UIViewController {
             self.displayAlertNetWorkNotAvailable()
         }
         
-
     }
     
     
@@ -274,7 +314,7 @@ class Assessor_HomeVC: UIViewController {
             editprofileVC.socialAvatar = self.socialAvatar
             editprofileVC.socialIdentifier = self.socialIdentifier
             editprofileVC.userInfo = self.userInfomation
-            
+            editprofileVC.editDelegate = self
             self.navigationController?.pushViewController(editprofileVC, animated: true)
         }
         else
@@ -333,3 +373,19 @@ class Assessor_HomeVC: UIViewController {
         userDefault.synchronize()
     }
 }
+
+extension Assessor_HomeVC: EditProfileDelegate
+{
+    func updateDone() {
+        self.loadNewData()
+    }
+}
+
+
+
+
+
+
+
+
+

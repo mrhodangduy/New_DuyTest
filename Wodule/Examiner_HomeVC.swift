@@ -12,6 +12,7 @@ import FBSDKLoginKit
 import FacebookLogin
 import SVProgressHUD
 import Reachability
+import AVFoundation
 
 class Examiner_HomeVC: UIViewController {
     
@@ -53,10 +54,7 @@ class Examiner_HomeVC: UIViewController {
         asignDataInView()
         
         userDefault.set(userInfomation["id"] as! Int, forKey: USERID_STRING)
-        userDefault.synchronize()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.loadNewData), name: NSNotification.Name(rawValue: NOTIFI_UPDATED), object: nil)
-        
+        userDefault.synchronize()        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -157,16 +155,11 @@ class Examiner_HomeVC: UIViewController {
     {
         if Connectivity.isConnectedToInternet
         {
-            loadingShow()
             DispatchQueue.global(qos: .default).async {
-                UserInfoAPI.getUserInfo(withToken: self.token!, completion: { (users) in
-                    
+                UserInfoAPI.getUserInfo(withToken: self.token!, completion: { (users) in                    
                     self.userInfomation = users!
                     DispatchQueue.main.async(execute: {
-                        
                         self.asignDataInView()
-                        self.loadingHide()
-                        
                         print("\nCURRENT USER INFO AFTER UPDATED:\n------>",self.userInfomation)
                         
                     })
@@ -197,6 +190,7 @@ class Examiner_HomeVC: UIViewController {
         editprofileVC.userInfo = self.userInfomation
         editprofileVC.socialAvatar = self.socialAvatar
         editprofileVC.socialIdentifier = self.socialIdentifier
+        editprofileVC.editDelegate = self
         
         self.navigationController?.pushViewController(editprofileVC, animated: true)
         
@@ -217,8 +211,6 @@ class Examiner_HomeVC: UIViewController {
         {
             self.displayAlertNetWorkNotAvailable()
         }
-        
-        
     }
     
     @IBAction func calendarTap(_ sender: Any) {
@@ -231,15 +223,29 @@ class Examiner_HomeVC: UIViewController {
         {
             self.displayAlertNetWorkNotAvailable()
         }
-        
-        
+    }
+    
+    func onHandleDoExam()
+    {
+        let instruction_guideVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "instruction_guideVC") as! Instruction_GuideVC
+        self.navigationController?.pushViewController(instruction_guideVC, animated: true)
+
     }
     
     @IBAction func startAssessmentTap(_ sender: Any) {
         if Connectivity.isConnectedToInternet
         {
-            let instruction_guideVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "instruction_guideVC") as! Instruction_GuideVC
-            self.navigationController?.pushViewController(instruction_guideVC, animated: true)
+            if AVAudioSession.sharedInstance().recordPermission() == AVAudioSessionRecordPermission.undetermined {
+                AudioRecorderManager.shared.setup()
+                
+            } else if AVAudioSession.sharedInstance().recordPermission() == AVAudioSessionRecordPermission.granted {
+                
+                onHandleDoExam()
+                
+            } else {
+                self.displayAlertMicroPermission()
+                print("Denied")
+            }            
         }
         else
         {
@@ -298,13 +304,17 @@ class Examiner_HomeVC: UIViewController {
         
         userDefault.synchronize()
     }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self)
-    }
+
     
 }
 
+
+extension Examiner_HomeVC: EditProfileDelegate
+{
+    func updateDone() {
+        self.loadNewData()
+    }
+}
 
 
 

@@ -20,11 +20,11 @@ class APIURL{
     static let allrecordURL = "http://wodule.io/api/records"
     static let getCodeInfoURL = "http://wodule.io/api/code"
     static let updateSocialInfoURL = "http://wodule.io/api/socialite"
-    static let getAllrecordURL = "http://wodule.io/api/records?page="
+    static let getAllrecordURL = "http://wodule.io/api/records"
     static let accountingURL = "http://wodule.io/api/accounting"
     static let messageURL = "http://wodule.io/api/message"
     static let calendarURL = "http://wodule.io/api/calendars"
-
+    static let downloadURL = "http://wodule.io/api/downloads"
     
 }
 

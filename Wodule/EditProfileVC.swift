@@ -10,6 +10,10 @@ import UIKit
 import SDWebImage
 import Alamofire
 
+protocol EditProfileDelegate {
+    func updateDone()
+}
+
 class EditProfileVC: UIViewController {
     
     @IBOutlet weak var lbb_Type: UILabel!
@@ -54,6 +58,8 @@ class EditProfileVC: UIViewController {
     
     var socialAvatar:URL!
     var socialIdentifier:String!
+    
+    var editDelegate: EditProfileDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -483,7 +489,7 @@ class EditProfileVC: UIViewController {
                     
                     if status
                     {
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: NOTIFI_UPDATED), object: self)
+                        self.editDelegate.updateDone()
                         DispatchQueue.main.async(execute: {
                             print("\n----> UPDATE SUCCESSFUL")
                             self.loadingHide()

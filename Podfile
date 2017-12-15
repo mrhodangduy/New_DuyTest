@@ -18,5 +18,5 @@ target 'Wodule' do
     pod 'IQKeyboardManagerSwift'
     pod 'ReachabilitySwift'
     pod 'Charts', '3.0.1'
-
+    pod 'SQLite.swift', '0.11.3'
 end

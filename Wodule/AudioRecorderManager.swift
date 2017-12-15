@@ -22,7 +22,7 @@ class AudioRecorderManager: NSObject {
         
         do {
             
-            try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.defaultToSpeaker])
+            try recordingSession.setCategory(AVAudioSessionCategoryRecord, with: [.defaultToSpeaker])
             try recordingSession.setActive(true)
             
             recordingSession.requestRecordPermission() {[weak self] (allowed: Bool) -> Void  in
@@ -61,34 +61,31 @@ class AudioRecorderManager: NSObject {
         
         let audioURL = NSURL(fileURLWithPath: path.path)
        
-        let recoredSt:[String:Any] = [
-            AVFormatIDKey: Int(kAudioFormatAppleLossless),
-            AVEncoderAudioQualityKey : AVAudioQuality.max.rawValue,
-            AVNumberOfChannelsKey: 2,
-            AVEncoderBitRateKey: 48000,
-            AVSampleRateKey : 44100
-        ]
-        
+        let recordSettings = [
+            AVFormatIDKey: kAudioFormatAppleLossless,
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue,
+            AVEncoderBitRateKey: 8,
+            AVNumberOfChannelsKey: 1,
+            AVSampleRateKey: 44100.0] as [String : Any]
         do {
-            recorder = try AVAudioRecorder(url: audioURL as URL, settings: recoredSt)
+            recorder = try AVAudioRecorder(url: audioURL as URL, settings: recordSettings)
             recorder?.delegate = self
             
             recorder?.isMeteringEnabled = true
-//            recorder?.prepareToRecord()
+            recorder?.prepareToRecord()
             
-            recorder?.record()
+            recorder?.record()            
             
-            
-            self.meterTimer = Timer.scheduledTimer(timeInterval: 0.1,
-                                                   target:self,
-                                                   selector:#selector(AudioRecorderManager.updateAudioMeter(timer:)),
-                                                   userInfo:nil,
-                                                   repeats:true)
             result(true, audioURL)
             print("Recording")
-            
+            print(recorder?.settings)
+
         } catch {
+            
+            print(error.localizedDescription)
             result(false, nil)
+            print(recorder?.settings)
+
         }
     }
     

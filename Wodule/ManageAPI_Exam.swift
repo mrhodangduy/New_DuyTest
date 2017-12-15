@@ -141,24 +141,26 @@ struct ExamRecord
     }
     
     
-    static func getUniqueRecord(token: String, id: Int, completion: @escaping (_ status: Bool,_ code: Int, _ result: NSDictionary?) -> ())
+    static func getUniqueRecord(token: String, ids: [Int], completion: @escaping (_ status: Bool) -> ())
     {
-        let url = URL(string: APIURL.getAllrecordURL + "/\(id)")
-        let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
-        
-        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+        var status: Bool!
+        var i = 0
+        while i < ids.count {
+            let url = URL(string: APIURL.getAllrecordURL + "/\(ids[i])")
+            let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
             
-            if response.result.isSuccess {
-                if response.response?.statusCode == 201 {
-                    completion(true, 201, response.result.value as? NSDictionary)
-                } else {
-                    completion(false, response.response!.statusCode, response.result.value as? NSDictionary)
-                }
-            } else {
-                completion(false, response.response!.statusCode, response.result.value as? NSDictionary)
+            
+            
+            Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+                
+                status = true
+                
             }
+            i += 1
         }
-
+        completion(status)
+        
+        
     }
     
     static func downloadRecord(token: String, completion: @escaping (_ status: Bool,_ code: Int, _ result: [NSDictionary]?) -> ())

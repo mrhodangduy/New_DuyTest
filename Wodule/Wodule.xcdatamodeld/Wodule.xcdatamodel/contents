@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16E195" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ExamDownload" representedClassName="ExamDownload" syncable="YES" codeGenerationType="class">
+        <attribute name="audio_1" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="audio_2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="audio_3" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="audio_4" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="comment_1" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="comment_2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="comment_3" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="comment_4" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="exam" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="examinee" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="examQuestionaireFour" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="examQuestionaireOne" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="examQuestionaireThree" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="examQuestionaireTwo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="score_1" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="score_2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="score_3" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="score_4" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="ExamDownload" positionX="-63" positionY="-18" width="128" height="345"/>
+    </elements>
+</model>

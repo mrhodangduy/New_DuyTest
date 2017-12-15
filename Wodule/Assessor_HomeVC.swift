@@ -181,23 +181,9 @@ class Assessor_HomeVC: UIViewController {
     }
     
     @IBAction func assessmentHistoryTap(_ sender: Any) {
-        if Connectivity.isConnectedToInternet
-        {
-            let assessmentrecordVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessmentrecordVC") as! Assessor_AssessmentRecordVC
-            self.navigationController?.pushViewController(assessmentrecordVC, animated: true)
-            
-            
-            
-//            let assessmenthistory = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessmenthistoryVC") as! AssessmentHistoryVC
-//            assessmenthistory.type = "grades"
-//            assessmenthistory.userID = userInfomation["id"] as? Int
-//            self.navigationController?.pushViewController(assessmenthistory, animated: true)
-
-        }
-        else
-        {
-            self.displayAlertNetWorkNotAvailable()
-        }
+        let assessmentrecordVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessmentrecordVC") as! Assessor_AssessmentRecordVC
+        assessmentrecordVC.assessorID = userInfomation["id"] as! Int64
+        self.navigationController?.pushViewController(assessmentrecordVC, animated: true)
         
     }
     
@@ -211,8 +197,7 @@ class Assessor_HomeVC: UIViewController {
         else
         {
             self.displayAlertNetWorkNotAvailable()
-        }
-        
+        }        
         
     }
     

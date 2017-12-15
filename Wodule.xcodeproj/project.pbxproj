@@ -64,6 +64,8 @@
 		63C57BF11FA2F1F600DC3B40 /* Assessor_Part3VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C57BEE1FA2F1F600DC3B40 /* Assessor_Part3VC.swift */; };
 		63C57BF21FA2F1F600DC3B40 /* Assessor_Part4VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C57BEF1FA2F1F600DC3B40 /* Assessor_Part4VC.swift */; };
 		63CCBE211FB2A5F8005FD1AE /* ReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CCBE201FB2A5F8005FD1AE /* ReachabilityManager.swift */; };
+		63CCF5541FE3B84C00241056 /* DatabaseManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CCF5531FE3B84C00241056 /* DatabaseManagement.swift */; };
+		63CE81DF1FDE1F7E00563199 /* Wodule.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 63CE81DD1FDE1F7E00563199 /* Wodule.xcdatamodeld */; };
 		63D0FCCD1F85F2D6006347B0 /* EditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D0FCCC1F85F2D6006347B0 /* EditProfileVC.swift */; };
 		63D0FCCF1F85F2F8006347B0 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63D0FCCE1F85F2F8006347B0 /* Profile.storyboard */; };
 		63D0FCD21F861AC2006347B0 /* EditProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D0FCD11F861AC2006347B0 /* EditProfileCell.swift */; };
@@ -156,6 +158,8 @@
 		63C57BEE1FA2F1F600DC3B40 /* Assessor_Part3VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_Part3VC.swift; sourceTree = "<group>"; };
 		63C57BEF1FA2F1F600DC3B40 /* Assessor_Part4VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_Part4VC.swift; sourceTree = "<group>"; };
 		63CCBE201FB2A5F8005FD1AE /* ReachabilityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityManager.swift; sourceTree = "<group>"; };
+		63CCF5531FE3B84C00241056 /* DatabaseManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManagement.swift; sourceTree = "<group>"; };
+		63CE81DE1FDE1F7E00563199 /* Wodule.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Wodule.xcdatamodel; sourceTree = "<group>"; };
 		63D0FCCC1F85F2D6006347B0 /* EditProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileVC.swift; sourceTree = "<group>"; };
 		63D0FCCE1F85F2F8006347B0 /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		63D0FCD11F861AC2006347B0 /* EditProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileCell.swift; sourceTree = "<group>"; };
@@ -227,6 +231,7 @@
 			children = (
 				DA1620711F8D0B5E0056D7D3 /* Wodule.entitlements */,
 				63B0181F1FBD335E002F9308 /* GoogleService-Info.plist */,
+				63CE81DD1FDE1F7E00563199 /* Wodule.xcdatamodeld */,
 				630BD8BF1F82379900B24CA5 /* Model */,
 				630BD8BC1F82350300B24CA5 /* View */,
 				630BD8A91F821D0800B24CA5 /* Controller */,
@@ -296,6 +301,7 @@
 				63F145A41F8772E900CD03BF /* Wodule-Bridging-Header.h */,
 				63D6FB581F9F447900E7985D /* ManageAPI_Accounting.swift */,
 				63CCBE201FB2A5F8005FD1AE /* ReachabilityManager.swift */,
+				63CCF5531FE3B84C00241056 /* DatabaseManagement.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -595,6 +601,7 @@
 				"${BUILT_PRODUCTS_DIR}/JWGCircleCounter/JWGCircleCounter.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -614,6 +621,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JWGCircleCounter.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -638,6 +646,7 @@
 				630BD8B71F821D9C00B24CA5 /* Examiner_HomeVC.swift in Sources */,
 				63F07F9F1FB06AF50088B860 /* MessagesCell.swift in Sources */,
 				63F1459F1F8721FA00CD03BF /* Examinee_CategoriesVC.swift in Sources */,
+				63CE81DF1FDE1F7E00563199 /* Wodule.xcdatamodeld in Sources */,
 				DAAD6B511F8530DD00F45371 /* Assessor_OverViewCell.swift in Sources */,
 				630BD89D1F81DC8700B24CA5 /* UIButtonX.swift in Sources */,
 				6347CF081F8C6819009D717D /* InstagramLoginVC.swift in Sources */,
@@ -662,6 +671,7 @@
 				63D0FCD21F861AC2006347B0 /* EditProfileCell.swift in Sources */,
 				63C57BF11FA2F1F600DC3B40 /* Assessor_Part3VC.swift in Sources */,
 				DA7560991F83F874008DB772 /* Part2VC.swift in Sources */,
+				63CCF5541FE3B84C00241056 /* DatabaseManagement.swift in Sources */,
 				63BCC6731FDA88570014C5BA /* AssessmentRecordCell.swift in Sources */,
 				6347CF0A1F8C6FA5009D717D /* AuthInstagram.swift in Sources */,
 				DA7560A11F83F8A5008DB772 /* EndVC.swift in Sources */,
@@ -889,6 +899,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		63CE81DD1FDE1F7E00563199 /* Wodule.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				63CE81DE1FDE1F7E00563199 /* Wodule.xcdatamodel */,
+			);
+			currentVersion = 63CE81DE1FDE1F7E00563199 /* Wodule.xcdatamodel */;
+			path = Wodule.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 630BD8731F81D72100B24CA5 /* Project object */;
 }

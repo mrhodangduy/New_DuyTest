@@ -24,7 +24,7 @@ class APIURL{
     static let accountingURL = "http://wodule.io/api/accounting"
     static let messageURL = "http://wodule.io/api/message"
     static let calendarURL = "http://wodule.io/api/calendars"
-    static let downloadURL = "http://wodule.io/api/downloads"
+    static let downloadURL = "http://wodule.io/api/downloads?page="
     
 }
 
@@ -51,6 +51,7 @@ let ASSESSOR_STORYBOARD = "Assessor"
 let EXAMINEE_STORYBOARD = "Examinee"
 let MAIN_STORYBOARD = "Main"
 let PROFILE_STORYBOARD = "Profile"
+let OFFLINE_STORYBOARD = "Offline"
 
 let userDefault = UserDefaults.standard
 let TOKEN_STRING = "token"

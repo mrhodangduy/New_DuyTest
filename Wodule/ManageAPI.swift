@@ -380,7 +380,7 @@ struct UserInfoAPI
                     if response.result.isSuccess
                     {
                         let json = response.result.value as? [String:AnyObject]
-                        print("\nJSON DATA:\n---->", json!)
+                        print("\nJSON DATA:\n---->", json as Any)
                         
                         
                         if let token = json?["token"] as? String

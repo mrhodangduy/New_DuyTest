@@ -12,6 +12,31 @@ import Alamofire
 
 struct ExamRecord
 {
+
+    static func downloadAudioFile(audioUrl: String, saveUrl: String, completion: @escaping (Bool, NSDictionary?) -> ())
+    {
+        let destination: DownloadRequest.DownloadFileDestination = {_, _ in
+            
+            let directoryUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let file  = directoryUrl.appendingPathComponent(saveUrl, isDirectory: false)
+            return (file, [.createIntermediateDirectories, .removePreviousFile])
+        }
+        
+        let url = URL(string: audioUrl)
+        
+        Alamofire.download(url!, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil, to: destination).responseJSON { (response) in
+            
+            print("audioURL", audioUrl)
+            
+            if response.result.error == nil {
+                completion(true, response.result.value as? NSDictionary)
+            } else {
+                completion(false, response.result.value as? NSDictionary)
+            }
+        }
+    }
+    
+    
     static func uploadExam(withToken token:String, idExam: Int, audiofile1: Data?,audiofile2: Data?,audiofile3: Data?,audiofile4: Data?, completion: @escaping (Bool?, NSDictionary?) -> ())
     {
         let url = URL(string: "http://wodule.io/api/exams/\(idExam)/records")
@@ -141,44 +166,51 @@ struct ExamRecord
     }
     
     
-    static func getUniqueRecord(token: String, ids: [Int], completion: @escaping (_ status: Bool) -> ())
+    static func getUniqueRecord(token: String, id: Int)
     {
-        var status: Bool!
-        var i = 0
-        while i < ids.count {
-            let url = URL(string: APIURL.getAllrecordURL + "/\(ids[i])")
-            let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
-            
-            
-            
-            Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
-                
-                status = true
-                
-            }
-            i += 1
+        let url = URL(string: APIURL.getAllrecordURL + "/\(id)")
+        let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
+        
+        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+            print("@@@@@@@@@@@ Result")
+            print(response.result.value as Any)
         }
-        completion(status)
-        
-        
-    }
     
-    static func downloadRecord(token: String, completion: @escaping (_ status: Bool,_ code: Int, _ result: [NSDictionary]?) -> ())
+    }
+
+    static func downloadRecord(token: String, page: Int, completion: @escaping (_ status: Bool,_ code: Int, _ result: [NSDictionary]?, _ totalPage: Int) -> ())
     {
-        let url = URL(string: APIURL.downloadURL)
+        let url = URL(string: APIURL.downloadURL + "\(page)")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
         Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
+            let code = response.response!.statusCode
             if response.result.isSuccess {
-                let data = (response.result.value as? NSDictionary)?["data"] as? [NSDictionary]
-                if response.response?.statusCode == 200 {
-                    completion(true, 200, data)
-                } else {
-                    completion(false, response.response!.statusCode, nil)
+                let json = response.result.value as? NSDictionary
+                print("JSON",json as Any)
+                if let data = json?["data"] as? [NSDictionary]
+                {
+                    print("DATA",data)
+                    if data.count != 0
+                    {
+                        guard let meta = json?["meta"] as? NSDictionary, let pagination = meta["pagination"] as? NSDictionary, let total_pages = pagination["total_pages"] as? Int else {return}
+                        
+                        completion(true, code, data, total_pages)
+                    }
+                    else
+                    {
+                        completion(true,code,data, 1)
+                    }
+                    
                 }
+                else
+                {
+                    completion(false,code, nil, 1)
+                }
+                
             } else {
-                completion(false, response.response!.statusCode, nil)
+                completion(false,code, nil, 1)
             }
         }
     }

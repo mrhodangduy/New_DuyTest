@@ -16,7 +16,7 @@ class AccountingWeeklyCell: UITableViewCell {
     @IBOutlet weak var ratioWithTotalView: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

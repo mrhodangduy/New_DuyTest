@@ -17,7 +17,7 @@ struct ManageAPI_Accounting
     {
         let url = URL(string: APIURL.baseURL + "/\(type)")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
-
+        
         Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
             if response.result.isSuccess

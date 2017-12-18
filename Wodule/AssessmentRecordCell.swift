@@ -9,7 +9,7 @@
 import UIKit
 
 protocol OfflineRecordDelegate {
-    func onClickStart(id: Int64)
+    func onClickStart(indexPath: IndexPath)
 }
 
 class AssessmentRecordCell: UITableViewCell {
@@ -17,12 +17,12 @@ class AssessmentRecordCell: UITableViewCell {
     @IBOutlet weak var examIDLabel: UILabel!
     @IBOutlet weak var startButton: UIButtonX!
     
-    var id:Int64!
+    var indexPath:IndexPath!
     var delegate: OfflineRecordDelegate!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-//        startButton.isHidden = true
+        startButton.isHidden = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -32,7 +32,7 @@ class AssessmentRecordCell: UITableViewCell {
     }
     @IBAction func onClickStart(_ sender: Any) {
         
-        delegate.onClickStart(id: self.id)
+        delegate.onClickStart(indexPath: indexPath)
         
     }
     

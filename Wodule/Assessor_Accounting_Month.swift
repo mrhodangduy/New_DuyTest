@@ -57,16 +57,12 @@ class Assessor_Accounting_Month: UIViewController {
         // Refresh chart with new data
         pieChartView.notifyDataSetChanged()
         
-        
     }
-    
     
     @IBAction func onClickBack(_ sender: Any) {
         
         self.navigationController?.popViewController(animated: true)
     }
-    
-
 }
 
 extension Assessor_Accounting_Month: UITableViewDataSource, UITableViewDelegate
@@ -79,14 +75,15 @@ extension Assessor_Accounting_Month: UITableViewDataSource, UITableViewDelegate
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountingWeeklyCell", for: indexPath) as! AccountingWeeklyCell
-        if indexPath.row == 1
+        if indexPath.section == 1
         {
             cell.ratioWithTotalView.constant = cell.totalView.frame.width * 2/3
         }
-        if indexPath.row == 2
+        if indexPath.section == 2
         {
             cell.ratioWithTotalView.constant = cell.totalView.frame.width * 1/3
         }
+        
         return cell
     }
     

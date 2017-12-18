@@ -1,5 +1,5 @@
 //
-//  Assessor_Part1VC.swift
+//  Assessor_Part4VC.swift
 //  Wodule
 //
 //  Created by QTS Coder on 10/4/17.
@@ -9,51 +9,47 @@
 import UIKit
 import AVFoundation
 
+class Offline_Part4: UIViewController {
 
-class Assessor_GradeVC: UIViewController {
-    
-    @IBOutlet weak var tv_Content: UITextView!
-    @IBOutlet weak var tv_Comment: RoundTextView!
-    @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var containerViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var decreaseBtn: UIButtonX!
-    @IBOutlet weak var increaseBtn: UIButtonX!
-    @IBOutlet weak var img_Question: UIImageViewX!
-    @IBOutlet weak var controlFontSizeView: UIView!
-    @IBOutlet weak var titleQuestion: UILabel!
-    @IBOutlet weak var controlImageView: UIView!
     
-    @IBOutlet weak var play_pauseBtn: UIButton!
     @IBOutlet var dataTableView: UITableView!
     var backgroundView:UIView!
+
+    @IBOutlet weak var titleQuestion: UILabel!
+    @IBOutlet weak var controlFontSizeView: UIView!
+    @IBOutlet weak var controlImageView: UIView!
+    @IBOutlet weak var tv_Content: UITextView!
+    @IBOutlet weak var img_Question: UIImageViewX!
+    @IBOutlet weak var tv_Comment: RoundTextView!
     @IBOutlet weak var scoreBtn: UIButton!
-    
-    var isExpanding:Bool!
-    var isPlaying:Bool!
-    var originalHeight:CGFloat!
-    var currentPlayer: AVAudioPlayer?
-    var data: Data?
-    var isTapped:Bool!    
-    
-    var Exam:NSDictionary!
-    
+    @IBOutlet weak var play_pauseBtn: UIButton!
     var score = 0
-    let token = userDefault.object(forKey: TOKEN_STRING) as? String
+    var Exam: ExamDataStruct!
+
+    var isExpanding:Bool!
+    var originalHeight:CGFloat!
+    var isPlaying:Bool!
+    var currentPlayer: AVAudioPlayer?
+    var isTapped:Bool!
+
+    var data1: Data?
+    var data2: Data?
+    var data3: Data?
+    var data4: Data?
     
     func onHandleSetupAudio()
     {
-        if Connectivity.isConnectedToInternet
-        {
-            currentPlayer = AVAudioPlayer()
-            let url = URL(string: Exam["audio_1"] as! String)
+        currentPlayer = AVAudioPlayer()
+            let url = getAudioUrlOffline(saveName: "audio_1", examinerId: Exam.examinerId, identifier: Exam.identifier)
             play_pauseBtn.isHidden = true
             self.loadingShow()
             DispatchQueue.global(qos: .background).async {
                 do
                 {
-                    self.data = try Data(contentsOf: url!)
+                    self.data4 = try Data(contentsOf: url)
                     do {
-                        self.currentPlayer = try AVAudioPlayer(data: self.data!)
+                        self.currentPlayer = try AVAudioPlayer(data: self.data4!)
                         DispatchQueue.main.async(execute: {
                             self.currentPlayer?.play()
                             self.currentPlayer?.pause()
@@ -65,20 +61,15 @@ class Assessor_GradeVC: UIViewController {
                     }
                     catch
                     {
+                        self.loadingHide()
                         print("cannot play")
                     }
                 }
                 catch
                 {
+                    self.loadingHide()
                     print("Cannot get data")
                 }
-            }
-            
-        }
-        else
-        {
-            play_pauseBtn.isHidden = true
-            self.displayAlertNetWorkNotAvailable()
         }
     }
     
@@ -96,16 +87,11 @@ class Assessor_GradeVC: UIViewController {
         dataTableView.dataSource = self
         dataTableView.delegate = self
         
-        
-        img_Question.contentMode = .scaleAspectFit
-        
-        
-        if ((Exam?["examQuestionaireOne"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        if ((Exam.examQuestionaireFour)?.hasPrefix("http://wodule.io/user/"))!
         {
-            
-            titleQuestion.text = TITLEPHOTO
             img_Question.isHidden = false
-            img_Question.sd_setImage(with: URL(string: Exam["examQuestionaireOne"] as! String), placeholderImage: nil, options: [], completed: nil)
+            titleQuestion.text = TITLEPHOTO
+            img_Question.sd_setImage(with: URL(string: Exam.examQuestionaireFour!), placeholderImage: nil, options: [], completed: nil)
             controlFontSizeView.isHidden = true
             controlImageView.isHidden = false
             tv_Content.isHidden = true
@@ -118,86 +104,42 @@ class Assessor_GradeVC: UIViewController {
             controlImageView.isHidden = true
             tv_Content.isHidden = false
             tv_Content.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
-            tv_Content.text = Exam["examQuestionaireOne"] as! String
+            tv_Content.text = Exam.examQuestionaireFour!
         }
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        tv_Content.isScrollEnabled = false
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        tv_Content.isScrollEnabled = true
-        
+
     }
     
     @IBAction func onClickPromtQuestion(_ sender: Any) {
         
-//        if ((Exam?["examQuestionaireOne"] as? String)?.hasPrefix("http://wodule.io/user/")) == true
-//        {
-//            let promt_1 = Exam?["promt1_1"] as? String
-//            let promt_2 = Exam?["promt1_2"] as? String
-//            let promt_3 = Exam?["promt1_3"] as? String
-//            self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
-//        }
-    }    
+    }
     
-    @IBAction func zoomTextTap(_ sender: Any) {
+    
+    @IBAction func onClickDecrease(_ sender: Any) {
         
-        let button = sender as! UIButton
+        tv_Content.decreaseFontSize()
+    }
+    
+    @IBAction func onClickIncrease(_ sender: Any) {
+        tv_Content.increaseFontSize()
+    }
+    
+    @IBAction func playAudioTap(_ sender: UIButton) {
         
-        if button == self.decreaseBtn
+        play_pauseAudio(button: sender, isPlay: isTapped)
+        
+        if isPlaying
         {
-            tv_Content.decreaseFontSize()
-        }
-        else if button == self.increaseBtn
-        {
-            tv_Content.increaseFontSize()
+            pause()
             
         }
         else
         {
-            return
+            resume()
+            
         }
         
-    }
-    
-    @IBAction func expandBtnTap(_ sender: Any) {
-        
-        let button = sender as! UIButton
-        
-        expand_collapesView(button: button, viewHeight: containerViewHeight, isExpanding: isExpanding, originalHeight: originalHeight)
-        
-        isExpanding = !isExpanding
-        
-    }
-    
-    @IBAction func onClickSubmit(_ sender: Any) {
-        
-        self.pause()
-        self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
-        self.isTapped = false
-        
-        if score == 0 || tv_Comment.text.trimmingCharacters(in: .whitespacesAndNewlines).characters.count == 0
-        {
-            self.alertMissingText(mess: "Score and Comment is required.", textField: nil)
-        }
-        else
-        {
-            userDefault.set(tv_Comment.text, forKey: COMMENT_PART1)
-            userDefault.synchronize()
-            let part2VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part2VC") as! Assessor_Part2VC
-            part2VC.Exam = self.Exam
-            part2VC.data1 = self.data
-            self.stop()
-            self.navigationController?.pushViewController(part2VC, animated: true)            
-        }
+        isTapped = !isTapped
+        print(isPlaying)
         
     }
     
@@ -221,40 +163,57 @@ class Assessor_GradeVC: UIViewController {
         currentPlayer?.stop()
         isPlaying = false
         print("DID STOP")
+
     }
     
-    @IBAction func playAudioTap(_ sender: UIButton) {
-        
-        play_pauseAudio(button: sender, isPlay: isTapped)
-        
-        if isPlaying
-        {
-            pause()
-            
-        }
-        else
-        {
-            resume()
-            
-        }
-        
-        isTapped = !isTapped
-        print(isPlaying)
-    }
-    
-    @IBAction func scoreTap(_ sender: Any) {
+    @IBAction func scoreTap(_ sender: UIButton) {
         let height:CGFloat = self.view.frame.height * (2/3)
         setupViewData(subView: dataTableView, height: height)
         createAnimatePopup(from: dataTableView, with: backgroundView)
     }
+
+    @IBAction func expandBtnTap(_ sender: Any) {
+        
+        let button = sender as! UIButton
+        
+        expand_collapesView(button: button, viewHeight: containerViewHeight, isExpanding: isExpanding, originalHeight: originalHeight)
+        
+        isExpanding = !isExpanding
+    }
     
+    @IBAction func nextBtnTap(_ sender: Any) {
+        
+        self.pause()
+        self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
+        self.isTapped = false
+        
+        if score == 0 || tv_Comment.text.trimmingCharacters(in: .whitespacesAndNewlines).characters.count == 0
+        {
+            self.alertMissingText(mess: "Score and Comment is required.", textField: nil)
+        }
+        else
+        {
+            userDefault.set(tv_Comment.text, forKey: COMMENT_PART4)
+            userDefault.synchronize()
+            let overviewVC = UIStoryboard(name: OFFLINE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "overviewVC") as! Offline_OverviewVC
+            overviewVC.numberOfQuestion = 4
+            overviewVC.Exam = self.Exam
+            overviewVC.data1 = self.data1
+            overviewVC.data2 = self.data2
+            overviewVC.data3 = self.data3
+            overviewVC.data4 = self.data4
+            self.stop()
+            self.navigationController?.pushViewController(overviewVC, animated: true)
+
+        }
+        
+    }
     
     func setupViewData(subView: UIView, height: CGFloat)
     {
         backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
         backgroundView.backgroundColor = UIColor.gray
         backgroundView.alpha = 0
-        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleCloseView))
         tapGesture.numberOfTapsRequired = 2
         backgroundView.addGestureRecognizer(tapGesture)
@@ -288,42 +247,41 @@ class Assessor_GradeVC: UIViewController {
         self.dataTableView.transform = .identity
 
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }    
-    
+
+
 }
 
-extension Assessor_GradeVC:UITableViewDataSource, UITableViewDelegate
+
+extension Offline_Part4:UITableViewDataSource, UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 100
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! Assessor_Part1Cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! Assessor_Part4Cell
         
         cell.lbl_Point.text = "\(indexPath.row + 1)"
         return cell
         
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 35
+        return 40
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
         scoreBtn.setTitle("\(indexPath.row + 1)", for: .normal)
-        userDefault.set(indexPath.row + 1, forKey: SCORE_PART1)
-        
+        userDefault.set(indexPath.row + 1, forKey: SCORE_PART4)
+
         score = indexPath.row + 1
-        
+
         handleCloseView()
+
     }
 }
 
-
-extension Assessor_GradeVC: AVAudioPlayerDelegate
+extension Offline_Part4: AVAudioPlayerDelegate
 {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         print("DID PLAYED")
@@ -332,18 +290,3 @@ extension Assessor_GradeVC: AVAudioPlayerDelegate
         self.isTapped = false
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

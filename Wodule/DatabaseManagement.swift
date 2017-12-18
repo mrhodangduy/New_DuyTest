@@ -33,9 +33,10 @@ struct ExamDataStruct {
     let audio_3: String?
     let audio_4: String?
     var lastChange: String
+    var isDownloaded: Bool
     
     var description: String {
-        return "id = \(self.examinerId), identifier = \(self.identifier), name = \(self.examName), status = \(self.status)"
+        return "id = \(self.examinerId), identifier = \(self.identifier), name = \(self.examName), status = \(self.status), isDownloaded = \(self.isDownloaded)"
     }
 }
 
@@ -69,6 +70,7 @@ class DatabaseManagement {
     private let audio_3F = Expression<String?>("audio_3")
     private let audio_4F = Expression<String?>("audio_4")
     private let lastChangeF = Expression<String>("lastChange")
+    private let isDownloadedF = Expression<Bool>("isDownloaded")
     
     private init()
     {
@@ -108,6 +110,8 @@ class DatabaseManagement {
                 table.column(audio_3F)
                 table.column(audio_4F)
                 table.column(lastChangeF)
+                table.column(isDownloadedF)
+                
             })
             print("create table successfully")
         } catch {
@@ -135,7 +139,8 @@ class DatabaseManagement {
                  audio_2: String?,
                  audio_3: String?,
                  audio_4: String?,
-                 lastChange: String) -> Int64? {
+                 lastChange: String,
+                 isDownload: Bool) -> Int64? {
         do {
             
             let insert = tblExam.insert(identifierF <- identifier,
@@ -157,7 +162,8 @@ class DatabaseManagement {
                                         audio_2F <- audio_2,
                                         audio_3F <- audio_3,
                                         audio_4F <- audio_4,
-                                        lastChangeF <- lastChange)
+                                        lastChangeF <- lastChange,
+                                        isDownloadedF <- isDownload)
             
             let rowid = try db!.run(insert)
             print("Insert to tblProduct successfully")
@@ -184,13 +190,14 @@ class DatabaseManagement {
                                              comment_4: exam[comment_4F], score_1: exam[score_1F],
                                              score_2: exam[score_2F],score_3: exam[score_3F], score_4: exam[score_4F],
                                              audio_1: exam[audio_1F], audio_2: exam[audio_2F], audio_3: exam[audio_3F],
-                                             audio_4: exam[audio_4F], lastChange: exam[lastChangeF])
+                                             audio_4: exam[audio_4F], lastChange: exam[lastChangeF],
+                                             isDownloaded: exam[isDownloadedF])
                 
                 exams.append(newExam)
 
             }
         } catch {
-            print("Cannot get list of product")
+            print("Cannot get list of exam")
         }
         for exam in exams {
             print("###########")
@@ -199,10 +206,10 @@ class DatabaseManagement {
         return exams
     }
     
-    func queryAllExam(withID examinerid : Int64, status: String?) -> [ExamDataStruct] {
+    func queryAllExam(withID examinerid : Int64, status: String) -> [ExamDataStruct] {
         var exams = [ExamDataStruct]()
         
-        let query = tblExam.where(examinerIdF == examinerid)
+        let query = tblExam.where(examinerIdF == examinerid && statusF == status)
         do {
             let items = try db!.prepare(query)
             for exam in items {
@@ -216,13 +223,13 @@ class DatabaseManagement {
                                              comment_4: exam[comment_4F], score_1: exam[score_1F],
                                              score_2: exam[score_2F],score_3: exam[score_3F], score_4: exam[score_4F],
                                              audio_1: exam[audio_1F], audio_2: exam[audio_2F], audio_3: exam[audio_3F],
-                                             audio_4: exam[audio_4F], lastChange: exam[lastChangeF])
+                                             audio_4: exam[audio_4F], lastChange: exam[lastChangeF], isDownloaded: exam[isDownloadedF])
                 
                 exams.append(newExam)
                 
             }
         } catch {
-            print("Cannot get list of product")
+            print("Cannot get list of exam")
         }
         for exam in exams {
             print("###########")
@@ -230,6 +237,22 @@ class DatabaseManagement {
         }
         return exams
     }
+    
+    func queryIdentifierListAll() -> [Int64]
+    {
+        var idList = [Int64]()
+        
+        do {
+            for id in try db!.prepare(tblExam)
+            {
+                idList.append(id[identifierF])
+            }
+            
+        } catch {
+        }
+        return idList
+    }
+
     
     func queryIdentifierList(of examinerId: Int64) -> [Int64]
     {
@@ -247,6 +270,25 @@ class DatabaseManagement {
         return idList
     }
     
+    func queryIdentifiersNotDownloadAudio(of examinerId: Int64) -> [Int64]
+    {
+        var idList = [Int64]()
+        
+        let query = tblExam.where(examinerIdF == examinerId && isDownloadedF == false)
+        do {
+            
+            for id in try db!.prepare(query)
+            {
+                idList.append(id[identifierF])
+                print("@@@@@@@@@@@@")
+                print(id[identifierF], id[examinerIdF], id[isDownloadedF])
+            }
+            
+        } catch {
+        }
+        return idList
+    }
+    
     func deleteExam(id: Int64) -> Bool
     {
         do {
@@ -260,11 +302,50 @@ class DatabaseManagement {
         }
         return false
     }
-
-
     
+    func updateExamDownload(id: Int64, isDownloaded: Bool) -> Bool
+    {
+        let tblFilterExam = tblExam.where(identifierF == id)
+        do {
+            let update = tblFilterExam.update(isDownloadedF <- isDownloaded)
+            if try db!.run(update) > 0 {
+                print("Update exam successfully")
+                return true
+            }
+        } catch {
+            print("Update failed: \(error)")
+        }
+        
+        return false
+        
+    }
+    
+    
+    func updateGradeExam(examinerid: Int64, identifier: Int64, grade1: String, comment1: String, grade2: String, comment2: String, grade3: String?, comment3: String?, grade4: String?, comment4: String?, status: String) -> Bool
+    {
+        let tblFilterGrade = tblExam.where(examinerIdF == examinerid && identifierF == identifier)
+        do
+        {
+            let update = tblFilterGrade.update([score_1F <- grade1, comment_1F <- comment1,
+                                                score_2F <- grade2, comment_2F <- comment2,
+                                                score_3F <- grade3, comment_3F <- comment3,
+                                                score_4F <- grade4, comment_4F <- comment4,
+                                                statusF <- status])
+            if try db!.run(update) > 0 {
+                print("Update exam successfully")
+                return true
+            }
+        } catch {
+            print("Update failed: \(error)")
+        }
+        
+        return false
+        
+    }    
     
 }
+
+
 
 
 

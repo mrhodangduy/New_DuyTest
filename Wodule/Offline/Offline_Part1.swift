@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 
-class Assessor_GradeVC: UIViewController {
+class Offline_Part1: UIViewController {
     
     @IBOutlet weak var tv_Content: UITextView!
     @IBOutlet weak var tv_Comment: RoundTextView!
@@ -35,51 +35,45 @@ class Assessor_GradeVC: UIViewController {
     var data: Data?
     var isTapped:Bool!    
     
-    var Exam:NSDictionary!
+    var Exam:ExamDataStruct!
     
     var score = 0
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
     
     func onHandleSetupAudio()
     {
-        if Connectivity.isConnectedToInternet
-        {
-            currentPlayer = AVAudioPlayer()
-            let url = URL(string: Exam["audio_1"] as! String)
-            play_pauseBtn.isHidden = true
-            self.loadingShow()
-            DispatchQueue.global(qos: .background).async {
-                do
-                {
-                    self.data = try Data(contentsOf: url!)
-                    do {
-                        self.currentPlayer = try AVAudioPlayer(data: self.data!)
-                        DispatchQueue.main.async(execute: {
-                            self.currentPlayer?.play()
-                            self.currentPlayer?.pause()
-                            self.currentPlayer?.delegate = self
-                            self.loadingHide()
-                            self.play_pauseBtn.isHidden = false
-                            print("TOTAL TIME:",self.currentPlayer?.duration as Any)
-                        })
-                    }
-                    catch
-                    {
-                        print("cannot play")
-                    }
+        currentPlayer = AVAudioPlayer()
+        let url = getAudioUrlOffline(saveName: "audio_1", examinerId: Exam.examinerId, identifier: Exam.identifier)
+        play_pauseBtn.isHidden = true
+        self.loadingShow()
+        DispatchQueue.global(qos: .background).async {
+            do
+            {
+                self.data = try Data(contentsOf: url)
+                do {
+                    self.currentPlayer = try AVAudioPlayer(data: self.data!)
+                    DispatchQueue.main.async(execute: {
+                        self.currentPlayer?.play()
+                        self.currentPlayer?.pause()
+                        self.currentPlayer?.delegate = self
+                        self.loadingHide()
+                        self.play_pauseBtn.isHidden = false
+                        print("TOTAL TIME:",self.currentPlayer?.duration as Any)
+                    })
                 }
                 catch
                 {
-                    print("Cannot get data")
+                    self.loadingHide()
+                    print("cannot play")
                 }
             }
-            
+            catch
+            {
+                self.loadingHide()
+                print("Cannot get data")
+            }
         }
-        else
-        {
-            play_pauseBtn.isHidden = true
-            self.displayAlertNetWorkNotAvailable()
-        }
+        
     }
     
     override func viewDidLoad() {
@@ -100,12 +94,12 @@ class Assessor_GradeVC: UIViewController {
         img_Question.contentMode = .scaleAspectFit
         
         
-        if ((Exam?["examQuestionaireOne"] as? String)?.hasPrefix("http://wodule.io/user/"))!
+        if ((Exam.examQuestionaireOne)?.hasPrefix("http://wodule.io/user/"))!
         {
             
             titleQuestion.text = TITLEPHOTO
             img_Question.isHidden = false
-            img_Question.sd_setImage(with: URL(string: Exam["examQuestionaireOne"] as! String), placeholderImage: nil, options: [], completed: nil)
+            img_Question.sd_setImage(with: URL(string: Exam.examQuestionaireOne!), placeholderImage: nil, options: [], completed: nil)
             controlFontSizeView.isHidden = true
             controlImageView.isHidden = false
             tv_Content.isHidden = true
@@ -118,7 +112,7 @@ class Assessor_GradeVC: UIViewController {
             controlImageView.isHidden = true
             tv_Content.isHidden = false
             tv_Content.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
-            tv_Content.text = Exam["examQuestionaireOne"] as! String
+            tv_Content.text = Exam.examQuestionaireOne!
         }
         
     }
@@ -139,14 +133,7 @@ class Assessor_GradeVC: UIViewController {
     
     @IBAction func onClickPromtQuestion(_ sender: Any) {
         
-//        if ((Exam?["examQuestionaireOne"] as? String)?.hasPrefix("http://wodule.io/user/")) == true
-//        {
-//            let promt_1 = Exam?["promt1_1"] as? String
-//            let promt_2 = Exam?["promt1_2"] as? String
-//            let promt_3 = Exam?["promt1_3"] as? String
-//            self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
-//        }
-    }    
+    }
     
     @IBAction func zoomTextTap(_ sender: Any) {
         
@@ -192,7 +179,7 @@ class Assessor_GradeVC: UIViewController {
         {
             userDefault.set(tv_Comment.text, forKey: COMMENT_PART1)
             userDefault.synchronize()
-            let part2VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part2VC") as! Assessor_Part2VC
+            let part2VC = UIStoryboard(name: OFFLINE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part2VC") as! Offline_Part2
             part2VC.Exam = self.Exam
             part2VC.data1 = self.data
             self.stop()
@@ -295,7 +282,7 @@ class Assessor_GradeVC: UIViewController {
     
 }
 
-extension Assessor_GradeVC:UITableViewDataSource, UITableViewDelegate
+extension Offline_Part1:UITableViewDataSource, UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 100
@@ -323,7 +310,7 @@ extension Assessor_GradeVC:UITableViewDataSource, UITableViewDelegate
 }
 
 
-extension Assessor_GradeVC: AVAudioPlayerDelegate
+extension Offline_Part1: AVAudioPlayerDelegate
 {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         print("DID PLAYED")

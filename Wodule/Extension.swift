@@ -360,4 +360,14 @@ extension UIViewController
         self.present(alert, animated: true, completion: nil)
     }
     
+    func getAudioUrlOffline(saveName: String, examinerId: Int64, identifier: Int64) -> URL
+    {
+        let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let folder = directoryURL.appendingPathComponent("\(examinerId)")
+        let child = folder.appendingPathComponent("\(identifier)")
+        let file = child.appendingPathComponent(saveName + ".mp3", isDirectory: false)
+        print(file)
+        return file
+    }
+    
 }

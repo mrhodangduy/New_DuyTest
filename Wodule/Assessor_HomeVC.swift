@@ -12,7 +12,6 @@ import SVProgressHUD
 import FBSDKLoginKit
 import FacebookLogin
 
-
 class Assessor_HomeVC: UIViewController {
     
     @IBOutlet weak var lbl_Name1: UILabel!
@@ -53,7 +52,11 @@ class Assessor_HomeVC: UIViewController {
         print("\nCURRENT USER AVATARLINK: ------>\n",socialAvatar)
         
         asignDataInView()        
-        
+
+        if Connectivity.isConnectedToInternet
+        {
+            upLoadGraded()
+        }
         
     }    
     
@@ -104,6 +107,56 @@ class Assessor_HomeVC: UIViewController {
         
     }
     
+    func upLoadGraded()
+    {
+        let examList = DatabaseManagement.shared.queryAllExam(withID: userInfomation["id"] as! Int64, status: "Graded")
+        print("@@@@@@@")
+        print(examList)
+        
+        if examList.count > 0 {
+            self.loadingShowwithStatus(status: "Uploading...")
+            for exam in examList
+            {
+                ExamRecord.postGrade(withToken: self.token!, identifier: Int(exam.identifier), grade1: Int(exam.score_1!)!, comment1: exam.comment_1!, grade2: Int(exam.score_2!)!, comment2: exam.comment_2!, grade3: Int(exam.score_3!), comment3: exam.comment_3, grade4: Int(exam.score_4!), comment4: exam.comment_4, completion: { (status, code, result) in
+                    
+                    if status == true
+                    {
+                        print(status, result as Any)
+                        let delete = DatabaseManagement.shared.deleteExam(id: exam.identifier)
+                        if delete
+                        {
+                            self.deleteAudioFile(fileName: "\(exam.identifier)", examninerID: exam.examinerId)
+                            
+                        }
+                        print(delete)
+                    } else {
+                        print(code as Any)
+                    }
+                    
+                })
+            }
+            DispatchQueue.main.async {
+                self.loadingHide()
+            }
+        }
+    }
+    
+    func deleteAudioFile(fileName: String, examninerID: Int64) {
+        let fileManager = FileManager.default
+        let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+        let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+        let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+        guard let dirPath = paths.first else {
+            return
+        }
+        let filePath = "\(dirPath)/\(examninerID)/" + fileName
+        do {
+            try fileManager.removeItem(atPath: filePath)
+            print("deleted")
+        } catch let error as NSError {
+            print(error.debugDescription)
+        }
+    }
     func asignDataInView()
         
     {
@@ -135,7 +188,6 @@ class Assessor_HomeVC: UIViewController {
             return
         }
         
-        
         if userInfomation["ln_first"] as? String == "Yes"
         {
             lbl_Name1.text = userInfomation["last_name"] as? String
@@ -156,8 +208,6 @@ class Assessor_HomeVC: UIViewController {
         {
             lbl_Age.text = nil
         }
-        
-        
     }
     
     func loadNewData()
@@ -177,7 +227,6 @@ class Assessor_HomeVC: UIViewController {
                 })
             }
         }
-        
     }
     
     @IBAction func assessmentHistoryTap(_ sender: Any) {
@@ -197,7 +246,7 @@ class Assessor_HomeVC: UIViewController {
         else
         {
             self.displayAlertNetWorkNotAvailable()
-        }        
+        }
         
     }
     
@@ -238,6 +287,7 @@ class Assessor_HomeVC: UIViewController {
                 {
                     DispatchQueue.main.async {
                         self.alertMissingText(mess: "No exam to grade.", textField: nil)
+                        self.loadingHide()
                     }
                 } else if error?["code"] as! Int == 429
                 {

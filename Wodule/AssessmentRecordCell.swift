@@ -14,6 +14,7 @@ protocol OfflineRecordDelegate {
 
 class AssessmentRecordCell: UITableViewCell {
 
+    @IBOutlet weak var downloadingLabel: UILabelX!
     @IBOutlet weak var examIDLabel: UILabel!
     @IBOutlet weak var startButton: UIButtonX!
     

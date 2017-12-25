@@ -63,11 +63,21 @@ class Assessor_Part3VC: UIViewController {
                     catch
                     {
                         print("cannot play")
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            self.alertMissingText(mess: ERROR_MESSAGE.CANNOTPLAY_AUDIO, textField: nil)
+                            
+                        })
                     }
                 }
                 catch
                 {
                     print("Cannot get data")
+                    DispatchQueue.main.async(execute: {
+                        self.loadingHide()
+                        self.alertMissingText(mess: ERROR_MESSAGE.CANNOTPLAY_AUDIO, textField: nil)
+                        
+                    })
                 }
             }
 
@@ -92,6 +102,7 @@ class Assessor_Part3VC: UIViewController {
         
         dataTableView.dataSource = self
         dataTableView.delegate = self
+        tv_Content.contentInset = UIEdgeInsetsMake(10, 0, 25, 0)
 
         
         if ((Exam?["examQuestionaireThree"] as? String)?.hasPrefix("http://wodule.io/user/"))!
@@ -117,13 +128,7 @@ class Assessor_Part3VC: UIViewController {
     }
     
     @IBAction func onClickPromtQuestion(_ sender: Any) {
-//        if ((Exam?["examQuestionaireThree"] as? String)?.hasPrefix("http://wodule.io/user/")) == true
-//        {
-//            let promt_1 = Exam?["promt3_1"] as? String
-//            let promt_2 = Exam?["promt3_2"] as? String
-//            let promt_3 = Exam?["promt3_3"] as? String
-//            self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
-//        }
+
     }
     
     
@@ -196,9 +201,12 @@ class Assessor_Part3VC: UIViewController {
 
     @IBAction func nextBtnTap(_ sender: Any) {
         
-        self.pause()
-        self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
-        self.isTapped = false
+        if currentPlayer != nil
+        {
+            self.pause()
+            self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
+            self.isTapped = false
+        }
         
         if score == 0 || tv_Comment.text.trimmingCharacters(in: .whitespacesAndNewlines).characters.count == 0
         {
@@ -208,6 +216,11 @@ class Assessor_Part3VC: UIViewController {
         {
             userDefault.set(tv_Comment.text, forKey: COMMENT_PART3)
             userDefault.synchronize()
+            
+            if currentPlayer != nil {
+                self.stop()
+            }
+            
             if self.Exam?["examQuestionaireFour"] as? String == nil
             {
                 let overviewVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "overviewVC") as! Assessor_OverviewVC
@@ -216,8 +229,6 @@ class Assessor_Part3VC: UIViewController {
                 overviewVC.data1 = self.data1
                 overviewVC.data2 = self.data2
                 overviewVC.data3 = self.data3
-                self.stop()
-
                 self.navigationController?.pushViewController(overviewVC, animated: true)
 
             }

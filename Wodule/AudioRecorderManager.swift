@@ -64,7 +64,7 @@ class AudioRecorderManager: NSObject {
         let recordSettings = [
             AVFormatIDKey: kAudioFormatAppleLossless,
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue,
-            AVEncoderBitRateKey: 8,
+            AVEncoderBitRateKey: 12000.0,
             AVNumberOfChannelsKey: 1,
             AVSampleRateKey: 44100.0] as [String : Any]
         do {
@@ -78,13 +78,13 @@ class AudioRecorderManager: NSObject {
             
             result(true, audioURL)
             print("Recording")
-            print(recorder?.settings)
+            print(recorder?.settings as Any)
 
         } catch {
             
             print(error.localizedDescription)
             result(false, nil)
-            print(recorder?.settings)
+            print(recorder?.settings as Any)
 
         }
     }
@@ -130,7 +130,6 @@ extension AudioRecorderManager:AVAudioRecorderDelegate{
     func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder,error: Error?) {
         print("\(String(describing: error?.localizedDescription))")
     }
-    
     
 }
 

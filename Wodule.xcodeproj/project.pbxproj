@@ -51,6 +51,7 @@
 		63497CE01FE7AAD0003CC61D /* Offline_Part4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63497CDC1FE7AAD0003CC61D /* Offline_Part4.swift */; };
 		63497CE21FE7AB1A003CC61D /* Offline_OverviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63497CE11FE7AB1A003CC61D /* Offline_OverviewVC.swift */; };
 		6362081B1F8B659C005D800F /* LoginWithGooglePlusDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6362081A1F8B659C005D800F /* LoginWithGooglePlusDelegate.swift */; };
+		639958691FF09B17001EAF0B /* ManageAPI_ExamOffline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639958681FF09B17001EAF0B /* ManageAPI_ExamOffline.swift */; };
 		63A36BF11F849F1A005857DE /* RoundTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36BF01F849F1A005857DE /* RoundTextView.swift */; };
 		63A36BF61F84A1DA005857DE /* Assessor_GradeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36BF51F84A1DA005857DE /* Assessor_GradeVC.swift */; };
 		63A36C041F84CEF4005857DE /* Assessor_CalendarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A36C031F84CEF4005857DE /* Assessor_CalendarVC.swift */; };
@@ -152,6 +153,7 @@
 		63497CDC1FE7AAD0003CC61D /* Offline_Part4.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Offline_Part4.swift; sourceTree = "<group>"; };
 		63497CE11FE7AB1A003CC61D /* Offline_OverviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Offline_OverviewVC.swift; sourceTree = "<group>"; };
 		6362081A1F8B659C005D800F /* LoginWithGooglePlusDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWithGooglePlusDelegate.swift; sourceTree = "<group>"; };
+		639958681FF09B17001EAF0B /* ManageAPI_ExamOffline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageAPI_ExamOffline.swift; sourceTree = "<group>"; };
 		63A36BF01F849F1A005857DE /* RoundTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundTextView.swift; sourceTree = "<group>"; };
 		63A36BF51F84A1DA005857DE /* Assessor_GradeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_GradeVC.swift; sourceTree = "<group>"; };
 		63A36C031F84CEF4005857DE /* Assessor_CalendarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assessor_CalendarVC.swift; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 				63CCBE201FB2A5F8005FD1AE /* ReachabilityManager.swift */,
 				63CCF5531FE3B84C00241056 /* DatabaseManagement.swift */,
 				63CFAC481FE7603900772866 /* DownloadOffline.swift */,
+				639958681FF09B17001EAF0B /* ManageAPI_ExamOffline.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -699,6 +702,7 @@
 				63F145A31F87330600CD03BF /* Part4VC.swift in Sources */,
 				63D0FCCD1F85F2D6006347B0 /* EditProfileVC.swift in Sources */,
 				DA75609B1F83F87F008DB772 /* Part1VC.swift in Sources */,
+				639958691FF09B17001EAF0B /* ManageAPI_ExamOffline.swift in Sources */,
 				630BD8C71F82450600B24CA5 /* Extension.swift in Sources */,
 				63D0FCD21F861AC2006347B0 /* EditProfileCell.swift in Sources */,
 				63C57BF11FA2F1F600DC3B40 /* Assessor_Part3VC.swift in Sources */,

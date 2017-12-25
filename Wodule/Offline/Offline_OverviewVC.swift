@@ -178,17 +178,17 @@ class Offline_OverviewVC: UIViewController {
         }
     }
     
-    func onHandleDisplayView(type:Int, question: String)
+    func onHandleDisplayView(type:Int, questionImage: URL?, questionText: String?)
     {
         if type == 1
         {
             onHandleViewData(subView: contentImageView, height: view.frame.height / 2, width: widthViewPhoto, xFrame: 0)
-            contentImageView.sd_setImage(with: URL(string: question), placeholderImage: nil, options: [], completed: nil)
+            contentImageView.sd_setImage(with: questionImage!, placeholderImage: nil, options: [], completed: nil)
         }
         else
         {
             onHandleViewData(subView: contentTextView, height: view.frame.height * (2/3), width: self.view.frame.width, xFrame: 0)
-            contentTextView.text =  question
+            contentTextView.text =  questionText!
             contentTextView.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
             
         }
@@ -210,7 +210,8 @@ class Offline_OverviewVC: UIViewController {
     
     @IBAction func part1_viewTextTap(_ sender: Any) {
         
-        onHandleDisplayView(type: part1Type, question: Exam.examQuestionaireOne!)
+        let url = getImageQuestionUrlOffline(saveName: "question_1", examinerId: Exam.examinerId, identifier: Exam.identifier)
+        onHandleDisplayView(type: part1Type, questionImage: url, questionText: Exam.examQuestionaireOne)
         
     }
     
@@ -235,8 +236,8 @@ class Offline_OverviewVC: UIViewController {
         self.onHandleDisableButton(sub1: part1PlayButton, sub2: part3PlayButton, sub3: part4PlayButton, isStatus: false)
     }
     @IBAction func part2_ViewPhotoTap(_ sender: Any) {
-        
-        onHandleDisplayView(type: part2Type, question: Exam.examQuestionaireTwo!)
+        let url = getImageQuestionUrlOffline(saveName: "question_2", examinerId: Exam.examinerId, identifier: Exam.identifier)
+        onHandleDisplayView(type: part2Type, questionImage: url, questionText: Exam.examQuestionaireTwo)
         
     }
     @IBAction func part2_ScoreTap(_ sender: Any) {
@@ -261,8 +262,8 @@ class Offline_OverviewVC: UIViewController {
     
     @IBAction func part3_ViewData(_ sender: Any) {
         
-        onHandleDisplayView(type: part3Type, question: Exam.examQuestionaireThree!)
-        
+        let url = getImageQuestionUrlOffline(saveName: "question_3", examinerId: Exam.examinerId, identifier: Exam.identifier)
+        onHandleDisplayView(type: part3Type, questionImage: url, questionText: Exam.examQuestionaireThree)
     }
     
     
@@ -296,8 +297,8 @@ class Offline_OverviewVC: UIViewController {
     
     @IBAction func part4_ViewData(_ sender: Any) {
         
-        onHandleDisplayView(type: part4Type, question: Exam.examQuestionaireFour!)
-        
+        let url = getImageQuestionUrlOffline(saveName: "question_4", examinerId: Exam.examinerId, identifier: Exam.identifier)
+        onHandleDisplayView(type: part1Type, questionImage: url, questionText: Exam.examQuestionaireFour)
     }
     
     @IBAction func submitTap(_ sender: Any) {
@@ -335,17 +336,76 @@ class Offline_OverviewVC: UIViewController {
         }
         else
         {
-            let update = DatabaseManagement.shared.updateGradeExam(examinerid: Exam.examinerId, identifier: Exam.identifier, grade1: "\(score_Part1!)", comment1: comment_Part1!, grade2:"\(score_Part2!)" , comment2: comment_Part2!, grade3: "\(String(describing: score_Part3))" , comment3: comment_Part3, grade4: "\(String(describing: score_Part4))", comment4: comment_Part4, status: "Graded")
-            if update == true {
+            if Connectivity.isConnectedToInternet == false
+            {
+                let update = DatabaseManagement.shared.updateGradeExam(examinerid: Exam.examinerId, identifier: Exam.identifier, grade1: "\(score_Part1!)", comment1: comment_Part1!, grade2:"\(score_Part2!)" , comment2: comment_Part2!, grade3: "\(String(describing: score_Part3))" , comment3: comment_Part3, grade4: "\(String(describing: score_Part4))", comment4: comment_Part4, status: "graded")
+                if update == true {
+                    let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
+                    self.navigationController?.pushViewController(accountingVC, animated: true)
+                    self.removeScoreObject()
+                    
+                } else {
+                    self.alertMissingText(mess: "Cannot save score", textField: nil)
+                }
+            }            
+            else {
+                self.onHandlePostGrade(grade1: score_Part1!, comment1: comment_Part1!, grade2: score_Part2!, comment2: comment_Part2!, grade3: score_Part3, comment3: comment_Part3, grade4: score_Part4, comment4: comment_Part4)
+            }
+            
+        }
+        
+    }
+    
+    func onHandlePostGrade(grade1: Int64, comment1:String, grade2: Int64, comment2:String, grade3: Int64?, comment3:String?, grade4: Int64?, comment4:String?)
+    {
+        self.loadingShow()
+        let token = userDefault.object(forKey: TOKEN_STRING) as? String
+        let identifier = Exam.identifier
+        
+        ExamRecord.postGrade(withToken: token!, identifier: Int(identifier), grade1: grade1, comment1: comment1, grade2: grade2, comment2: comment2, grade3: grade3, comment3: comment3, grade4: grade4, comment4: comment4, completion: { (status:Bool?, code:Int?, result:NSDictionary?) in
+            
+            print(status as Any, code as Any , result as Any)
+            
+            if status!
+            {
+                print("grade susscessful")
+                self.loadingHide()
                 let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
                 self.navigationController?.pushViewController(accountingVC, animated: true)
                 self.removeScoreObject()
- 
-            } else {
-                self.alertMissingText(mess: "Cannot save score", textField: nil)
+                
+                let delete = DatabaseManagement.shared.deleteExam(id: identifier)
+                if delete
+                {
+                    self.deleteAudioFile(fileName: "\(identifier)", examninerID: self.Exam.examinerId)
+                    
+                }
             }
-        }
-        
+                
+            else if code == 409
+            {
+                DispatchQueue.main.async(execute: {
+                    self.loadingHide()
+                    self.alertMissingText(mess: "The particular audio has already a grade.", textField: nil)
+                })
+                
+            }
+            else if let error = result?["error"] as? String
+            {
+                
+                DispatchQueue.main.async(execute: { 
+                    self.loadingHide()
+                    self.alertMissingText(mess: error ,textField: nil)
+                })
+                
+            } else
+            {
+                DispatchQueue.main.async(execute: { 
+                    self.loadingHide()
+                    self.alertMissingText(mess: "Failed to grade exam.", textField: nil)
+                })
+            }
+        })
     }
     
     func setupViewData(subView: UIView, height: CGFloat, width: CGFloat, x: CGFloat)
@@ -435,7 +495,12 @@ class Offline_OverviewVC: UIViewController {
             catch
             {
                 print("cannot play")
-                self.loadingHide()
+                DispatchQueue.main.async(execute: {
+                    self.currentAudioPlayer = nil
+                    self.loadingHide()
+                    self.alertMissingText(mess: ERROR_MESSAGE.CANNOTPLAY_AUDIO, textField: nil)
+                    
+                })
             }
         }
         
@@ -461,8 +526,6 @@ class Offline_OverviewVC: UIViewController {
         userDefault.removeObject(forKey: IDENTIFIER_KEY)
         userDefault.synchronize()
     }
-    
-    
 }
 
 extension Offline_OverviewVC:UITableViewDataSource, UITableViewDelegate

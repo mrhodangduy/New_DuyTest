@@ -286,6 +286,10 @@ class Examiner_HomeVC: UIViewController {
             print("LogOut")
         }
         
+        UserInfoAPI.invalidToken(token: self.token!) { (status, result) in
+            print(status, result)
+        }
+        
         let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
         
         let mainControler = MainNavigationController(rootViewController: loginVC)
@@ -304,10 +308,7 @@ class Examiner_HomeVC: UIViewController {
         
         userDefault.synchronize()
     }
-
-    
 }
-
 
 extension Examiner_HomeVC: EditProfileDelegate
 {

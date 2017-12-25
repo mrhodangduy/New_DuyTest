@@ -32,20 +32,33 @@ struct ExamDataStruct {
     let audio_2: String?
     let audio_3: String?
     let audio_4: String?
-    var lastChange: String
+    var expired_at: String
+    var isExpired: Bool
     var isDownloaded: Bool
     
     var description: String {
-        return "id = \(self.examinerId), identifier = \(self.identifier), name = \(self.examName), status = \(self.status), isDownloaded = \(self.isDownloaded)"
+        return "id = \(self.examinerId), identifier = \(self.identifier), name = \(self.examName), status = \(self.status), isDownloaded = \(self.isDownloaded), expired_at = \(self.expired_at), isExpired = \(self.isExpired) "
     }
 }
 
-
 class DatabaseManagement {
+    
+    
+    
     
     static let shared: DatabaseManagement = DatabaseManagement()
     private let db:Connection?
     
+    fileprivate let convertdateformatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return formatter
+    }()
+    
+    func gettimeRemaining(from: Date) -> Float
+    {
+        return Float((from.timeIntervalSinceNow) / 3600)
+    }
     
     private let tblExam = Table("ExamsSaved")
     private let id = Expression<Int64>("id")
@@ -69,7 +82,8 @@ class DatabaseManagement {
     private let audio_2F = Expression<String?>("audio_2")
     private let audio_3F = Expression<String?>("audio_3")
     private let audio_4F = Expression<String?>("audio_4")
-    private let lastChangeF = Expression<String>("lastChange")
+    private let expired_atF = Expression<String>("expired_at")
+    private let isExpiredF = Expression<Bool>("isExpired")
     private let isDownloadedF = Expression<Bool>("isDownloaded")
     
     private init()
@@ -109,7 +123,8 @@ class DatabaseManagement {
                 table.column(audio_2F)
                 table.column(audio_3F)
                 table.column(audio_4F)
-                table.column(lastChangeF)
+                table.column(expired_atF)
+                table.column(isExpiredF)
                 table.column(isDownloadedF)
                 
             })
@@ -139,7 +154,8 @@ class DatabaseManagement {
                  audio_2: String?,
                  audio_3: String?,
                  audio_4: String?,
-                 lastChange: String,
+                 expired_at: String,
+                 isExpired: Bool,
                  isDownload: Bool) -> Int64? {
         do {
             
@@ -150,6 +166,7 @@ class DatabaseManagement {
                                         examQuestionaireOneF <- examQuestionaireOne,
                                         examQuestionaireTwoF <- examQuestionaireTwo,
                                         examQuestionaireThreeF <- examQuestionaireThree,
+                                        examQuestionaireFourF <- examQuestionaireFour,
                                         comment_1F <- comment_1,
                                         comment_2F <- comment_2,
                                         comment_3F <- comment_3,
@@ -162,7 +179,8 @@ class DatabaseManagement {
                                         audio_2F <- audio_2,
                                         audio_3F <- audio_3,
                                         audio_4F <- audio_4,
-                                        lastChangeF <- lastChange,
+                                        expired_atF <- expired_at,
+                                        isExpiredF <- isExpired,
                                         isDownloadedF <- isDownload)
             
             let rowid = try db!.run(insert)
@@ -190,7 +208,7 @@ class DatabaseManagement {
                                              comment_4: exam[comment_4F], score_1: exam[score_1F],
                                              score_2: exam[score_2F],score_3: exam[score_3F], score_4: exam[score_4F],
                                              audio_1: exam[audio_1F], audio_2: exam[audio_2F], audio_3: exam[audio_3F],
-                                             audio_4: exam[audio_4F], lastChange: exam[lastChangeF],
+                                             audio_4: exam[audio_4F], expired_at: exam[expired_atF], isExpired: exam[isExpiredF],
                                              isDownloaded: exam[isDownloadedF])
                 
                 exams.append(newExam)
@@ -199,17 +217,14 @@ class DatabaseManagement {
         } catch {
             print("Cannot get list of exam")
         }
-        for exam in exams {
-            print("###########")
-            print("each exam = \(exam)")
-        }
+        
         return exams
     }
     
     func queryAllExam(withID examinerid : Int64, status: String) -> [ExamDataStruct] {
         var exams = [ExamDataStruct]()
         
-        let query = tblExam.where(examinerIdF == examinerid && statusF == status)
+        let query = tblExam.where(examinerIdF == examinerid && statusF == status && isExpiredF == false)
         do {
             let items = try db!.prepare(query)
             for exam in items {
@@ -223,7 +238,7 @@ class DatabaseManagement {
                                              comment_4: exam[comment_4F], score_1: exam[score_1F],
                                              score_2: exam[score_2F],score_3: exam[score_3F], score_4: exam[score_4F],
                                              audio_1: exam[audio_1F], audio_2: exam[audio_2F], audio_3: exam[audio_3F],
-                                             audio_4: exam[audio_4F], lastChange: exam[lastChangeF], isDownloaded: exam[isDownloadedF])
+                                             audio_4: exam[audio_4F], expired_at: exam[expired_atF], isExpired: exam[isExpiredF], isDownloaded: exam[isDownloadedF])
                 
                 exams.append(newExam)
                 
@@ -231,10 +246,7 @@ class DatabaseManagement {
         } catch {
             print("Cannot get list of exam")
         }
-        for exam in exams {
-            print("###########")
-            print("each exam = \(exam.description)")
-        }
+        
         return exams
     }
     
@@ -270,6 +282,43 @@ class DatabaseManagement {
         return idList
     }
     
+    func queryIdentifierListExpiredToUpdate(of examinerId: Int64) -> [Int64]
+    {
+        var idList = [Int64]()
+        
+        let query = tblExam.where(examinerIdF == examinerId && isExpiredF == false)
+        do {
+            for exam in try db!.prepare(query)
+            {
+                let date = convertdateformatter.date(from: exam[expired_atF])
+                let time = gettimeRemaining(from: date!)
+                if time < 0 {
+                    idList.append(exam[identifierF])
+                }
+            }
+            
+        } catch {
+        }
+        return idList
+    }
+    
+    func queryIdentifierListExpiredToDeleted(of examinerId: Int64) -> [Int64]
+    {
+        var idList = [Int64]()
+        
+        let query = tblExam.where(examinerIdF == examinerId && isExpiredF == true)
+        do {
+            for exam in try db!.prepare(query)
+            {
+                idList.append(exam[identifierF])                
+            }
+            
+        } catch {
+        }
+        return idList
+    }
+    
+    
     func queryIdentifiersNotDownloadAudio(of examinerId: Int64) -> [Int64]
     {
         var idList = [Int64]()
@@ -297,7 +346,6 @@ class DatabaseManagement {
             print("delete sucessfully")
             return true
         } catch {
-            
             print("Delete failed")
         }
         return false
@@ -320,6 +368,24 @@ class DatabaseManagement {
         
     }
     
+    func updateExpiredExam(id: Int64) -> Bool
+    {
+        let tblFilterExam = tblExam.where(identifierF == id)
+        do {
+            let update = tblFilterExam.update(isExpiredF <- true)
+            if try db!.run(update) > 0 {
+                print("Update exam successfully")
+                return true
+            }
+        } catch {
+            print("Update failed: \(error)")
+        }
+        
+        return false
+        
+    }
+
+    
     
     func updateGradeExam(examinerid: Int64, identifier: Int64, grade1: String, comment1: String, grade2: String, comment2: String, grade3: String?, comment3: String?, grade4: String?, comment4: String?, status: String) -> Bool
     {
@@ -338,10 +404,8 @@ class DatabaseManagement {
         } catch {
             print("Update failed: \(error)")
         }
-        
         return false
-        
-    }    
+    }
     
 }
 

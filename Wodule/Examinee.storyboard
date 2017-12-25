@@ -3658,6 +3658,7 @@
                         <outlet property="part2TitleLabel" destination="oWt-BW-yCg" id="0ji-Qs-7ET"/>
                         <outlet property="part3ContainerView" destination="a9u-gs-Zfc" id="Uq3-d1-zSw"/>
                         <outlet property="part3CountdownLabel" destination="t14-Px-NdE" id="zVu-OL-H7P"/>
+                        <outlet property="part3MainView" destination="a7s-LR-AyM" id="hOR-EG-yrc"/>
                         <outlet property="part3PlayButton" destination="Ree-bg-iqm" id="5fi-ET-O8L"/>
                         <outlet property="part3QuestionButton" destination="RF4-hR-Nia" id="Q0q-Ui-DEx"/>
                         <outlet property="part3RunningView" destination="gBq-Xb-yRv" id="eJL-pv-prB"/>
@@ -3665,6 +3666,7 @@
                         <outlet property="part3TitleLabel" destination="OXg-mA-mPE" id="dpN-3f-hvV"/>
                         <outlet property="part4ContainerView" destination="p0S-CE-Av7" id="1td-2h-IQf"/>
                         <outlet property="part4CountdownLabel" destination="sa3-dT-sAt" id="QXj-bm-N0O"/>
+                        <outlet property="part4MainView" destination="kg9-8f-kXj" id="bc0-D7-fNZ"/>
                         <outlet property="part4PlayButton" destination="eIs-Fi-YZ1" id="vlY-9v-Syt"/>
                         <outlet property="part4QuestionButton" destination="p7h-uo-7GF" id="P1F-58-Jav"/>
                         <outlet property="part4RunningView" destination="0iT-hM-dIT" id="DCO-r7-Yk3"/>

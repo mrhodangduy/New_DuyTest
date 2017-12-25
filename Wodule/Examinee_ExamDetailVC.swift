@@ -237,7 +237,11 @@ class Examinee_ExamDetailVC: UIViewController {
     }
     
     @IBAction func onClickBack(_ sender: Any) {
-        
+        if currentAudioPlayer != nil
+        {
+            self.currentAudioPlayer?.stop()
+            self.currentAudioPlayer = nil
+        }
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -302,22 +306,10 @@ class Examinee_ExamDetailVC: UIViewController {
         
         setupViewData(subView: subView, height: height, width: width, x: xFrame)
         createAnimatePopup(from: subView, with: backgroundView)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        if currentAudioPlayer != nil
-        {
-            self.currentAudioPlayer?.stop()
-            self.currentAudioPlayer = nil
-        }
-        
-    }
-    
+    }    
     
     func onHandlePlayAudio(link: String, button: UIButton, runningView: UIView, mainView: UIView, label: UILabel)
-    {
-        
+    {        
         runningView.frame.size.width = 0
         loadingShow()
         let urlPath = URL(string: link)
@@ -344,15 +336,23 @@ class Examinee_ExamDetailVC: UIViewController {
                 }
                 catch
                 {
-                    print("cannot play")
-                    self.loadingHide()
+                    DispatchQueue.main.async(execute: {
+                        self.currentAudioPlayer = nil
+                        self.loadingHide()
+                        self.alertMissingText(mess: ERROR_MESSAGE.CANNOTPLAY_AUDIO, textField: nil)
+                        self.onHandleEnableButton()
+                    })
                 }
             }
             catch
             {
                 print("Cannot get data")
-                self.loadingHide()
-                self.displayAlertNetWorkNotAvailable()
+                DispatchQueue.main.async(execute: {
+                    self.currentAudioPlayer = nil
+                    self.loadingHide()
+                    self.alertMissingText(mess: ERROR_MESSAGE.CANNOTPLAY_AUDIO, textField: nil)
+                    self.onHandleEnableButton()
+                })
             }
         }
 
@@ -466,6 +466,15 @@ class Examinee_ExamDetailVC: UIViewController {
         sub1.isUserInteractionEnabled = isStatus
         sub2.isUserInteractionEnabled = isStatus
         sub3.isUserInteractionEnabled = isStatus
+    }
+    
+    func onHandleEnableButton()
+    {
+        part1PlayButton.isUserInteractionEnabled = true
+        part2PlayButton.isUserInteractionEnabled = true
+        part3PlayButton.isUserInteractionEnabled = true
+        part4PlayButton.isUserInteractionEnabled = true
+
     }
     
 }

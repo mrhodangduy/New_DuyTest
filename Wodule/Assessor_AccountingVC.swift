@@ -51,7 +51,7 @@ class Assessor_AccountingVC: UIViewController {
         self.loadingShow()
         ManageAPI_Accounting.getAccounting(witkToken: token!, type: "daily") { (status: Bool,code:Int?, result:NSDictionary?) in
             
-            print(result)
+            print(result as Any)
             
             if status
             {
@@ -112,9 +112,7 @@ class Assessor_AccountingVC: UIViewController {
         let data = BarChartData(dataSets: [dataSet])
         data.barWidth = 0.95
         data.setDrawValues(false)
-        barChartView.data = data
-        
-        
+        barChartView.data = data        
         
         // Color
         dataSet.colors = [#colorLiteral(red: 0.1332121491, green: 0.3832967877, blue: 0.206708461, alpha: 1)]
@@ -158,7 +156,6 @@ class Assessor_AccountingVC: UIViewController {
     @IBAction func backtoHomeTap(_ sender: Any) {
         
         guard let viewControllers: [UIViewController] = self.navigationController?.viewControllers else {return}
-        print(viewControllers)
         for assessor_homeVC in viewControllers {
             if assessor_homeVC is Assessor_HomeVC {
                 self.navigationController!.popToViewController(assessor_homeVC, animated: true)

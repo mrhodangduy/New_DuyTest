@@ -24,6 +24,12 @@ class Assessor_HomeVC: UIViewController {
     @IBOutlet weak var img_Avatar: UIImageViewX!
     @IBOutlet weak var unreadLabel: UILabelX!
     
+    fileprivate let convertdateformatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return formatter
+    }()
+    
     var imageData:Data!
     var userInfomation:NSDictionary!
     var socialAvatar: URL!
@@ -38,6 +44,10 @@ class Assessor_HomeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        userDefault.set(NSKeyedArchiver.archivedData(withRootObject: userInfomation), forKey: USERINFO_STRING)
+        userDefault.synchronize()
+        
+        
         if userDefault.object(forKey: SOCIALKEY) as? String != nil
         {
             socialIdentifier = userDefault.object(forKey: SOCIALKEY) as! String
@@ -46,23 +56,52 @@ class Assessor_HomeVC: UIViewController {
         {
             socialIdentifier = NORMALLOGIN
         }
-        
-        print("\nCURRENT USER TOKEN: ------>\n", token!)
-        print("\nCURRENT USER INFO: ------>\n",userInfomation)
-        print("\nCURRENT USER AVATARLINK: ------>\n",socialAvatar)
-        
         asignDataInView()        
 
-        if Connectivity.isConnectedToInternet
+        self.upLoadGraded()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.upLoadGraded), name: NSNotification.Name.available, object: nil)
+    }
+    
+    func onHandleCheckExpiredExam()
+    {
+        let examinerID = userInfomation["id"] as! Int64
+        let idlistJustExpired = DatabaseManagement.shared.queryIdentifierListExpiredToUpdate(of: examinerID)
+        print("List exam just expired", idlistJustExpired)
+        if idlistJustExpired.isEmpty == false
         {
-            upLoadGraded()
+            for id in idlistJustExpired {
+                let _ = DatabaseManagement.shared.updateExpiredExam(id: id)
+            }
         }
         
-    }    
+        let idExpired = DatabaseManagement.shared.queryIdentifierListExpiredToDeleted(of: examinerID)
+        print("List exam expired", idExpired)
+        if !idExpired.isEmpty {
+            for id in idExpired {
+                ExamRecord.examExpired(token: self.token!, id: id, completion: { (status, results) in
+                    
+                    if status {
+                        let delete = DatabaseManagement.shared.deleteExam(id: id)
+                        if delete
+                        {
+                            self.deleteAudioFile(fileName: "\(id)", examninerID: examinerID)
+                        }
+                        print(delete)
+                    } else {
+                        print("Errrorrr to delete")
+                    }
+                })
+            }
+        }
+
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
+        self.onHandleCheckExpiredExam()
+        
         self.unreadLabel.isHidden = true
         if Connectivity.isConnectedToInternet
         {
@@ -82,7 +121,6 @@ class Assessor_HomeVC: UIViewController {
                                     self.unreadLabel.isHidden = false
                                     
                                 }
-                                print(self.messagesList)
                                 
                             })
 
@@ -100,63 +138,63 @@ class Assessor_HomeVC: UIViewController {
            
             }
         }
-        else
-        {
-            self.displayAlertNetWorkNotAvailable()
-        }
         
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        print("Deinit")
+    }
+        
     func upLoadGraded()
     {
-        let examList = DatabaseManagement.shared.queryAllExam(withID: userInfomation["id"] as! Int64, status: "Graded")
-        print("@@@@@@@")
-        print(examList)
-        
-        if examList.count > 0 {
-            self.loadingShowwithStatus(status: "Uploading...")
-            for exam in examList
-            {
-                ExamRecord.postGrade(withToken: self.token!, identifier: Int(exam.identifier), grade1: Int(exam.score_1!)!, comment1: exam.comment_1!, grade2: Int(exam.score_2!)!, comment2: exam.comment_2!, grade3: Int(exam.score_3!), comment3: exam.comment_3, grade4: Int(exam.score_4!), comment4: exam.comment_4, completion: { (status, code, result) in
+        if Connectivity.isConnectedToInternet
+        {
+            let examList = DatabaseManagement.shared.queryAllExam(withID: userInfomation["id"] as! Int64, status: "graded")
+            print("@@@@@@@")
+            print(examList)
+            
+            if examList.count > 0 {
+                self.loadingShowwithStatus(status: "Uploading...")
+                for exam in examList
+                {
+                    var grade3: Int64?
+                    var grade4: Int64?
                     
-                    if status == true
-                    {
-                        print(status, result as Any)
-                        let delete = DatabaseManagement.shared.deleteExam(id: exam.identifier)
-                        if delete
-                        {
-                            self.deleteAudioFile(fileName: "\(exam.identifier)", examninerID: exam.examinerId)
-                            
-                        }
-                        print(delete)
+                    if exam.score_3 == nil {
+                        grade3 = nil
+                        grade4 = nil
                     } else {
-                        print(code as Any)
+                        grade3 = Int64(exam.score_3!)
+                        grade4 = Int64(exam.score_4!)
                     }
                     
-                })
-            }
-            DispatchQueue.main.async {
-                self.loadingHide()
+                    ExamRecord.postGrade(withToken: self.token!, identifier: Int(exam.identifier), grade1: Int64(exam.score_1!)!, comment1: exam.comment_1!, grade2: Int64(exam.score_2!)!, comment2: exam.comment_2!, grade3: grade3, comment3: exam.comment_3, grade4: grade4, comment4: exam.comment_4, completion: { (status, code, result) in
+                        
+                        if status == true
+                        {
+                            print(status as Any, result as Any)
+                            let delete = DatabaseManagement.shared.deleteExam(id: exam.identifier)
+                            if delete
+                            {
+                                self.deleteAudioFile(fileName: "\(exam.identifier)", examninerID: exam.examinerId)
+                                
+                            }
+                            print(delete)
+                        } else {
+                            print(code as Any, result as Any)
+                        }
+                        
+                    })
+                }
+                DispatchQueue.main.async {
+                    self.loadingHide()
+                }
             }
         }
-    }
+        
+    }    
     
-    func deleteAudioFile(fileName: String, examninerID: Int64) {
-        let fileManager = FileManager.default
-        let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
-        let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
-        let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
-        guard let dirPath = paths.first else {
-            return
-        }
-        let filePath = "\(dirPath)/\(examninerID)/" + fileName
-        do {
-            try fileManager.removeItem(atPath: filePath)
-            print("deleted")
-        } catch let error as NSError {
-            print(error.debugDescription)
-        }
-    }
     func asignDataInView()
         
     {
@@ -220,7 +258,6 @@ class Assessor_HomeVC: UIViewController {
                     self.userInfomation = users!
                     DispatchQueue.main.async(execute: {
                         self.asignDataInView()
-                        print("\nCURRENT USER INFO AFTER UPDATED: ------>\n",self.userInfomation)
                         
                     })
                     
@@ -269,7 +306,6 @@ class Assessor_HomeVC: UIViewController {
         {
             self.loadingShow()
             ExamRecord.getAllRecord(completion: { (records: [NSDictionary]?, code: Int?, error: NSDictionary?) in
-                print(records as Any)
                 if let exams = records
                 {
                     let exam = exams[0]
@@ -277,7 +313,6 @@ class Assessor_HomeVC: UIViewController {
                         let part1VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "gradeVC") as! Assessor_GradeVC
                         
                         part1VC.Exam = exam
-                        print(exam)
                         let identifier = exam["identifier"] as? Int
                         userDefault.set(identifier, forKey: IDENTIFIER_KEY)
                         userDefault.synchronize()
@@ -371,10 +406,8 @@ class Assessor_HomeVC: UIViewController {
         alert.addAction(okBtn)
         alert.addAction(cancelBtn)
         self.present(alert, animated: true, completion: nil)
-
-        
-        
     }
+    
     func onHandleLogOut()
     {
         switch socialIdentifier {
@@ -391,6 +424,10 @@ class Assessor_HomeVC: UIViewController {
             print("LogOut Normal")
         }
         
+        UserInfoAPI.invalidToken(token: self.token!) { (status, result) in
+            print(status, result)
+        }
+        
         let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
         
         let mainControler = MainNavigationController(rootViewController: loginVC)
@@ -400,6 +437,7 @@ class Assessor_HomeVC: UIViewController {
         
         UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
         userDefault.removeObject(forKey: TOKEN_STRING)
+        userDefault.removeObject(forKey: USERINFO_STRING)
         userDefault.removeObject(forKey: SOCIALKEY)
         userDefault.removeObject(forKey: SOCIALAVATAR)
         userDefault.removeObject(forKey: USERNAMELOGIN)

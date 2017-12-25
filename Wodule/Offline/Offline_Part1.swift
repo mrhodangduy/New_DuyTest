@@ -63,14 +63,24 @@ class Offline_Part1: UIViewController {
                 }
                 catch
                 {
-                    self.loadingHide()
+                    
                     print("cannot play")
+                    DispatchQueue.main.async(execute: {
+                        self.currentPlayer = nil
+                        self.loadingHide()
+                        self.alertMissingText(mess: ERROR_MESSAGE.CANNOTPLAY_AUDIO, textField: nil)
+                        
+                    })
                 }
             }
             catch
             {
-                self.loadingHide()
-                print("Cannot get data")
+                DispatchQueue.main.async(execute: {
+                    self.currentPlayer = nil
+                    self.loadingHide()
+                    self.alertMissingText(mess: ERROR_MESSAGE.CANNOTPLAY_AUDIO, textField: nil)
+                    
+                })
             }
         }
         
@@ -90,16 +100,16 @@ class Offline_Part1: UIViewController {
         dataTableView.dataSource = self
         dataTableView.delegate = self
         
-        
         img_Question.contentMode = .scaleAspectFit
-        
+        tv_Content.contentInset = UIEdgeInsetsMake(10, 0, 25, 0)
         
         if ((Exam.examQuestionaireOne)?.hasPrefix("http://wodule.io/user/"))!
         {
             
             titleQuestion.text = TITLEPHOTO
             img_Question.isHidden = false
-            img_Question.sd_setImage(with: URL(string: Exam.examQuestionaireOne!), placeholderImage: nil, options: [], completed: nil)
+            let url = getImageQuestionUrlOffline(saveName: "question_1", examinerId: Exam.examinerId, identifier: Exam.identifier)
+            img_Question.sd_setImage(with: url, placeholderImage: nil, options: [], completed: nil)
             controlFontSizeView.isHidden = true
             controlImageView.isHidden = false
             tv_Content.isHidden = true
@@ -120,14 +130,14 @@ class Offline_Part1: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tv_Content.isScrollEnabled = false
+//        tv_Content.isScrollEnabled = false
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        tv_Content.isScrollEnabled = true
+//        tv_Content.isScrollEnabled = true
         
     }
     
@@ -166,10 +176,12 @@ class Offline_Part1: UIViewController {
     }
     
     @IBAction func onClickSubmit(_ sender: Any) {
-        
-        self.pause()
-        self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
-        self.isTapped = false
+        if currentPlayer != nil
+        {
+            self.pause()
+            self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
+            self.isTapped = false
+        }
         
         if score == 0 || tv_Comment.text.trimmingCharacters(in: .whitespacesAndNewlines).characters.count == 0
         {
@@ -177,12 +189,15 @@ class Offline_Part1: UIViewController {
         }
         else
         {
+            if currentPlayer != nil
+            {
+                self.stop()
+            }
             userDefault.set(tv_Comment.text, forKey: COMMENT_PART1)
             userDefault.synchronize()
             let part2VC = UIStoryboard(name: OFFLINE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part2VC") as! Offline_Part2
             part2VC.Exam = self.Exam
             part2VC.data1 = self.data
-            self.stop()
             self.navigationController?.pushViewController(part2VC, animated: true)            
         }
         
@@ -319,18 +334,6 @@ extension Offline_Part1: AVAudioPlayerDelegate
         self.isTapped = false
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -166,7 +166,7 @@ struct ExamRecord
     }
     
     
-    static func getUniqueRecord(token: String, id: Int)
+    static func getUniqueRecord(token: String, id: Int, completion: @escaping (_ status: Bool) -> ())
     {
         let url = URL(string: APIURL.getAllrecordURL + "/\(id)")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
@@ -174,6 +174,7 @@ struct ExamRecord
         Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             print("@@@@@@@@@@@ Result")
             print(response.result.value as Any)
+            completion(true)
         }
     
     }
@@ -188,10 +189,8 @@ struct ExamRecord
             let code = response.response!.statusCode
             if response.result.isSuccess {
                 let json = response.result.value as? NSDictionary
-                print("JSON",json as Any)
                 if let data = json?["data"] as? [NSDictionary]
                 {
-                    print("DATA",data)
                     if data.count != 0
                     {
                         guard let meta = json?["meta"] as? NSDictionary, let pagination = meta["pagination"] as? NSDictionary, let total_pages = pagination["total_pages"] as? Int else {return}
@@ -215,7 +214,7 @@ struct ExamRecord
         }
     }
     
-    static func postGrade(withToken token: String, identifier:Int, grade1: Int,comment1:String, grade2: Int, comment2:String, grade3: Int?,comment3:String?,grade4: Int?,comment4:String?, completion: @escaping (Bool?, Int?, NSDictionary?) -> ())
+    static func postGrade(withToken token: String, identifier:Int, grade1: Int64, comment1:String, grade2: Int64, comment2:String, grade3: Int64?, comment3:String?, grade4: Int64?, comment4:String?, completion: @escaping (Bool?, Int?, NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.baseURL + "/records/" + "\(identifier)" + "/grades")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)", "Content-Type": "application/x-www-form-urlencoded"]
@@ -255,6 +254,23 @@ struct ExamRecord
                 completion(false, code, json)
                 print(response.result.error?.localizedDescription as Any)
                 
+            }
+            
+        }
+        
+    }
+    
+    static func examExpired(token: String, id: Int64, completion: @escaping (Bool, NSDictionary?)  -> () )
+    {
+        let url = URL(string: APIURL.expiredExamURL + "\(id)")
+        let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
+
+        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+            
+            if response.result.isSuccess && response.response?.statusCode == 200 {
+                completion(true, response.result.value as? NSDictionary)
+            } else {
+                completion(false, response.result.value as? NSDictionary)
             }
             
         }

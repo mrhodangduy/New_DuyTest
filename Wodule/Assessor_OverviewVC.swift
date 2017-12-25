@@ -311,10 +311,10 @@ class Assessor_OverviewVC: UIViewController {
                 self.currentAudioPlayer = nil
             }
             
-            let score_Part1 = userDefault.object(forKey: SCORE_PART1) as? Int
-            let score_Part2 = userDefault.object(forKey: SCORE_PART2) as? Int
-            let score_Part3 = userDefault.object(forKey: SCORE_PART3) as? Int
-            let score_Part4 = userDefault.object(forKey: SCORE_PART4) as? Int
+            let score_Part1 = userDefault.object(forKey: SCORE_PART1) as? Int64
+            let score_Part2 = userDefault.object(forKey: SCORE_PART2) as? Int64
+            let score_Part3 = userDefault.object(forKey: SCORE_PART3) as? Int64
+            let score_Part4 = userDefault.object(forKey: SCORE_PART4) as? Int64
             let comment_Part1 = userDefault.object(forKey: COMMENT_PART1) as? String
             let comment_Part2 = userDefault.object(forKey: COMMENT_PART2) as? String
             let comment_Part3 = userDefault.object(forKey: COMMENT_PART3) as? String
@@ -342,7 +342,7 @@ class Assessor_OverviewVC: UIViewController {
                 let token = userDefault.object(forKey: TOKEN_STRING) as? String
                 let identifier = userDefault.integer(forKey: IDENTIFIER_KEY)
                 
-                ExamRecord.postGrade(withToken: token!, identifier: identifier, grade1: score_Part1!, comment1: comment_Part1!, grade2: score_Part2!, comment2: comment_Part2!, grade3: score_Part3, comment3: comment_Part3, grade4: score_Part4, comment4: comment_Part4, completion: { (status:Bool?, code:Int?, result:NSDictionary?) in
+                ExamRecord.postGrade(withToken: token!, identifier: identifier, grade1: Int64(score_Part1!), comment1: comment_Part1!, grade2: Int64(score_Part2!), comment2: comment_Part2!, grade3: score_Part3, comment3: comment_Part3, grade4: score_Part4, comment4: comment_Part4, completion: { (status:Bool?, code:Int?, result:NSDictionary?) in
                     print(status as Any, code as Any , result as Any)
                     
                     if status!
@@ -462,7 +462,12 @@ class Assessor_OverviewVC: UIViewController {
             catch
             {
                 print("cannot play")
-                self.loadingHide()
+                DispatchQueue.main.async(execute: {
+                    self.currentAudioPlayer = nil
+                    self.loadingHide()
+                    self.alertMissingText(mess: ERROR_MESSAGE.CANNOTPLAY_AUDIO, textField: nil)
+                    
+                })
             }
         }
         

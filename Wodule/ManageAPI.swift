@@ -206,89 +206,6 @@ struct LoginWithSocial
 struct UserInfoAPI
 {
     
-    let id:Int
-    let role_id: Int
-    let first_name:String
-    let middle_name: String
-    let last_name: String
-    let date_of_birth: String
-    let country_of_birth:String
-    let city:String
-    let country:String
-    let telephone: String
-    let nationality:String
-    let status: String
-    let gender: String
-    let user_name:String
-    let email: String
-    let type: String
-    let picture: String
-    let organization: String
-    let student_class:String
-    let adviser: String
-    let ln_first:String?
-    let native_name:String?
-    let suffix:String?
-    let address:String?
-    let ethnicity:String?
-    let religion:String?
-    
-    enum error:Error {
-        case missing(String)
-    }
-    
-    init(json:[String: AnyObject], ln_first:String?,native_name:String?,suffix:String?,address:String?,ethnicity:String?,religion:String?) throws
-    {
-        guard let id = json["id"] as? Int else { throw error.missing("mising")}
-        guard let role_id = json["role_id"] as? Int else { throw error.missing("mising")}
-        guard let first_name = json["first_name"] as? String else {throw error.missing("mising")}
-        guard let middle_name = json["middle_name"] as? String else {throw error.missing("mising")}
-        guard let last_name = json["last_name"] as? String else {throw error.missing("mising")}
-        guard let date_of_birth = json["date_of_birth"] as? String else {throw error.missing("mising")}
-        guard let country_of_birth = json["country_of_birth"] as? String else {throw error.missing("mising")}
-        guard let city = json["city"] as? String else {throw error.missing("mising")}
-        guard let country = json["country"] as? String else {throw error.missing("mising")}
-        guard let telephone = json["telephone"] as? String else {throw error.missing("mising")}
-        guard let nationality = json["nationality"] as? String else {throw error.missing("mising")}
-        guard let status = json["status"] as? String else {throw error.missing("mising")}
-        guard let gender = json["gender"] as? String else {throw error.missing("mising")}
-        guard let user_name = json["user_name"] as? String else {throw error.missing("mising")}
-        guard let email = json["email"] as? String else {throw error.missing("mising")}
-        guard let type = json["type"] as? String else {throw error.missing("mising")}
-        guard let picture = json["picture"] as? String else {throw error.missing("mising")}
-        guard let organization = json["organization"] as? String else {throw error.missing("mising")}
-        guard let student_class = json["student_class"] as? String else {throw error.missing("mising")}
-        guard let adviser = json["adviser"] as? String else {throw error.missing("mising")}
-        
-        self.id = id
-        self.role_id = role_id
-        self.first_name = first_name
-        self.middle_name = middle_name
-        self.last_name = last_name
-        self.date_of_birth = date_of_birth
-        self.country_of_birth = country_of_birth
-        self.city = city
-        self.country = country
-        self.telephone = telephone
-        self.nationality = nationality
-        self.status = status
-        self.gender = gender
-        self.user_name = user_name
-        self.email = email
-        self.type = type
-        self.picture = picture
-        self.organization = organization
-        self.student_class = student_class
-        self.adviser = adviser
-        self.ln_first = ln_first
-        self.native_name = native_name
-        self.suffix = suffix
-        self.address = address
-        self.ethnicity = ethnicity
-        self.religion = religion
-        
-    }
-    
     static func getUserInfo(withToken token: String,completion: @escaping (NSDictionary?) -> ())
     {
         let url  = URL(string: APIURL.getProfileURL)
@@ -417,7 +334,6 @@ struct UserInfoAPI
                         userDefault.synchronize()
                     }
                     
-                    
                 })
                 
             case .failure(let error):
@@ -524,6 +440,23 @@ struct UserInfoAPI
             {
                 completion(false, json)
             }
+        }
+    }
+    
+    
+    static func invalidToken(token: String, completion: @escaping (_ status: Bool, _ result: NSDictionary)->())
+    {
+        let url = URL(string: APIURL.invalidTokenURL)
+        let httpHeader: HTTPHeaders = ["Authorization":"Bearer \(token)"]
+        
+        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+            
+            if response.result.isSuccess && response.response?.statusCode == 200 {
+                completion(true, response.result.value as! NSDictionary)
+            } else {
+                completion(false, response.result.value as! NSDictionary)
+            }
+            
         }
     }
     

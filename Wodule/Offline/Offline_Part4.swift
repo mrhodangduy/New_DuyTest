@@ -41,7 +41,7 @@ class Offline_Part4: UIViewController {
     func onHandleSetupAudio()
     {
         currentPlayer = AVAudioPlayer()
-            let url = getAudioUrlOffline(saveName: "audio_1", examinerId: Exam.examinerId, identifier: Exam.identifier)
+            let url = getAudioUrlOffline(saveName: "audio_4", examinerId: Exam.examinerId, identifier: Exam.identifier)
             play_pauseBtn.isHidden = true
             self.loadingShow()
             DispatchQueue.global(qos: .background).async {
@@ -61,14 +61,24 @@ class Offline_Part4: UIViewController {
                     }
                     catch
                     {
-                        self.loadingHide()
                         print("cannot play")
+                        DispatchQueue.main.async(execute: {
+                            self.currentPlayer = nil
+                            self.loadingHide()
+                            self.alertMissingText(mess: ERROR_MESSAGE.CANNOTPLAY_AUDIO, textField: nil)
+                            
+                        })
                     }
                 }
                 catch
                 {
-                    self.loadingHide()
                     print("Cannot get data")
+                    DispatchQueue.main.async(execute: {
+                        self.currentPlayer = nil
+                        self.loadingHide()
+                        self.alertMissingText(mess: ERROR_MESSAGE.CANNOTPLAY_AUDIO, textField: nil)
+                        
+                    })
                 }
         }
     }
@@ -86,12 +96,14 @@ class Offline_Part4: UIViewController {
         
         dataTableView.dataSource = self
         dataTableView.delegate = self
-        
+        tv_Content.contentInset = UIEdgeInsetsMake(10, 0, 25, 0)
+
         if ((Exam.examQuestionaireFour)?.hasPrefix("http://wodule.io/user/"))!
         {
             img_Question.isHidden = false
             titleQuestion.text = TITLEPHOTO
-            img_Question.sd_setImage(with: URL(string: Exam.examQuestionaireFour!), placeholderImage: nil, options: [], completed: nil)
+            let url = getImageQuestionUrlOffline(saveName: "question_4", examinerId: Exam.examinerId, identifier: Exam.identifier)
+            img_Question.sd_setImage(with: url, placeholderImage: nil, options: [], completed: nil)
             controlFontSizeView.isHidden = true
             controlImageView.isHidden = false
             tv_Content.isHidden = true
@@ -183,9 +195,12 @@ class Offline_Part4: UIViewController {
     
     @IBAction func nextBtnTap(_ sender: Any) {
         
-        self.pause()
-        self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
-        self.isTapped = false
+        if currentPlayer != nil
+        {
+            self.pause()
+            self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
+            self.isTapped = false
+        }
         
         if score == 0 || tv_Comment.text.trimmingCharacters(in: .whitespacesAndNewlines).characters.count == 0
         {
@@ -193,6 +208,10 @@ class Offline_Part4: UIViewController {
         }
         else
         {
+            if currentPlayer != nil
+            {
+                self.stop()
+            }
             userDefault.set(tv_Comment.text, forKey: COMMENT_PART4)
             userDefault.synchronize()
             let overviewVC = UIStoryboard(name: OFFLINE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "overviewVC") as! Offline_OverviewVC
@@ -202,7 +221,6 @@ class Offline_Part4: UIViewController {
             overviewVC.data2 = self.data2
             overviewVC.data3 = self.data3
             overviewVC.data4 = self.data4
-            self.stop()
             self.navigationController?.pushViewController(overviewVC, animated: true)
 
         }

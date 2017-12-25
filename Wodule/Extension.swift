@@ -370,4 +370,56 @@ extension UIViewController
         return file
     }
     
+    func getImageQuestionUrlOffline(saveName: String, examinerId: Int64, identifier: Int64) -> URL?
+    {
+        let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let folder = directoryURL.appendingPathComponent("\(examinerId)")
+        let child = folder.appendingPathComponent("\(identifier)")
+        let file = child.appendingPathComponent(saveName + ".jpeg", isDirectory: false)
+        print(file)
+        return file
+    }
+    
+    func getGMTDate(date: String) -> Date
+    {
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return format.date(from: date)!
+    
+    }
+    
+        
+    func gettimeRemaining(from: Date) -> Float
+    {
+        let dateString = Date().currentTimeZoneDate()
+        let date = getGMTDate(date: dateString)
+        return Float((from.timeIntervalSince(date) / 3600))
+    }
+    
+    func deleteAudioFile(fileName: String, examninerID: Int64) {
+        let fileManager = FileManager.default
+        let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+        let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+        let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+        guard let dirPath = paths.first else {
+            return
+        }
+        let filePath = "\(dirPath)/\(examninerID)/" + fileName
+        do {
+            try fileManager.removeItem(atPath: filePath)
+            print("deleted")
+        } catch let error as NSError {
+            print(error.debugDescription)
+        }
+    }
+    
+}
+
+extension Date {
+    func currentTimeZoneDate() -> String {
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return formatter.string(from: self)
+    }
 }

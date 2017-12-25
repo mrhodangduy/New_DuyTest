@@ -19,6 +19,9 @@ class SplashScreenVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let userInfoData = userDefault.object(forKey: USERINFO_STRING) as? Data
+        print(userInfoData as Any)
+
         self.loadingIndicator.hidesWhenStopped = true
         notifiLabel.isHidden = true
         self.loadingIndicator.startAnimating()
@@ -33,11 +36,26 @@ class SplashScreenVC: UIViewController {
             self.perform(#selector(self.onHanldeAutoLogin), with: self, afterDelay: 1)
             
         }
-        else
+        else if userInfoData != nil
         {
+            let assessor_homeVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessor_homeVC") as! Assessor_HomeVC
+            let userInfo = NSKeyedUnarchiver.unarchiveObject(with: userInfoData!) as? NSDictionary
+            assessor_homeVC.userInfomation = userInfo!
+            
+            let mainControler = MainNavigationController(rootViewController: assessor_homeVC)
+            let window = UIApplication.shared.delegate!.window!!
+            window.rootViewController = mainControler
+            window.makeKeyAndVisible()
+            print("-----> LOGIN SUCCESSFUL")
+            
+            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+
+        }
+        else {
             self.loadingIndicator.stopAnimating()
             displayAlertNetWorkNotAvailable()
             NotificationCenter.default.addObserver(self, selector: #selector(self.onHanldeAutoLogin), name: NSNotification.Name.available, object: nil)
+
         }
         
         print("username:", username as Any, "password:", password as Any)

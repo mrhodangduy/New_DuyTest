@@ -13,14 +13,14 @@ class DataOffline
 {
     static let shared = DataOffline()
     
-    func download(url: String, folder: String, id: String, saveName: String, completion: @escaping (_ status: Bool,_ urlString: String) -> ())
+    func download(url: String, folder: String, id: String, saveName: String, completionProgress: @escaping (_ percent: Double) -> (), completion: @escaping (_ status: Bool,_ urlString: String) -> ())
     {
         let downloadUrl = URL(string: url)
         let destination: DownloadRequest.DownloadFileDestination = { _, _ in
             let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             let folder = directoryURL.appendingPathComponent(folder)
             let child = folder.appendingPathComponent(id)
-            let file = child.appendingPathComponent(saveName + ".mp3", isDirectory: false)
+            let file = child.appendingPathComponent(saveName, isDirectory: false)
             return (file, [.createIntermediateDirectories])
         }
         
@@ -29,7 +29,7 @@ class DataOffline
             let qosUtility = DispatchQoS.QoSClass.utility
             DispatchQueue.global(qos: qosUtility).async {
                 let percent = progress.fractionCompleted * 100
-                print(percent)
+                completionProgress(percent)
                 }
         }
         .response { (response) in            
@@ -40,8 +40,6 @@ class DataOffline
                 completion(false, (response.error?.localizedDescription)!)
             }
         }
-        
-        
     }
     
 }

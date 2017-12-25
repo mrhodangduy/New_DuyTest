@@ -26,6 +26,17 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vhS-Rd-vEU" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
                         <rect key="frame" x="190" y="4" width="80" height="25"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloading" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RS9-Yw-nVu" customClass="UILabelX" customModule="Wodule" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="80" height="25"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F7H-sM-hN1" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="80" height="25"/>
                                 <color key="backgroundColor" red="0.050676546990871429" green="0.19164103269577026" blue="0.087919391691684723" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -48,9 +59,13 @@
                             <constraint firstItem="F7H-sM-hN1" firstAttribute="leading" secondItem="vhS-Rd-vEU" secondAttribute="leading" id="0tr-Ha-G0U"/>
                             <constraint firstAttribute="trailing" secondItem="F7H-sM-hN1" secondAttribute="trailing" id="5Dd-7N-5er"/>
                             <constraint firstItem="F7H-sM-hN1" firstAttribute="top" secondItem="vhS-Rd-vEU" secondAttribute="top" id="K8R-jd-DBK"/>
+                            <constraint firstAttribute="trailing" secondItem="RS9-Yw-nVu" secondAttribute="trailing" id="Ldr-1x-3aa"/>
                             <constraint firstAttribute="height" constant="25" id="TVa-d2-5Lo"/>
+                            <constraint firstAttribute="bottom" secondItem="RS9-Yw-nVu" secondAttribute="bottom" id="VMd-uD-ME3"/>
                             <constraint firstAttribute="bottom" secondItem="F7H-sM-hN1" secondAttribute="bottom" id="iap-6c-Bnw"/>
                             <constraint firstAttribute="width" constant="80" id="jsA-64-reP"/>
+                            <constraint firstItem="RS9-Yw-nVu" firstAttribute="top" secondItem="vhS-Rd-vEU" secondAttribute="top" id="nD9-ry-X99"/>
+                            <constraint firstItem="RS9-Yw-nVu" firstAttribute="leading" secondItem="vhS-Rd-vEU" secondAttribute="leading" id="xja-A9-cpb"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -65,10 +80,12 @@
                     <constraint firstItem="vhS-Rd-vEU" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="RcB-9a-XXO"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="vhS-Rd-vEU" firstAttribute="centerX" secondItem="KGk-i7-Jjw" secondAttribute="centerX" constant="70" id="Adg-Nm-Rsl"/>
             </constraints>
             <connections>
+                <outlet property="downloadingLabel" destination="RS9-Yw-nVu" id="FbV-rB-1VE"/>
                 <outlet property="examIDLabel" destination="bb5-Rr-rvC" id="0tz-zE-NmU"/>
                 <outlet property="startButton" destination="F7H-sM-hN1" id="LTP-Vd-c0v"/>
             </connections>

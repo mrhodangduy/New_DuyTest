@@ -25,7 +25,13 @@ class APIURL{
     static let messageURL = "http://wodule.io/api/message"
     static let calendarURL = "http://wodule.io/api/calendars"
     static let downloadURL = "http://wodule.io/api/downloads?page="
-    
+    static let invalidTokenURL = "http://wodule.io/api/user_login/invalidate"
+    static let expiredExamURL = "http://wodule.io/api/expired/"
+
+}
+
+struct ERROR_MESSAGE {
+    static let CANNOTPLAY_AUDIO = "Can not load audio file."
 }
 
 enum UserType: String    
@@ -55,7 +61,7 @@ let OFFLINE_STORYBOARD = "Offline"
 
 let userDefault = UserDefaults.standard
 let TOKEN_STRING = "token"
-let USER_STRING = "userinfo"
+let USERINFO_STRING = "userinfo"
 let FIRSTNAME_STRING = "first_name"
 let LASTNAME_STRING = "last_name"
 let MIDDLENAME_STRING = "middle_name"

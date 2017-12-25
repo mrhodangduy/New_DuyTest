@@ -33,7 +33,6 @@ class AssessmentHistoryVC: UIViewController {
         dataTableView.delegate = self
         
         self.onHandleInitData()
-
         
     }
     override func viewDidDisappear(_ animated: Bool) {

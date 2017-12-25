@@ -65,12 +65,23 @@ class Assessor_GradeVC: UIViewController {
                     }
                     catch
                     {
-                        print("cannot play")
+                        DispatchQueue.main.async(execute: {
+                            self.currentPlayer = nil
+                            self.loadingHide()
+                            self.alertMissingText(mess: ERROR_MESSAGE.CANNOTPLAY_AUDIO, textField: nil)
+                            
+                        })
                     }
                 }
                 catch
                 {
                     print("Cannot get data")
+                    DispatchQueue.main.async(execute: {
+                        self.currentPlayer = nil
+                        self.loadingHide()
+                        self.alertMissingText(mess: ERROR_MESSAGE.CANNOTPLAY_AUDIO, textField: nil)
+                        
+                    })
                 }
             }
             
@@ -96,9 +107,8 @@ class Assessor_GradeVC: UIViewController {
         dataTableView.dataSource = self
         dataTableView.delegate = self
         
-        
         img_Question.contentMode = .scaleAspectFit
-        
+        tv_Content.contentInset = UIEdgeInsetsMake(10, 0, 25, 0)
         
         if ((Exam?["examQuestionaireOne"] as? String)?.hasPrefix("http://wodule.io/user/"))!
         {
@@ -123,30 +133,11 @@ class Assessor_GradeVC: UIViewController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        tv_Content.isScrollEnabled = false
-        
-    }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        tv_Content.isScrollEnabled = true
-        
-    }
     
     @IBAction func onClickPromtQuestion(_ sender: Any) {
         
-//        if ((Exam?["examQuestionaireOne"] as? String)?.hasPrefix("http://wodule.io/user/")) == true
-//        {
-//            let promt_1 = Exam?["promt1_1"] as? String
-//            let promt_2 = Exam?["promt1_2"] as? String
-//            let promt_3 = Exam?["promt1_3"] as? String
-//            self.alert_PromtQuestion(title: "Question", mess: promt_1! + promt_2! + promt_3! )
-//        }
-    }    
+    }
     
     @IBAction func zoomTextTap(_ sender: Any) {
         
@@ -179,10 +170,13 @@ class Assessor_GradeVC: UIViewController {
     }
     
     @IBAction func onClickSubmit(_ sender: Any) {
-        
-        self.pause()
-        self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
-        self.isTapped = false
+        if currentPlayer != nil
+        {
+            self.pause()
+            self.play_pauseBtn.setImage(#imageLiteral(resourceName: "btn_play"), for: .normal)
+            self.isTapped = false
+
+        }
         
         if score == 0 || tv_Comment.text.trimmingCharacters(in: .whitespacesAndNewlines).characters.count == 0
         {
@@ -190,13 +184,16 @@ class Assessor_GradeVC: UIViewController {
         }
         else
         {
+            if currentPlayer != nil
+            {
+                self.stop()
+            }
             userDefault.set(tv_Comment.text, forKey: COMMENT_PART1)
             userDefault.synchronize()
             let part2VC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part2VC") as! Assessor_Part2VC
             part2VC.Exam = self.Exam
             part2VC.data1 = self.data
-            self.stop()
-            self.navigationController?.pushViewController(part2VC, animated: true)            
+            self.navigationController?.pushViewController(part2VC, animated: true)
         }
         
     }

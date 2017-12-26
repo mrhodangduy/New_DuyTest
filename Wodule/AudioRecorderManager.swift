@@ -22,7 +22,7 @@ class AudioRecorderManager: NSObject {
         
         do {
             
-            try recordingSession.setCategory(AVAudioSessionCategoryRecord, with: [.defaultToSpeaker])
+            try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.defaultToSpeaker])
             try recordingSession.setActive(true)
             
             recordingSession.requestRecordPermission() {[weak self] (allowed: Bool) -> Void  in
@@ -61,12 +61,13 @@ class AudioRecorderManager: NSObject {
         
         let audioURL = NSURL(fileURLWithPath: path.path)
        
-        let recordSettings = [
-            AVFormatIDKey: kAudioFormatAppleLossless,
-            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue,
-            AVEncoderBitRateKey: 12000.0,
+        let recordSettings : [String:Any] = [
+            AVFormatIDKey: kAudioFormatMPEG4AAC,
+            AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue,
+            AVEncoderBitRateKey: 32000,
             AVNumberOfChannelsKey: 1,
-            AVSampleRateKey: 44100.0] as [String : Any]
+            AVSampleRateKey: 44100]
+        
         do {
             recorder = try AVAudioRecorder(url: audioURL as URL, settings: recordSettings)
             recorder?.delegate = self
@@ -85,7 +86,6 @@ class AudioRecorderManager: NSObject {
             print(error.localizedDescription)
             result(false, nil)
             print(recorder?.settings as Any)
-
         }
     }
     
@@ -130,11 +130,6 @@ extension AudioRecorderManager:AVAudioRecorderDelegate{
     func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder,error: Error?) {
         print("\(String(describing: error?.localizedDescription))")
     }
-    
 }
-
-
-
-
 
 

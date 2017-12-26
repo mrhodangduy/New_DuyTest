@@ -30,7 +30,6 @@ class Assessor_AssessmentRecordVC: UIViewController {
     var currentpage:Int!
     var totalPage:Int!
     
-    var refresh = false
     
     fileprivate let convertdateformatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -53,6 +52,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
         
         recordsTableView.register(UINib(nibName: "AssessmentRecordCell", bundle: nil), forCellReuseIdentifier: "AssessmentRecordCell")
         
+        onHandleCheckExpiredExam()
         downloadExam()
     }
     
@@ -82,22 +82,53 @@ class Assessor_AssessmentRecordVC: UIViewController {
     
     @IBAction func onClickRefresh(_ sender: Any) {
         
-        if !refresh
+        if recordList.count == 10
         {
-            onHandleCallAPI()
-        } else
-        {
-            downloadExam()
+            self.alertMissingText(mess: "You reach to limit record to download.", textField: nil)
+            return
         }
-        
-        refresh = !refresh
-        
+        onHandleCallAPI()
+            
     }
 
     @IBAction func onClickBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
     
+    func onHandleCheckExpiredExam()
+    {
+        let idlistJustExpired = DatabaseManagement.shared.queryIdentifierListExpiredToUpdate(of: self.assessorID)
+        print("List exam just expired", idlistJustExpired)
+        if idlistJustExpired.isEmpty == false
+        {
+            for id in idlistJustExpired {
+                let _ = DatabaseManagement.shared.updateExpiredExam(id: id)
+            }
+        }
+        
+        let idExpired = DatabaseManagement.shared.queryIdentifierListExpiredToDeleted(of: self.assessorID)
+        print("List exam expired", idExpired)
+        if !idExpired.isEmpty {
+            for id in idExpired {
+                ExamRecord.examExpired(token: self.token!, id: id, completion: { (status, results) in
+                    
+                    if status {
+                        let delete = DatabaseManagement.shared.deleteExam(id: id)
+                        if delete
+                        {
+                            self.deleteAudioFile(fileName: "\(id)", examninerID: self.assessorID)
+                        }
+                        print(delete)
+                    } else {
+                        print("Errrorrr to delete")
+                    }
+                })
+            }
+        }
+        
+    }
+    
+
     func downloadExam()
     {
         if Connectivity.isConnectedToInternet
@@ -105,23 +136,58 @@ class Assessor_AssessmentRecordVC: UIViewController {
             self.loadingShow()
             currentpage = 1
             ExamRecord.downloadRecord(token: self.token!, page: self.currentpage, completion: { (status, code, result, total_Page) in
-                if status == true && (result?.count)! > 0 {
-                    for item in result!
+                
+                if status == true {
+                    
+                    if  !result!.isEmpty {
+                        for item in result!
+                        {
+                            print("IDDDDDDDDDDD: ----->", item["identifier"] as! Int)
+                        }
+                        self.totalPage = total_Page
+                        if (result?.count)! > 10
+                        {
+                            let data: [NSDictionary] = Array(result!.prefix(upTo: 10))
+                            self.onHandleSaveDataToLocal(data: data, examinerId: self.assessorID)
+                            self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
+                            DispatchQueue.main.async(execute: {
+                                self.recordsTableView.reloadData()
+                                self.loadingHide()
+                            })
+                            
+                        }
+                        else
+                        {
+                            self.onHandleSaveDataToLocal(data: result!, examinerId: self.assessorID)
+                            self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
+                            DispatchQueue.main.async(execute: {
+                                self.recordsTableView.reloadData()
+                                self.loadingHide()
+                            })
+
+                        }
+                    } else if result!.isEmpty
                     {
-                        print("IDDDDDDDDDDD: ----->", item["identifier"] as! Int)
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            self.alertMissingText(mess: "You don't have any record.", textField: nil)
+                        })
+                    } else
+                    {
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            self.alertMissingText(mess: "You reach to limit record to download.", textField: nil)
+                            self.recordsTableView.reloadData()
+                        })
                     }
-                    self.totalPage = total_Page
-                    self.onHandleSaveDataToLocal(data: result!, examinerId: self.assessorID)
-                    self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
-                    DispatchQueue.main.async(execute: {
-                        self.recordsTableView.reloadData()
-                        self.loadingHide()
-                    })
+                    
                 } else if code == 429
                 {
+                    self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
                     DispatchQueue.main.async(execute: {
                         self.loadingHide()
                         self.alertMissingText(mess: "Too Many Attempts\n(ErrorCode:\(429))", textField: nil)
+                        self.recordsTableView.reloadData()
                     })
                     
                 } else if code == 401
@@ -132,19 +198,26 @@ class Assessor_AssessmentRecordVC: UIViewController {
                     })
                 }
                 else {
+                    self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
                     DispatchQueue.main.async(execute: {
                         self.loadingHide()
                         self.alertMissingText(mess: "Server error. Try again later.", textField: nil)
+                        self.recordsTableView.reloadData()
                     })
                 }
             })
         }
             
         else {
-            self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
-            DispatchQueue.main.async {
-                self.recordsTableView.reloadData()
-            }
+            self.onHandleLoadLocalData()
+        }
+    }
+    
+    func onHandleLoadLocalData()
+    {
+        self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
+        DispatchQueue.main.async {
+            self.recordsTableView.reloadData()
         }
     }
     
@@ -159,35 +232,61 @@ class Assessor_AssessmentRecordVC: UIViewController {
                 
             } else {
                 
-                DataOffline.shared.download(url: questions[i]!, folder: "\(examinerid)", id: "\(id)", saveName: "question_\(i+1).jpeg", completionProgress: { (percent) in
-                    
-                    print("question_\(i+1).jpeg", percent)
-                    
-                }, completion: { (status, urlString) in
-                    print("!!!!!!!!!!!!!!!")
-                    print("Status", status, "Urlstring:", urlString)
-                })
+                let existPhoto = onHandleCheckFileAvailable(examiner: examinerid, id: id, savename: "question_\(i+1).jpeg")
+                if existPhoto
+                {
+                    continue
+                }
+                else
+                {
+                    DataOffline.shared.download(url: questions[i]!, folder: "\(examinerid)", id: "\(id)", saveName: "question_\(i+1).jpeg", completionProgress: { (percent) in
+                        
+                        print("question_\(i+1).jpeg", percent)
+                        
+                    }, completion: { (status, urlString) in
+                        print("!!!!!!!!!!!!!!!")
+                        print("Status", status, "Urlstring:", urlString)
+                    })
+                }
+                
             }
         }
     }
     
-    func onHandleCheckFileAvailable(examiner: Int64, id: Int64) -> Bool
+    func onHandleCheckFileAvailable(examiner: Int64, id: Int64, savename:String?) -> Bool
     {
         let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let folder = directoryURL.appendingPathComponent("\(examiner)")
         let child = folder.appendingPathComponent("\(id)")
-        
-        if FileManager.default.fileExists(atPath: child.path)
+        if savename == nil
         {
-            print("FIle existsssss")
+            if FileManager.default.fileExists(atPath: child.path)
+            {
+                print("FIle existsssss")
+            } else
+            {
+                print("Not founddddddddd")
+                
+            }
+            
+            return FileManager.default.fileExists(atPath: child.path)
+
         } else
         {
-            print("Not founddddddddd")
-
+            let photo = child.appendingPathComponent(savename!)
+            if FileManager.default.fileExists(atPath: photo.path)
+            {
+                print("Photo existsssss")
+            } else
+            {
+                print(" Photo Not founddddddddd")
+                
+            }
+            
+            return FileManager.default.fileExists(atPath: photo.path)
         }
         
-        return FileManager.default.fileExists(atPath: child.path)
-
+        
     }
     
     func onHandleSaveDataToLocal(data: [NSDictionary], examinerId: Int64)
@@ -227,16 +326,17 @@ class Assessor_AssessmentRecordVC: UIViewController {
                 let time = gettimeRemaining(from: date)
                 print("TIme remaining: ", time)
                 isExpired = time < 0 ? true : false                
-                
+                let idExpired = DatabaseManagement.shared.queryIdentifierListExpiredToDeleted(of: examinerId)
                 let ids:[Int64] = DatabaseManagement.shared.queryIdentifierList(of: examinerId)
+                
                 if ids.contains(identifier)
                 {
                     print("Already exist")
                     let idsList = DatabaseManagement.shared.queryIdentifiersNotDownloadAudio(of: examinerId)
                     print(idsList)
-                    let existFile = self.onHandleCheckFileAvailable(examiner: examinerId, id: identifier)
+                    let existFile = self.onHandleCheckFileAvailable(examiner: examinerId, id: identifier, savename: nil)
                     
-                    if !existFile
+                    if !existFile && !idExpired.contains(identifier)
                     {
                         let update = DatabaseManagement.shared.updateExamDownload(id: identifier, isDownloaded: false)
                         print(update)
@@ -249,55 +349,41 @@ class Assessor_AssessmentRecordVC: UIViewController {
                         }
                         
                         if audio_3 != nil {
-                            var part1Completion = false
-                            var part2Completion = false
-                            var part3Completion = false
-                            var part4Completion = false
+                            
+                            var percent1: Double = 0
+                            var percent2: Double = 0
+                            var percent3: Double = 0
+                            var percent4: Double = 0
                             
                             DataOffline.shared.download(url: audio_1!, folder: "\(examinerId)", id: "\(identifier)", saveName: "audio_1.mp3", completionProgress: { (percent) in
-                                print("audio1", percent)
-                                if percent == 100
-                                {
-                                    part1Completion = true
-                                    self.onHandleUpdateAndReloadData(part1: part1Completion, part2: part2Completion, part3: part3Completion, part4: part4Completion, id: identifier)
-                                }
+                                
+                                percent1 = percent
+                                self.onHandleProgressDownloadTotal(id: identifier, percent1: percent1, percent2: percent2, percent3: percent3, percent4: percent4)
                                 
                             }, completion: { (status, urlString) in
                                 
                             })
                             
                             DataOffline.shared.download(url: audio_2!, folder: "\(examinerId)", id: "\(identifier)", saveName: "audio_2.mp3", completionProgress: { (percent) in
-                                print("audio2", percent)
-                                
-                                if percent == 100
-                                {
-                                    part2Completion = true
-                                    self.onHandleUpdateAndReloadData(part1: part1Completion, part2: part2Completion, part3: part3Completion, part4: part4Completion, id: identifier)
-                                }
+
+                                percent2 = percent
+                                self.onHandleProgressDownloadTotal(id: identifier, percent1: percent1, percent2: percent2, percent3: percent3, percent4: percent4)
                                 
                             }, completion: { (status, urlString) in
                                 
                             })
                             DataOffline.shared.download(url: audio_3!, folder: "\(examinerId)", id: "\(identifier)", saveName: "audio_3.mp3", completionProgress: { (percent) in
-                                print("audio3", percent)
+
+                                percent3 = percent
+                                self.onHandleProgressDownloadTotal(id: identifier, percent1: percent1, percent2: percent2, percent3: percent3, percent4: percent4)
                                 
-                                if percent == 100
-                                {
-                                    part3Completion = true
-                                    self.onHandleUpdateAndReloadData(part1: part1Completion, part2: part2Completion, part3: part3Completion, part4: part4Completion, id: identifier)
-                                }
                                 
                             }, completion: { (status, urlString) in
                                 
                             })
                             DataOffline.shared.download(url: audio_4!, folder: "\(examinerId)", id: "\(identifier)", saveName: "audio_4.mp3", completionProgress: { (percent) in
-                                print("audio4", percent)
-                                
-                                if percent == 100
-                                {
-                                    part4Completion = true
-                                    self.onHandleUpdateAndReloadData(part1: part1Completion, part2: part2Completion, part3: part3Completion, part4: part4Completion, id: identifier)
-                                }
+                                percent4 = percent
+                                self.onHandleProgressDownloadTotal(id: identifier, percent1: percent1, percent2: percent2, percent3: percent3, percent4: percent4)
                                 
                             }, completion: { (status, urlString) in
                                 
@@ -306,30 +392,24 @@ class Assessor_AssessmentRecordVC: UIViewController {
                             
                         } else {
                             
-                            var part1Completion = false
-                            var part2Completion = false
+                            var percent1: Double = 0
+                            var percent2: Double = 0
                             
                             DataOffline.shared.download(url: audio_1!, folder: "\(examinerId)", id: "\(identifier)", saveName: "audio_1.mp3", completionProgress: { (percent) in
-                                print("audio1", percent)
                                 
-                                if percent == 100
-                                {
-                                    part1Completion = true
-                                    self.onHandleUpdateAndReloadData(part1: part1Completion, part2: part2Completion, part3: nil, part4: nil, id: identifier)
-                                }
+                                percent1 = percent
+                                self.onHandleProgressDownloadTotal(id: identifier, percent1: percent1, percent2: percent2, percent3: nil, percent4: nil)
+                                
                                 
                             }, completion: { (status, urlString) in
                                 
                             })
                             
                             DataOffline.shared.download(url: audio_2!, folder: "\(examinerId)", id: "\(identifier)", saveName: "audio_2.mp3", completionProgress: { (percent) in
-                                print("audio2", percent)
                                 
-                                if percent == 100
-                                {
-                                    part2Completion = true
-                                    self.onHandleUpdateAndReloadData(part1: part1Completion, part2: part2Completion, part3: nil, part4: nil, id: identifier)
-                                }
+                                percent2 = percent
+                                self.onHandleProgressDownloadTotal(id: identifier, percent1: percent1, percent2: percent2, percent3: nil, percent4: nil)
+                                
                                 
                             }, completion: { (status, urlString) in
                                 
@@ -339,15 +419,15 @@ class Assessor_AssessmentRecordVC: UIViewController {
                     
                     else if idsList.contains(identifier)
                     {
-                        let update = DatabaseManagement.shared.updateExamDownload(id: identifier, isDownloaded: true)
-                        print(update)
-                        if update
-                        {
+//                        let update = DatabaseManagement.shared.updateExamDownload(id: identifier, isDownloaded: true)
+//                        print(update)
+//                        if update
+//                        {
                             self.recordList = DatabaseManagement.shared.queryAllExam(withID: examinerId, status: "pending")
                             DispatchQueue.main.async(execute: {
                                 self.recordsTableView.reloadData()
                             })
-                        }
+//                        }
                     } else
                     {
                         print("Downloaded")
@@ -357,60 +437,48 @@ class Assessor_AssessmentRecordVC: UIViewController {
                     let questionArray: [String?] = [examQuestionaireOne, examQuestionaireTwo, examQuestionaireThree, examQuestionaireFour]
                     self.onHandleDownloadImageQuestion(questions: questionArray, examinerid: examinerId, id: identifier)
 
-                    let insertID = DatabaseManagement.shared.addExam(identifier: identifier, examinerId: examinerId, examName: examName, status: status, examQuestionaireOne: examQuestionaireOne, examQuestionaireTwo: examQuestionaireTwo, examQuestionaireThree: examQuestionaireThree, examQuestionaireFour: examQuestionaireFour, comment_1: comment_1, comment_2: comment_2, comment_3: comment_3, comment_4: comment_4, score_1: score_1, score_2: score_2, score_3: score_3, score_4: score_4, audio_1: audio_1, audio_2: audio_2, audio_3: audio_3, audio_4: audio_4, expired_at: expired_at, isExpired: isExpired, isDownload: false)
+                    let insertID = DatabaseManagement.shared.addExam(identifier: identifier, examinerId: examinerId, examName: examName, status: status, examQuestionaireOne: examQuestionaireOne, examQuestionaireTwo: examQuestionaireTwo, examQuestionaireThree: examQuestionaireThree, examQuestionaireFour: examQuestionaireFour, comment_1: comment_1, comment_2: comment_2, comment_3: comment_3, comment_4: comment_4, score_1: score_1, score_2: score_2, score_3: score_3, score_4: score_4, audio_1: audio_1, audio_2: audio_2, audio_3: audio_3, audio_4: audio_4, expired_at: expired_at, isExpired: isExpired, isDownload: false, progressDownload: 0)
                     print(insertID as Any)
+                    print(isExpired)
                     if insertID != nil
                     {
                         if audio_3 != nil {
-                            var part1Completion = false
-                            var part2Completion = false
-                            var part3Completion = false
-                            var part4Completion = false
+                            
+                            var percent1: Double = 0
+                            var percent2: Double = 0
+                            var percent3: Double = 0
+                            var percent4: Double = 0
 
                             DataOffline.shared.download(url: audio_1!, folder: "\(examinerId)", id: "\(identifier)", saveName: "audio_1.mp3", completionProgress: { (percent) in
-                                print("audio1", percent)
-                                if percent == 100
-                                {
-                                    part1Completion = true
-                                    self.onHandleUpdateAndReloadData(part1: part1Completion, part2: part2Completion, part3: part3Completion, part4: part4Completion, id: identifier)
-                                }
+                                percent1 = percent
+                                self.onHandleProgressDownloadTotal(id: identifier, percent1: percent1, percent2: percent2, percent3: percent3, percent4: percent4)
+                                
                                 
                             }, completion: { (status, urlString) in
                                 
                             })
                             
                             DataOffline.shared.download(url: audio_2!, folder: "\(examinerId)", id: "\(identifier)", saveName: "audio_2.mp3", completionProgress: { (percent) in
-                                print("audio2", percent)
-
-                                if percent == 100
-                                {
-                                    part2Completion = true
-                                    self.onHandleUpdateAndReloadData(part1: part1Completion, part2: part2Completion, part3: part3Completion, part4: part4Completion, id: identifier)
-                                }
+                                percent2 = percent
+                                self.onHandleProgressDownloadTotal(id: identifier, percent1: percent1, percent2: percent2, percent3: percent3, percent4: percent4)
+                                
                                 
                             }, completion: { (status, urlString) in
                                 
                             })
                             DataOffline.shared.download(url: audio_3!, folder: "\(examinerId)", id: "\(identifier)", saveName: "audio_3.mp3", completionProgress: { (percent) in
-                                print("audio3", percent)
-
-                                if percent == 100
-                                {
-                                    part3Completion = true
-                                    self.onHandleUpdateAndReloadData(part1: part1Completion, part2: part2Completion, part3: part3Completion, part4: part4Completion, id: identifier)
-                                }
+                                percent3 = percent
+                                self.onHandleProgressDownloadTotal(id: identifier, percent1: percent1, percent2: percent2, percent3: percent3, percent4: percent4)
+                                
                                 
                             }, completion: { (status, urlString) in
                                 
                             })
                             DataOffline.shared.download(url: audio_4!, folder: "\(examinerId)", id: "\(identifier)", saveName: "audio_4.mp3", completionProgress: { (percent) in
-                                print("audio4", percent)
-
-                                if percent == 100
-                                {
-                                    part4Completion = true
-                                    self.onHandleUpdateAndReloadData(part1: part1Completion, part2: part2Completion, part3: part3Completion, part4: part4Completion, id: identifier)
-                                }
+                                percent4 = percent
+                                self.onHandleProgressDownloadTotal(id: identifier, percent1: percent1, percent2: percent2, percent3: percent3, percent4: percent4)
+                                
+                                
                                 
                             }, completion: { (status, urlString) in
                                 
@@ -419,36 +487,26 @@ class Assessor_AssessmentRecordVC: UIViewController {
                             
                         } else {
                             
-                            var part1Completion = false
-                            var part2Completion = false
+                            var percent1: Double = 0
+                            var percent2: Double = 0
                             
                             DataOffline.shared.download(url: audio_1!, folder: "\(examinerId)", id: "\(identifier)", saveName: "audio_1.mp3", completionProgress: { (percent) in
-                                print("audio1", percent)
-
-                                if percent == 100
-                                {
-                                    part1Completion = true
-                                    self.onHandleUpdateAndReloadData(part1: part1Completion, part2: part2Completion, part3: nil, part4: nil, id: identifier)
-                                }
+                                percent1 = percent
+                                self.onHandleProgressDownloadTotal(id: identifier, percent1: percent1, percent2: percent2, percent3: nil, percent4: nil)
                                 
                             }, completion: { (status, urlString) in
                                 
                             })
                             
                             DataOffline.shared.download(url: audio_2!, folder: "\(examinerId)", id: "\(identifier)", saveName: "audio_2.mp3", completionProgress: { (percent) in
-                                print("audio2", percent)
-
-                                if percent == 100
-                                {
-                                    part2Completion = true
-                                    self.onHandleUpdateAndReloadData(part1: part1Completion, part2: part2Completion, part3: nil, part4: nil, id: identifier)
-                                }
+                                percent2 = percent
+                                self.onHandleProgressDownloadTotal(id: identifier, percent1: percent1, percent2: percent2, percent3: nil, percent4: nil)
+                                
                                 
                             }, completion: { (status, urlString) in
                                 
                             })
                         }
-
                     }
                 }
             }
@@ -456,28 +514,26 @@ class Assessor_AssessmentRecordVC: UIViewController {
         
     }
     
-    func onHandleUpdateAndReloadData(part1: Bool, part2: Bool, part3: Bool?, part4 : Bool?, id: Int64)
+    func onHandleProgressDownloadTotal(id: Int64, percent1: Double, percent2: Double, percent3: Double?, percent4: Double?)
     {
-        if part3 != nil
+        if percent3 == nil
         {
-            if part1 && part2 && part3! && part4!
+            let totalPercent: Int64 = Int64((percent1 + percent2)) / 2
+            print("Progress:", totalPercent, "%")
+            
+            if totalPercent % 5 == 0
             {
-                let update = DatabaseManagement.shared.updateExamDownload(id: id, isDownloaded: true)
-                print(update)
-                if update
-                {
+                let update = DatabaseManagement.shared.updateProgressDownload(id: id, percent: totalPercent)
+                if update {
                     self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
                     DispatchQueue.main.async(execute: {
                         self.recordsTableView.reloadData()
                     })
                 }
-            } else {
-                print("Still downloading more audio")
             }
-        } else
-        {
-            if part1 && part2
-            {
+            
+            if totalPercent == 100 {
+                
                 let update = DatabaseManagement.shared.updateExamDownload(id: id, isDownloaded: true)
                 print(update)
                 if update
@@ -487,14 +543,42 @@ class Assessor_AssessmentRecordVC: UIViewController {
                         self.recordsTableView.reloadData()
                     })
                 }
-            } else {
-                print("Still downloading more audio")
+                
+            }
+
+        } else {
+            
+            let totalPercent: Int64 = Int64((percent1 + percent2 + percent3! + percent4!)) / 4
+            print("Progress:", totalPercent, "%")
+            
+            if totalPercent % 5 == 0
+            {
+                let update = DatabaseManagement.shared.updateProgressDownload(id: id, percent: totalPercent)
+                if update {
+                    self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
+                    DispatchQueue.main.async(execute: {
+                        self.recordsTableView.reloadData()
+                    })
+                }
+            }
+            
+            if totalPercent == 100 {
+                
+                let update = DatabaseManagement.shared.updateExamDownload(id: id, isDownloaded: true)
+                print(update)
+                if update
+                {
+                    self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
+                    DispatchQueue.main.async(execute: {
+                        self.recordsTableView.reloadData()
+                    })
+                }
+                
             }
 
         }
-        
     }
-
+    
     func onHandleCallAPI()
     {
         if Connectivity.isConnectedToInternet
@@ -505,13 +589,15 @@ class Assessor_AssessmentRecordVC: UIViewController {
                 if status
                 {
                     if !dataRecords!.isEmpty {
-                        
-                        self.downloadExam()
-                        
+                        DispatchQueue.main.async(execute: {
+                            print("download")
+                            self.downloadExam()
+                        })
                     } else {
                         DispatchQueue.main.async {
                             self.loadingHide()
                             self.alertMissingText(mess: "No exam to download.", textField: nil)
+                            self.recordsTableView.reloadData()
                         }
                     }
                 } else if code == 429
@@ -521,11 +607,13 @@ class Assessor_AssessmentRecordVC: UIViewController {
                         DispatchQueue.main.async(execute: {
                             self.loadingHide()
                             self.alertMissingText(mess: "\(errorMess)\n(ErrorCode:\(error?["code"] as! Int))", textField: nil)
+                            self.recordsTableView.reloadData()
                         })
                     } else {
                         DispatchQueue.main.async(execute: {
                             self.loadingHide()
                             self.alertMissingText(mess: "Server error. Try again later.", textField: nil)
+                            self.recordsTableView.reloadData()
                         })
                         
                     }
@@ -634,16 +722,18 @@ extension Assessor_AssessmentRecordVC: UITableViewDataSource, UITableViewDelegat
             cell.delegate = self
             cell.indexPath = indexPath
             cell.examIDLabel.text = recordList[indexPath.row].examName
+            cell.downloadingLabel.text = "\(recordList[indexPath.row].progressDownload) %"
+           
             if recordList[indexPath.row].isDownloaded == true
             {
                 cell.startButton.isHidden = false
-                cell.downloadingLabel.isHidden = true
+                
             } else
             {
                 cell.startButton.isHidden = true
-                cell.downloadingLabel.isHidden = false
                 
             }
+            
             return cell
         } else {
             
@@ -673,15 +763,7 @@ extension Assessor_AssessmentRecordVC: UITableViewDataSource, UITableViewDelegat
         {
             if tableView == self.recordsTableView
             {
-                let lastItem = recordList.count - 2
-                if indexPath.row == lastItem && currentpage < totalPage + 1
-                {
-                    currentpage = currentpage + 1
-                    loadmore(page: currentpage)
-                    print(currentpage)
-                }
                 
-                print("No loadmore",currentpage,totalPage)
 
             } else {
                 let lastItem = historyList.count - 2

@@ -9,7 +9,6 @@
 import Foundation
 import Alamofire
 
-
 class ParallelServiceCaller
 {
     static let shared = ParallelServiceCaller()
@@ -61,9 +60,9 @@ class ParallelServiceCaller
             
             if response.result.isSuccess
             {
-                completion(true)
                 print("IDD register:", ((response.result.value as! NSDictionary)["data"] as? NSDictionary)?["identifier"] as! Int)
-                
+                completion(true)
+
             } else
             {
                 completion(false)

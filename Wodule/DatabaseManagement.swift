@@ -35,6 +35,7 @@ struct ExamDataStruct {
     var expired_at: String
     var isExpired: Bool
     var isDownloaded: Bool
+    var progressDownload: Int64
     
     var description: String {
         return "id = \(self.examinerId), identifier = \(self.identifier), name = \(self.examName), status = \(self.status), isDownloaded = \(self.isDownloaded), expired_at = \(self.expired_at), isExpired = \(self.isExpired) "
@@ -42,9 +43,6 @@ struct ExamDataStruct {
 }
 
 class DatabaseManagement {
-    
-    
-    
     
     static let shared: DatabaseManagement = DatabaseManagement()
     private let db:Connection?
@@ -85,13 +83,14 @@ class DatabaseManagement {
     private let expired_atF = Expression<String>("expired_at")
     private let isExpiredF = Expression<Bool>("isExpired")
     private let isDownloadedF = Expression<Bool>("isDownloaded")
-    
+    private let progressDownloadF = Expression<Int64>("progressDownload")
+
     private init()
     {
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
         do {
             db = try Connection("\(path)/wodule.sqlite3")
-            createTableExamSaved()
+//            createTableExamSaved()
         } catch {
             db = nil
             print("Unable open database")
@@ -126,7 +125,8 @@ class DatabaseManagement {
                 table.column(expired_atF)
                 table.column(isExpiredF)
                 table.column(isDownloadedF)
-                
+                table.column(progressDownloadF)
+
             })
             print("create table successfully")
         } catch {
@@ -156,7 +156,8 @@ class DatabaseManagement {
                  audio_4: String?,
                  expired_at: String,
                  isExpired: Bool,
-                 isDownload: Bool) -> Int64? {
+                 isDownload: Bool,
+                 progressDownload: Int64) -> Int64? {
         do {
             
             let insert = tblExam.insert(identifierF <- identifier,
@@ -181,7 +182,8 @@ class DatabaseManagement {
                                         audio_4F <- audio_4,
                                         expired_atF <- expired_at,
                                         isExpiredF <- isExpired,
-                                        isDownloadedF <- isDownload)
+                                        isDownloadedF <- isDownload,
+                                        progressDownloadF <- progressDownload)
             
             let rowid = try db!.run(insert)
             print("Insert to tblProduct successfully")
@@ -209,7 +211,7 @@ class DatabaseManagement {
                                              score_2: exam[score_2F],score_3: exam[score_3F], score_4: exam[score_4F],
                                              audio_1: exam[audio_1F], audio_2: exam[audio_2F], audio_3: exam[audio_3F],
                                              audio_4: exam[audio_4F], expired_at: exam[expired_atF], isExpired: exam[isExpiredF],
-                                             isDownloaded: exam[isDownloadedF])
+                                             isDownloaded: exam[isDownloadedF], progressDownload: exam[progressDownloadF])
                 
                 exams.append(newExam)
 
@@ -238,7 +240,7 @@ class DatabaseManagement {
                                              comment_4: exam[comment_4F], score_1: exam[score_1F],
                                              score_2: exam[score_2F],score_3: exam[score_3F], score_4: exam[score_4F],
                                              audio_1: exam[audio_1F], audio_2: exam[audio_2F], audio_3: exam[audio_3F],
-                                             audio_4: exam[audio_4F], expired_at: exam[expired_atF], isExpired: exam[isExpiredF], isDownloaded: exam[isDownloadedF])
+                                             audio_4: exam[audio_4F], expired_at: exam[expired_atF], isExpired: exam[isExpiredF], isDownloaded: exam[isDownloadedF], progressDownload: exam[progressDownloadF])
                 
                 exams.append(newExam)
                 
@@ -270,7 +272,7 @@ class DatabaseManagement {
     {
         var idList = [Int64]()
         
-        let query = tblExam.where(examinerIdF == examinerId)
+        let query = tblExam.where(examinerIdF == examinerId && isExpiredF == false)
         do {
             for id in try db!.prepare(query)
             {
@@ -323,7 +325,7 @@ class DatabaseManagement {
     {
         var idList = [Int64]()
         
-        let query = tblExam.where(examinerIdF == examinerId && isDownloadedF == false)
+        let query = tblExam.where(examinerIdF == examinerId && isDownloadedF == false && isExpiredF == false)
         do {
             
             for id in try db!.prepare(query)
@@ -384,8 +386,6 @@ class DatabaseManagement {
         return false
         
     }
-
-    
     
     func updateGradeExam(examinerid: Int64, identifier: Int64, grade1: String, comment1: String, grade2: String, comment2: String, grade3: String?, comment3: String?, grade4: String?, comment4: String?, status: String) -> Bool
     {
@@ -406,6 +406,25 @@ class DatabaseManagement {
         }
         return false
     }
+    
+    
+    func updateProgressDownload(id: Int64, percent: Int64) -> Bool
+    {
+        let tblFilterExam = tblExam.where(identifierF == id)
+        do {
+            let update = tblFilterExam.update(progressDownloadF <- percent)
+            if try db!.run(update) > 0 {
+                print("Update exam successfully")
+                return true
+            }
+        } catch {
+            print("Update failed: \(error)")
+        }
+        
+        return false
+
+    }
+    
     
 }
 

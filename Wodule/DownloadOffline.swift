@@ -32,8 +32,10 @@ class DataOffline
                 completionProgress(percent)
                 }
         }
-        .response { (response) in            
+        .response { (response) in
+            
             if response.error == nil {
+                
                 completion(true, (response.destinationURL?.absoluteString)!)
             }
             else {

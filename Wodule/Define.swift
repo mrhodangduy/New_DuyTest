@@ -34,6 +34,13 @@ struct ERROR_MESSAGE {
     static let CANNOTPLAY_AUDIO = "Can not load audio file."
 }
 
+struct INFORM_MESSAGE
+{
+    static let SAVETOLOCALDATA = "Exam is saved in local data and send to server whenever your app connect to WIFI within 24 hours."
+    static let ERRORTOSAVEDATA = "Can't save your exam to local data. Please try to save again."
+    static let CORRUPTDATA = "Your data is corrupt and can't save to local data."
+}
+
 enum UserType: String    
 {
     case examinee = "examinee"

@@ -39,6 +39,7 @@ class ReachabilityManager: NSObject {
     /// — parameter notification: Notification with the Reachability instance
     func reachabilityChanged(notification: Notification) {
         let reachability = notification.object as! Reachability
+        
         if reachability.connection == .none
         {
             debugPrint("Network became unreachable")
@@ -52,7 +53,6 @@ class ReachabilityManager: NSObject {
                 debugPrint("Network reachable through Cellular Data")
             default:
                 debugPrint("Network reachable through Wifi")
-                
             }
         }
         

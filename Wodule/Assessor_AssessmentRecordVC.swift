@@ -53,7 +53,20 @@ class Assessor_AssessmentRecordVC: UIViewController {
         recordsTableView.register(UINib(nibName: "AssessmentRecordCell", bundle: nil), forCellReuseIdentifier: "AssessmentRecordCell")
         
         onHandleCheckExpiredExam()
-        downloadExam()
+        
+        if ReachabilityManager.shared.reachability.isReachableViaWiFi
+        {
+            downloadExam()
+            
+        } else
+        {
+            self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
+            DispatchQueue.main.async(execute: {
+                self.recordsTableView.reloadData()
+                self.loadingHide()
+            })
+        }
+        
     }
     
     @IBAction func onClickToday(_ sender: Any) {
@@ -140,25 +153,44 @@ class Assessor_AssessmentRecordVC: UIViewController {
                 if status == true {
                     
                     if  !result!.isEmpty {
+                        var dataAvailable = [NSDictionary]()
                         for item in result!
                         {
+                            let expired_at = item["expired_at"] as! String
+                            let date = self.getGMTDate(date: expired_at)
+                            let time = self.gettimeRemaining(from: date)
+                            print("TIme remaining: ", time)
+                            
+                            if time < 0
+                            {
+                                let id = item["identifier"] as! Int64
+                                ExamRecord.examExpired(token: self.token!, id: id, completion: { (status, result) in
+                                    print("Remove out of list", status)
+                                })
+                            
+                            }
+                            else
+                            {
+                                dataAvailable.append(item)
+                            }
+                            
                             print("IDDDDDDDDDDD: ----->", item["identifier"] as! Int)
                         }
+                        
                         self.totalPage = total_Page
-                        if (result?.count)! > 10
+                        if dataAvailable.count > 10
                         {
-                            let data: [NSDictionary] = Array(result!.prefix(upTo: 10))
+                            let data: [NSDictionary] = Array(dataAvailable.prefix(upTo: 10))
                             self.onHandleSaveDataToLocal(data: data, examinerId: self.assessorID)
                             self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
                             DispatchQueue.main.async(execute: {
                                 self.recordsTableView.reloadData()
                                 self.loadingHide()
                             })
-                            
                         }
                         else
                         {
-                            self.onHandleSaveDataToLocal(data: result!, examinerId: self.assessorID)
+                            self.onHandleSaveDataToLocal(data: dataAvailable, examinerId: self.assessorID)
                             self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
                             DispatchQueue.main.async(execute: {
                                 self.recordsTableView.reloadData()
@@ -523,13 +555,19 @@ class Assessor_AssessmentRecordVC: UIViewController {
             
             if totalPercent % 5 == 0
             {
-                let update = DatabaseManagement.shared.updateProgressDownload(id: id, percent: totalPercent)
-                if update {
-                    self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
-                    DispatchQueue.main.async(execute: {
-                        self.recordsTableView.reloadData()
-                    })
+                if totalPercent != 100
+                {
+                    let update = DatabaseManagement.shared.updateProgressDownload(id: id, percent: totalPercent)
+                    if update {
+                        self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
+                        DispatchQueue.main.async(execute: {
+                            self.recordsTableView.reloadData()
+                        })
+                    }
+                } else {
+                    let _ = DatabaseManagement.shared.updateProgressDownload(id: id, percent: totalPercent)
                 }
+                
             }
             
             if totalPercent == 100 {

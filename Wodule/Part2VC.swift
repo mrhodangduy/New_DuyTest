@@ -80,6 +80,7 @@ class Part2VC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleUploadAfterConnectAgain), name: NSNotification.Name.available, object: nil)
         
     }
+    
     override func viewDidDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
     }

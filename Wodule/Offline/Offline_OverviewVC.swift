@@ -77,7 +77,6 @@ class Offline_OverviewVC: UIViewController {
         part3PlayingLabel.isHidden = true
         part4PlayingLabel.isHidden = true
         
-        
     }
     
     func onHandleInitView()
@@ -266,12 +265,10 @@ class Offline_OverviewVC: UIViewController {
         onHandleDisplayView(type: part3Type, questionImage: url, questionText: Exam.examQuestionaireThree)
     }
     
-    
     @IBAction func part3_ScoreTap(_ sender: Any) {
         
         currentIndex = 3
         configView()
-        
     }
     
     //Part4
@@ -336,24 +333,24 @@ class Offline_OverviewVC: UIViewController {
         }
         else
         {
-            if Connectivity.isConnectedToInternet == false
+            let status = ReachabilityManager.shared.reachability.isReachableViaWiFi
+            print("Connection to WIFI status description",status)
+            
+            if Connectivity.isConnectedToInternet == false || !ReachabilityManager.shared.reachability.isReachableViaWiFi
             {
                 let update = DatabaseManagement.shared.updateGradeExam(examinerid: Exam.examinerId, identifier: Exam.identifier, grade1: "\(score_Part1!)", comment1: comment_Part1!, grade2:"\(score_Part2!)" , comment2: comment_Part2!, grade3: "\(String(describing: score_Part3))" , comment3: comment_Part3, grade4: "\(String(describing: score_Part4))", comment4: comment_Part4, status: "graded")
                 if update == true {
-                    let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
-                    self.navigationController?.pushViewController(accountingVC, animated: true)
-                    self.removeScoreObject()
                     
-                } else {
-                    self.alertMissingText(mess: "Cannot save score", textField: nil)
+                    self.onHandleSaveSuccessful(mess: INFORM_MESSAGE.SAVETOLOCALDATA)
+                    
+                } else  {
+                    self.onHandleBackToHome(mess: INFORM_MESSAGE.CORRUPTDATA)
                 }
-            }            
+            }
             else {
                 self.onHandlePostGrade(grade1: score_Part1!, comment1: comment_Part1!, grade2: score_Part2!, comment2: comment_Part2!, grade3: score_Part3, comment3: comment_Part3, grade4: score_Part4, comment4: comment_Part4)
             }
-            
         }
-        
     }
     
     func onHandlePostGrade(grade1: Int64, comment1:String, grade2: Int64, comment2:String, grade3: Int64?, comment3:String?, grade4: Int64?, comment4:String?)
@@ -526,6 +523,35 @@ class Offline_OverviewVC: UIViewController {
         userDefault.removeObject(forKey: IDENTIFIER_KEY)
         userDefault.synchronize()
     }
+    
+    func onHandleSaveSuccessful(mess: String?)
+    {
+        let alert = UIAlertController(title: "Wodule", message: mess, preferredStyle: .alert)
+        let btnOK = UIAlertAction(title: "OK", style: .default) { (action) in
+            print("OK")
+            let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
+            self.navigationController?.pushViewController(accountingVC, animated: true)
+            self.removeScoreObject()
+        }
+        
+        alert.addAction(btnOK)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func onHandleBackToHome(mess: String?)
+    {
+        let alert = UIAlertController(title: "Wodule", message: mess, preferredStyle: .alert)
+        let btnExit = UIAlertAction(title: "Exit", style: .default) { (action) in
+            print("Exit")
+            let assessmentrecordVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "assessmentrecordVC") as! Assessor_AssessmentRecordVC
+            self.navigationController?.popToViewController(assessmentrecordVC, animated: true)
+            self.removeScoreObject()
+        }
+        
+        alert.addAction(btnExit)
+        self.present(alert, animated: true, completion: nil)
+    }
+
 }
 
 extension Offline_OverviewVC:UITableViewDataSource, UITableViewDelegate

@@ -14,6 +14,8 @@ extension Notification.Name
 {
     static let none = Notification.Name("none")
     static let available = Notification.Name("available")
+    static let WIFI = Notification.Name("wifi")
+    static let CELLULAR = Notification.Name("cellular")
     
 }
 

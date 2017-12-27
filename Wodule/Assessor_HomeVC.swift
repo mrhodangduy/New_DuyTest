@@ -44,9 +44,11 @@ class Assessor_HomeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let status = ReachabilityManager.shared.reachability.isReachableViaWiFi
+        print("Connection to WIFI status description",status)
+        
         userDefault.set(NSKeyedArchiver.archivedData(withRootObject: userInfomation), forKey: USERINFO_STRING)
         userDefault.synchronize()
-        
         
         if userDefault.object(forKey: SOCIALKEY) as? String != nil
         {
@@ -56,8 +58,7 @@ class Assessor_HomeVC: UIViewController {
         {
             socialIdentifier = NORMALLOGIN
         }
-        asignDataInView()        
-
+        asignDataInView()
         self.upLoadGraded()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.upLoadGraded), name: NSNotification.Name.available, object: nil)
@@ -101,8 +102,8 @@ class Assessor_HomeVC: UIViewController {
         super.viewWillAppear(animated)
         
         self.onHandleCheckExpiredExam()
-        
         self.unreadLabel.isHidden = true
+        
         if Connectivity.isConnectedToInternet
         {
             DispatchQueue.global(qos: .background).async {
@@ -148,7 +149,7 @@ class Assessor_HomeVC: UIViewController {
         
     func upLoadGraded()
     {
-        if Connectivity.isConnectedToInternet
+        if ReachabilityManager.shared.reachability.isReachableViaWiFi
         {
             let examList = DatabaseManagement.shared.queryAllExam(withID: userInfomation["id"] as! Int64, status: "graded")
             print("@@@@@@@")
@@ -191,6 +192,15 @@ class Assessor_HomeVC: UIViewController {
                     self.loadingHide()
                 }
             }
+        } else
+        {
+            let examinerID = userInfomation["id"] as! Int64
+            let listExamGraded = DatabaseManagement.shared.queryIdentifierListHasGraded(of: examinerID)
+            if !listExamGraded.isEmpty
+            {
+                self.alertMissingText(mess: "You have \(listExamGraded.count) exam(s) which has/(have) been graded and need to send to server via WIFI.", textField: nil)
+            }
+
         }
         
     }    
@@ -284,7 +294,6 @@ class Assessor_HomeVC: UIViewController {
         {
             self.displayAlertNetWorkNotAvailable()
         }
-        
     }
     
     @IBAction func calendarTap(_ sender: Any) {

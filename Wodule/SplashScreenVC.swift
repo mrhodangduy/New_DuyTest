@@ -55,7 +55,6 @@ class SplashScreenVC: UIViewController {
             self.loadingIndicator.stopAnimating()
             displayAlertNetWorkNotAvailable()
             NotificationCenter.default.addObserver(self, selector: #selector(self.onHanldeAutoLogin), name: NSNotification.Name.available, object: nil)
-
         }
         
         print("username:", username as Any, "password:", password as Any)
@@ -96,12 +95,7 @@ class SplashScreenVC: UIViewController {
         print(userDefault.object(forKey: TOKEN_STRING) as? String as Any)
         print(userDefault.object(forKey: SOCIALKEY) as? String as Any)
         
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-        
-    }
+    }    
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)

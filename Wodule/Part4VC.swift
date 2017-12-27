@@ -35,7 +35,6 @@ class Part4VC: UIViewController {
     var isUpload = false
     
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
-    
     let userID = userDefault.object(forKey: USERID_STRING) as? Int
     var examID:Int!
 
@@ -78,7 +77,6 @@ class Part4VC: UIViewController {
             tv_Data.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
             tv_Data.text = Exam?["question_4"] as! String
             circleTime.start(withSeconds: timeInitial)
-            
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleUploadAfterConnectAgain), name: NSNotification.Name.available, object: nil)
@@ -136,10 +134,7 @@ class Part4VC: UIViewController {
             }
 
         }
-        
-        
     }
-    
     
     @IBAction func nextBtnTap(_ sender: Any) {
         
@@ -154,7 +149,6 @@ class Part4VC: UIViewController {
                 
         isUpload = true
         self.onHandleUploadExam(audio4data: self.audio4_Data)
-        
     }
     
     func onHandleUploadSuccessful(mess: String?)

@@ -228,7 +228,6 @@ class Offline_Part2: UIViewController {
                 overviewVC.Exam = self.Exam
                 overviewVC.data1 = self.data1
                 overviewVC.data2 = self.data2
-
                 
                 self.navigationController?.pushViewController(overviewVC, animated: true)
             }

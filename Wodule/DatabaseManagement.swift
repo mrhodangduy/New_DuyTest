@@ -284,6 +284,23 @@ class DatabaseManagement {
         return idList
     }
     
+    func queryIdentifierListHasGraded(of examinerId: Int64) -> [Int64]
+    {
+        var idList = [Int64]()
+        
+        let query = tblExam.where(examinerIdF == examinerId && isExpiredF == false && statusF == "graded")
+        do {
+            for id in try db!.prepare(query)
+            {
+                idList.append(id[identifierF])
+            }
+            
+        } catch {
+        }
+        return idList
+    }
+
+    
     func queryIdentifierListExpiredToUpdate(of examinerId: Int64) -> [Int64]
     {
         var idList = [Int64]()

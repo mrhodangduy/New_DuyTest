@@ -30,7 +30,8 @@ class Part2VC: UIViewController {
     var audio2_Data: Data?
     var audioURL:NSURL?
     var isUpload = false
-
+    var numberOfFailed = 0
+    
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
     
     let userID = userDefault.object(forKey: USERID_STRING) as? Int
@@ -179,7 +180,6 @@ class Part2VC: UIViewController {
             print("OK")
             let endVC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "endassessmentVC") as! EndVC
             self.navigationController?.pushViewController(endVC, animated: true)
-
         }
         
         alert.addAction(btnOK)
@@ -190,11 +190,11 @@ class Part2VC: UIViewController {
     {
         let alert = UIAlertController(title: "Wodule", message: mess, preferredStyle: .alert)
         let btnTryagain = UIAlertAction(title: "Try Again", style: .destructive) { (action) in
-            
             print("Try again")
             self.onHandleUploadExam(audio2data: audio2data)
         }
         
+    
         alert.addAction(btnTryagain)
         self.present(alert, animated: true, completion: nil)
     }
@@ -223,9 +223,17 @@ class Part2VC: UIViewController {
                     }
                     else if status == false
                     {
+                        self.numberOfFailed += 1
                         DispatchQueue.main.async(execute: {
                             self.loadingHide()
-                            self.onHandleUploadError(mess: message, audio2data: audio2data)
+                            if self.numberOfFailed == 3
+                            {
+                                self.alertBackToHomeWithError(mess: "Your exam cannot upload at the moment.")
+                            } else
+                            {
+                                self.onHandleUploadExam(audio2data: audio2data)
+                            }
+                            
                         })
                     }
                     else

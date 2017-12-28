@@ -563,7 +563,7 @@ class EditProfileVC: UIViewController {
             }
             else
             {
-                print("Camera isnot available")
+                self.alertMissingText(mess: "Your camera is not available.", textField: nil)
             }
             
         }

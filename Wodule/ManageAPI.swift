@@ -444,7 +444,7 @@ struct UserInfoAPI
     }
     
     
-    static func invalidToken(token: String, completion: @escaping (_ status: Bool, _ result: NSDictionary)->())
+    static func invalidToken(token: String, completion: @escaping (_ status: Bool, _ result: NSDictionary?)->())
     {
         let url = URL(string: APIURL.invalidTokenURL)
         let httpHeader: HTTPHeaders = ["Authorization":"Bearer \(token)"]
@@ -452,11 +452,10 @@ struct UserInfoAPI
         Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
             if response.result.isSuccess && response.response?.statusCode == 200 {
-                completion(true, response.result.value as! NSDictionary)
+                completion(true, response.result.value as? NSDictionary)
             } else {
-                completion(false, response.result.value as! NSDictionary)
-            }
-            
+                completion(false, response.result.value as? NSDictionary)
+            }            
         }
     }
     

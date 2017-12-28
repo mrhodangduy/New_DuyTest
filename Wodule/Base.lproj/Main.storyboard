@@ -335,10 +335,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D1d-hk-d5G" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="120" width="320" height="380"/>
+                                <rect key="frame" x="0.0" y="120" width="320" height="378"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tri-im-LCz">
-                                        <rect key="frame" x="10" y="10" width="300" height="360"/>
+                                        <rect key="frame" x="10" y="10" width="300" height="358"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <attributedString key="attributedText">
                                             <fragment content="Lorem ipsum dolor sit er elit lamet">
@@ -375,22 +375,38 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r1T-D4-jxY">
-                                <rect key="frame" x="30" y="515" width="116" height="33"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r1T-D4-jxY" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                <rect key="frame" x="30" y="513" width="120" height="35"/>
+                                <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="eeL-J2-w3r"/>
+                                    <constraint firstAttribute="width" constant="120" id="ohh-oR-eua"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                <state key="normal" title="DISAGREE" backgroundImage="btn_green2">
+                                <state key="normal" title="DISAGREE">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="deagreeBtnTap:" destination="l92-J3-aPP" eventType="touchUpInside" id="G8p-WI-fso"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sDU-Q2-oEG">
-                                <rect key="frame" x="174" y="515" width="116" height="33"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sDU-Q2-oEG" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                <rect key="frame" x="170" y="513" width="120" height="35"/>
+                                <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                <state key="normal" title="AGREE" backgroundImage="btn_green2">
+                                <state key="normal" title="AGREE">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="agreeBtnTap:" destination="l92-J3-aPP" eventType="touchUpInside" id="EPM-hr-Msu"/>
                                 </connections>
@@ -405,6 +421,7 @@
                             <constraint firstItem="sDU-Q2-oEG" firstAttribute="top" secondItem="D1d-hk-d5G" secondAttribute="bottom" constant="15" id="DeD-zx-PcG"/>
                             <constraint firstItem="fCV-vB-G1P" firstAttribute="top" secondItem="tQW-5R-PwW" secondAttribute="bottom" constant="60" id="E78-RI-1NQ"/>
                             <constraint firstItem="DYk-DJ-2Aw" firstAttribute="leading" secondItem="qPI-al-15A" secondAttribute="leading" constant="20" id="HGc-1r-s23"/>
+                            <constraint firstItem="sDU-Q2-oEG" firstAttribute="height" secondItem="r1T-D4-jxY" secondAttribute="height" id="P6W-vR-zye"/>
                             <constraint firstAttribute="trailing" secondItem="sDU-Q2-oEG" secondAttribute="trailing" constant="30" id="VbX-BV-Bza"/>
                             <constraint firstAttribute="trailing" secondItem="D1d-hk-d5G" secondAttribute="trailing" id="ZGs-pa-F5R"/>
                             <constraint firstItem="fCV-vB-G1P" firstAttribute="leading" secondItem="qPI-al-15A" secondAttribute="leading" id="cnp-lb-25v"/>
@@ -1613,22 +1630,42 @@
                                     <action selector="backPageTap:" destination="BXg-TP-GTf" eventType="touchUpInside" id="oZb-pY-Yy7"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8ry-tx-0Av">
-                                <rect key="frame" x="70" y="517" width="116" height="33"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8ry-tx-0Av" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                <rect key="frame" x="70" y="517" width="80" height="33"/>
+                                <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="G5d-Jq-Vdi"/>
+                                    <constraint firstAttribute="height" constant="33" id="RJf-xa-Yk2"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                <state key="normal" title="RESET" backgroundImage="btn_green2">
+                                <state key="normal" title="RESET">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="resetBtnTap:" destination="BXg-TP-GTf" eventType="touchUpInside" id="NzC-2Y-VzI"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZWl-9s-9ba">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZWl-9s-9ba" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
                                 <rect key="frame" x="184" y="517" width="116" height="33"/>
+                                <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="116" id="sc7-4w-mV7"/>
+                                    <constraint firstAttribute="height" constant="33" id="znJ-ua-qW0"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                <state key="normal" title="SUBMIT" backgroundImage="btn_green2">
+                                <state key="normal" title="SUBMIT">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="submitBtnTap:" destination="BXg-TP-GTf" eventType="touchUpInside" id="DNy-zN-7hW"/>
                                 </connections>
@@ -1943,7 +1980,6 @@
         <image name="btn_back" width="50" height="50"/>
         <image name="btn_fb" width="32" height="32"/>
         <image name="btn_gplus" width="32" height="32"/>
-        <image name="btn_green2" width="116" height="33"/>
         <image name="btn_ig" width="32" height="32"/>
         <image name="btn_next" width="50" height="50"/>
         <image name="ic_arrow" width="10" height="10"/>

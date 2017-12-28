@@ -170,6 +170,8 @@ class Assessor_GradeVC: UIViewController {
     }
     
     @IBAction func onClickSubmit(_ sender: Any) {
+        self.view.endEditing(true)
+        
         if currentPlayer != nil
         {
             self.pause()

@@ -199,6 +199,7 @@ class Assessor_Part4VC: UIViewController {
     }
     
     @IBAction func nextBtnTap(_ sender: Any) {
+        self.view.endEditing(true)
         
         if currentPlayer != nil
         {

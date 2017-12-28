@@ -341,10 +341,19 @@ class Offline_OverviewVC: UIViewController {
                 let update = DatabaseManagement.shared.updateGradeExam(examinerid: Exam.examinerId, identifier: Exam.identifier, grade1: "\(score_Part1!)", comment1: comment_Part1!, grade2:"\(score_Part2!)" , comment2: comment_Part2!, grade3: "\(String(describing: score_Part3))" , comment3: comment_Part3, grade4: "\(String(describing: score_Part4))", comment4: comment_Part4, status: "graded")
                 if update == true {
                     
-                    self.onHandleSaveSuccessful(mess: INFORM_MESSAGE.SAVETOLOCALDATA)
+                    let expired_at = Exam.expired_at
+                    let date = self.getGMTDate(date: expired_at)
+                    let time = String(format: "%.2f", self.gettimeRemaining(from: date))
+                    DispatchQueue.main.async(execute: { 
+                        self.onHandleSaveSuccessful(mess: INFORM_MESSAGE.SAVETOLOCALDATA + time + " hours.")
+                    })
+                    
                     
                 } else  {
-                    self.onHandleBackToHome(mess: INFORM_MESSAGE.CORRUPTDATA)
+                    DispatchQueue.main.async(execute: {
+                        self.onHandleBackToHome(mess: INFORM_MESSAGE.CORRUPTDATA)
+                    })
+                    
                 }
             }
             else {
@@ -365,41 +374,32 @@ class Offline_OverviewVC: UIViewController {
             
             if status!
             {
-                print("grade susscessful")
-                self.loadingHide()
-                let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
-                self.navigationController?.pushViewController(accountingVC, animated: true)
-                self.removeScoreObject()
-                
-                let delete = DatabaseManagement.shared.deleteExam(id: identifier)
-                if delete
-                {
-                    self.deleteAudioFile(fileName: "\(identifier)", examninerID: self.Exam.examinerId)
-                    
-                }
-            }
-                
-            else if code == 409
-            {
-                DispatchQueue.main.async(execute: {
+                DispatchQueue.main.async(execute: { 
+                    print("grade susscessful")
                     self.loadingHide()
-                    self.alertMissingText(mess: "The particular audio has already a grade.", textField: nil)
+                    let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
+                    self.navigationController?.pushViewController(accountingVC, animated: true)
+                    self.removeScoreObject()
+                    let delete = DatabaseManagement.shared.deleteExam(id: identifier)
+                    if delete
+                    {
+                        self.deleteAudioFile(fileName: "\(identifier)", examninerID: self.Exam.examinerId)
+                        
+                    }
                 })
-                
-            }
+            }                
             else if let error = result?["error"] as? String
             {
-                
                 DispatchQueue.main.async(execute: { 
                     self.loadingHide()
-                    self.alertMissingText(mess: error ,textField: nil)
+                    self.alertBackToHomeWithError(mess: error)
                 })
                 
             } else
             {
                 DispatchQueue.main.async(execute: { 
                     self.loadingHide()
-                    self.alertMissingText(mess: "Failed to grade exam.", textField: nil)
+                    self.alertBackToHomeWithError(mess: "Failed to grade this exam.")
                 })
             }
         })
@@ -547,7 +547,6 @@ class Offline_OverviewVC: UIViewController {
             self.navigationController?.popToViewController(assessmentrecordVC, animated: true)
             self.removeScoreObject()
         }
-        
         alert.addAction(btnExit)
         self.present(alert, animated: true, completion: nil)
     }

@@ -763,12 +763,22 @@
                                     <action selector="backBtnTap:" destination="h3q-Lq-gY5" eventType="touchUpInside" id="IgX-vF-1vB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TEw-JI-fWb">
-                                <rect key="frame" x="210" y="1545" width="145" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TEw-JI-fWb" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                <rect key="frame" x="235" y="1545" width="120" height="40"/>
+                                <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="AzC-9d-Pjh"/>
+                                    <constraint firstAttribute="width" constant="120" id="JFQ-I2-WaK"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                <state key="normal" title="SUBMIT" backgroundImage="btn_green3">
+                                <state key="normal" title="SUBMIT">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="submitTap:" destination="h3q-Lq-gY5" eventType="touchUpInside" id="epe-jQ-uX1"/>
                                 </connections>
@@ -1143,7 +1153,6 @@
     </scenes>
     <resources>
         <image name="btn_back" width="50" height="50"/>
-        <image name="btn_green3" width="145" height="40"/>
         <image name="btn_scroll" width="7" height="16"/>
         <image name="default" width="500" height="500"/>
         <image name="ic_calendar" width="15" height="15"/>

@@ -375,12 +375,22 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Cf-GY-EcH">
                                         <rect key="frame" x="125.5" y="0.5" width="125" height="70"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6GF-da-jad">
-                                                <rect key="frame" x="5" y="18.5" width="116" height="33"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6GF-da-jad" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                                <rect key="frame" x="5" y="17.5" width="116" height="35"/>
+                                                <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="35" id="Wty-fY-70P"/>
+                                                    <constraint firstAttribute="width" constant="116" id="vuR-cu-gsX"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                                <state key="normal" title="SCORE" backgroundImage="btn_green2">
+                                                <state key="normal" title="SCORE">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="scoreTap:" destination="VDG-SD-bH0" eventType="touchUpInside" id="bcg-Z8-FnP"/>
                                                 </connections>
@@ -1169,12 +1179,22 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SaP-q1-Jxa">
                                 <rect key="frame" x="0.0" y="630" width="320" height="70"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hkt-la-rv2">
-                                        <rect key="frame" x="184" y="18.5" width="116" height="33"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hkt-la-rv2" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                        <rect key="frame" x="184" y="17.5" width="116" height="35"/>
+                                        <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="116" id="5Bd-p8-C19"/>
+                                            <constraint firstAttribute="height" constant="35" id="Lvu-h9-8d4"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                        <state key="normal" title="SUBMIT" backgroundImage="btn_green2">
+                                        <state key="normal" title="SUBMIT">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="submitTap:" destination="WbS-Zf-QbV" eventType="touchUpInside" id="qM6-Ru-08h"/>
                                         </connections>
@@ -1186,8 +1206,8 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1536-AF-4581" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fMp-Vj-icY">
-                                        <rect key="frame" x="20" y="34.5" width="120.5" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <rect key="frame" x="20" y="37" width="108" height="18"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1660,12 +1680,22 @@
                                             <constraint firstItem="aDU-ai-5wG" firstAttribute="centerY" secondItem="HQa-fk-VWg" secondAttribute="centerY" id="9Kx-gO-Mdm"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gK7-6A-9Ch">
-                                        <rect key="frame" x="129.5" y="19" width="116" height="33"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gK7-6A-9Ch" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                        <rect key="frame" x="129.5" y="18" width="116" height="35"/>
+                                        <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="b2X-OM-i06"/>
+                                            <constraint firstAttribute="width" constant="116" id="xRc-tN-gSU"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                        <state key="normal" title="SCORE" backgroundImage="btn_green2">
+                                        <state key="normal" title="SCORE">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="scoreTap:" destination="LpR-kK-VzP" eventType="touchUpInside" id="Oxz-er-WBT"/>
                                         </connections>
@@ -2115,12 +2145,22 @@
                                             <constraint firstItem="WvB-13-9Cd" firstAttribute="centerX" secondItem="R9X-QX-0XE" secondAttribute="centerX" id="P1E-77-KDl"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y0j-uU-TKj">
-                                        <rect key="frame" x="129.5" y="19" width="116" height="33"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y0j-uU-TKj" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                        <rect key="frame" x="129.5" y="18" width="116" height="35"/>
+                                        <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="116" id="aIq-bP-oZQ"/>
+                                            <constraint firstAttribute="height" constant="35" id="bgT-e0-Sce"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                        <state key="normal" title="SCORE" backgroundImage="btn_green2">
+                                        <state key="normal" title="SCORE">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="scoreTap:" destination="8lI-MJ-ohl" eventType="touchUpInside" id="CRa-md-96A"/>
                                         </connections>
@@ -2572,12 +2612,22 @@
                                             <constraint firstItem="75b-Yd-Cpp" firstAttribute="leading" secondItem="Ibn-fc-Cnr" secondAttribute="leading" constant="20" id="Q0f-3e-7Fo"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GoC-gs-dvl">
-                                        <rect key="frame" x="129.5" y="19" width="116" height="33"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GoC-gs-dvl" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                        <rect key="frame" x="129.5" y="18" width="116" height="35"/>
+                                        <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="Dyq-ob-9fK"/>
+                                            <constraint firstAttribute="width" constant="116" id="V6e-vB-oqO"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                        <state key="normal" title="SCORE" backgroundImage="btn_green2">
+                                        <state key="normal" title="SCORE">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="scoreTap:" destination="2bq-0V-I5c" eventType="touchUpInside" id="zIB-EY-PBu"/>
                                         </connections>
@@ -2689,7 +2739,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="btn_green2" width="116" height="33"/>
         <image name="btn_keyup" width="59" height="20"/>
         <image name="btn_next" width="50" height="50"/>
         <image name="btn_play" width="39" height="39"/>

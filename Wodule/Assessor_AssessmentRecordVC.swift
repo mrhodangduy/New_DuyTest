@@ -10,6 +10,7 @@ import UIKit
 import SQLite
 
 class Assessor_AssessmentRecordVC: UIViewController {
+    
     @IBOutlet weak var recordsTableView: UITableView!
     @IBOutlet weak var todayLabel: UILabelX!
     @IBOutlet weak var historyLabel: UILabelX!
@@ -17,6 +18,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
     @IBOutlet weak var historyView: UIViewX!
     @IBOutlet weak var historyTableView: UITableView!
     @IBOutlet weak var noHistoryLabel: UILabel!
+    @IBOutlet weak var refreshButton: UIButton!
     
     var recordList: [ExamDataStruct] = []
     let token = userDefault.object(forKey: TOKEN_STRING) as? String
@@ -70,6 +72,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
     }
     
     @IBAction func onClickToday(_ sender: Any) {
+        refreshButton.isHidden = false
         historyView.isHidden = true
         todayView.isHidden = false
         todayLabel.backgroundColor = .white
@@ -79,12 +82,13 @@ class Assessor_AssessmentRecordVC: UIViewController {
     }
     
     @IBAction func onClickHistory(_ sender: Any) {
-
+        
         if isHitoryTapped == false
         {
             self.onHandleInitDataOfHistory()
             isHitoryTapped = true
         }
+        refreshButton.isHidden = true
         historyView.isHidden = false
         todayView.isHidden = true
         historyLabel.backgroundColor = .white
@@ -159,7 +163,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
                             let expired_at = item["expired_at"] as! String
                             let date = self.getGMTDate(date: expired_at)
                             let time = self.gettimeRemaining(from: date)
-                            print("TIme remaining: ", time)
+                            print("Time remaining: ", time)
                             
                             if time < 0
                             {
@@ -167,7 +171,6 @@ class Assessor_AssessmentRecordVC: UIViewController {
                                 ExamRecord.examExpired(token: self.token!, id: id, completion: { (status, result) in
                                     print("Remove out of list", status)
                                 })
-                            
                             }
                             else
                             {
@@ -294,7 +297,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
         {
             if FileManager.default.fileExists(atPath: child.path)
             {
-                print("FIle existsssss")
+                print("File existsssss")
             } else
             {
                 print("Not founddddddddd")
@@ -311,7 +314,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
                 print("Photo existsssss")
             } else
             {
-                print(" Photo Not founddddddddd")
+                print("Photo Not founddddddddd")
                 
             }
             
@@ -356,8 +359,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
                 
                 let date = getGMTDate(date: expired_at)
                 let time = gettimeRemaining(from: date)
-                print("TIme remaining: ", time)
-                isExpired = time < 0 ? true : false                
+                isExpired = time < 0 ? true : false
                 let idExpired = DatabaseManagement.shared.queryIdentifierListExpiredToDeleted(of: examinerId)
                 let ids:[Int64] = DatabaseManagement.shared.queryIdentifierList(of: examinerId)
                 
@@ -370,6 +372,10 @@ class Assessor_AssessmentRecordVC: UIViewController {
                     
                     if !existFile && !idExpired.contains(identifier)
                     {
+                        
+                        let questionArray: [String?] = [examQuestionaireOne, examQuestionaireTwo, examQuestionaireThree, examQuestionaireFour]
+                        self.onHandleDownloadImageQuestion(questions: questionArray, examinerid: examinerId, id: identifier)
+                        
                         let update = DatabaseManagement.shared.updateExamDownload(id: identifier, isDownloaded: false)
                         print(update)
                         if update

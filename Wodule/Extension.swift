@@ -39,6 +39,19 @@ extension UITextView {
 extension UIViewController
 {
     
+    func alertBackToHomeWithError(mess: String?)
+    {
+        let alert = UIAlertController(title: "Wodule", message: mess, preferredStyle: .alert)
+        let exitBtn = UIAlertAction(title: "Back to Home", style: .cancel) { (exit) in
+            
+            self.navigationController?.popToRootViewController(animated: true)
+            
+        }
+        alert.addAction(exitBtn)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
     func endEditingView()
     {
         self.view.endEditing(true)
@@ -317,7 +330,7 @@ extension UIViewController
     func displayAlertNetWorkNotAvailable()
     {
         let alert = UIAlertController(title: "Wodule", message: "No internet connection available.", preferredStyle: .alert)
-        let openSettingBtn = UIAlertAction(title: "Settings", style: .default) { (action) in
+        let openSettingBtn = UIAlertAction(title: "Settings", style: .cancel) { (action) in
             
             self.openSetting()
             
@@ -349,7 +362,7 @@ extension UIViewController
     func displayAlertMicroPermission()
     {
         let alert = UIAlertController(title: "Wodule", message: "You need to grant Microphone permission to record exam.\n(Settings > Wodule > Microphone) ", preferredStyle: .alert)
-        let openSettingBtn = UIAlertAction(title: "Settings", style: .default) { (action) in
+        let openSettingBtn = UIAlertAction(title: "Settings", style: .cancel) { (action) in
             
             self.openLocationSettings()
             

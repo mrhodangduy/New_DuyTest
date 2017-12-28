@@ -233,6 +233,7 @@ class Assessor_OverviewVC: UIViewController {
         currentAudioPlayer = AVAudioPlayer()
 
         self.onHandlePlayAudio(data: data2!, button: part2PlayButton, runningView: runningView2, mainView: background2, label: part2PlayingLabel)
+        
         self.onHandleDisableButton(sub1: part1PlayButton, sub2: part3PlayButton, sub3: part4PlayButton, isStatus: false)
     }
     @IBAction func part2_ViewPhotoTap(_ sender: Any) {
@@ -347,25 +348,31 @@ class Assessor_OverviewVC: UIViewController {
                     
                     if status!
                     {
-                        print("grade susscessful")
-                        self.loadingHide()
-                        let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
-                        self.navigationController?.pushViewController(accountingVC, animated: true)
-                        self.removeScoreObject()
+                        DispatchQueue.main.async(execute: {
+                            print("grade susscessful")
+                            self.loadingHide()
+                            let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
+                            self.navigationController?.pushViewController(accountingVC, animated: true)
+                            self.removeScoreObject()
+                            
+                        })
                     }
                         
-                    else if code == 409
+                    else if let err = result?["error"] as? String
                     {
-                        self.loadingHide()
-                        self.alertMissingText(mess: "The particular audio has already a grade.", textField: nil)
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            self.alertBackToHomeWithError(mess: err)
+                        })
                     }
                     else
                     {
-                        self.loadingHide()
-                        self.alertMissingText(mess: "Failed to grade exam.", textField: nil)
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            self.alertBackToHomeWithError(mess: "Failed to grade this exam.")
+                        })
                     }
                 })
-                
             }
         }
         else

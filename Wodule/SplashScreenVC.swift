@@ -15,12 +15,18 @@ class SplashScreenVC: UIViewController {
     
     let username = userDefault.object(forKey: USERNAMELOGIN) as? String
     let password = userDefault.object(forKey: PASSWORDLOGIN) as? String
+    let token = userDefault.object(forKey: TOKEN_STRING) as? String
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let userInfoData = userDefault.object(forKey: USERINFO_STRING) as? Data
         print(userInfoData as Any)
+        if token != nil {
+            UserInfoAPI.invalidToken(token: token!, completion: { (status, result) in
+                print("Clean token")
+            })
+        }
 
         self.loadingIndicator.hidesWhenStopped = true
         notifiLabel.isHidden = true

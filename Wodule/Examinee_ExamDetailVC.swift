@@ -64,10 +64,16 @@ class Examinee_ExamDetailVC: UIViewController {
     var part2Type:Int!
     var part3Type:Int!
     var part4Type:Int!
+    
+    var part1Data: Data?
+    var part2Data: Data?
+    var part3Data: Data?
+    var part4Data: Data?
 
     var isPlaying: Int!
     var time:Timer!
     var totalTime: TimeInterval!
+    
     
     var currentAudioPlayer: AVAudioPlayer?
     
@@ -204,7 +210,7 @@ class Examinee_ExamDetailVC: UIViewController {
     @IBAction func onClickPart1Audio(_ sender: Any) {
         isPlaying = 1
         currentAudioPlayer = AVAudioPlayer()
-        self.onHandlePlayAudio(link: ExamDetail["audio_1"] as! String, button: part1PlayButton, runningView: part1RunningView, mainView: part1MainView, label: part1CountdownLabel)
+        self.onHandlePlayAudio(part: 1, dataSaved: part1Data, link: ExamDetail["audio_1"] as! String, button: part1PlayButton, runningView: part1RunningView, mainView: part1MainView, label: part1CountdownLabel)
         self.onHandleDisableButton(sub1: part2PlayButton, sub2: part3PlayButton, sub3: part4PlayButton, isStatus: false)
     }
     
@@ -213,7 +219,7 @@ class Examinee_ExamDetailVC: UIViewController {
         isPlaying = 2
         currentAudioPlayer = AVAudioPlayer()
 
-        self.onHandlePlayAudio(link: ExamDetail["audio_2"] as! String, button: part2PlayButton, runningView: part2RunningView, mainView: part2MainView, label: part2CountdownLabel)
+        self.onHandlePlayAudio(part: 2, dataSaved: part2Data, link: ExamDetail["audio_2"] as! String, button: part2PlayButton, runningView: part2RunningView, mainView: part2MainView, label: part2CountdownLabel)
         self.onHandleDisableButton(sub1: part1PlayButton, sub2: part3PlayButton, sub3: part4PlayButton, isStatus: false)
         
     }
@@ -222,7 +228,7 @@ class Examinee_ExamDetailVC: UIViewController {
         isPlaying = 3
         currentAudioPlayer = AVAudioPlayer()
 
-        self.onHandlePlayAudio(link: ExamDetail["audio_3"] as! String, button: part3PlayButton, runningView: part3RunningView, mainView: part3MainView, label: part3CountdownLabel)
+        self.onHandlePlayAudio(part: 3, dataSaved: part3Data, link: ExamDetail["audio_3"] as! String, button: part3PlayButton, runningView: part3RunningView, mainView: part3MainView, label: part3CountdownLabel)
         self.onHandleDisableButton(sub1: part1PlayButton, sub2: part2PlayButton, sub3: part4PlayButton, isStatus: false)
 
     }
@@ -231,7 +237,7 @@ class Examinee_ExamDetailVC: UIViewController {
         isPlaying = 4
         currentAudioPlayer = AVAudioPlayer()
 
-        self.onHandlePlayAudio(link: ExamDetail["audio_4"] as! String, button: part4PlayButton, runningView: part4RunningView, mainView: part4MainView, label: part4CountdownLabel)
+        self.onHandlePlayAudio(part: 4, dataSaved: part4Data, link: ExamDetail["audio_4"] as! String, button: part4PlayButton, runningView: part4RunningView, mainView: part4MainView, label: part4CountdownLabel)
         self.onHandleDisableButton(sub1: part2PlayButton, sub2: part3PlayButton, sub3: part1PlayButton, isStatus: false)
 
     }
@@ -308,7 +314,7 @@ class Examinee_ExamDetailVC: UIViewController {
         createAnimatePopup(from: subView, with: backgroundView)
     }    
     
-    func onHandlePlayAudio(link: String, button: UIButton, runningView: UIView, mainView: UIView, label: UILabel)
+    func onHandlePlayAudio(part: Int, dataSaved: Data?, link: String, button: UIButton, runningView: UIView, mainView: UIView, label: UILabel)
     {        
         runningView.frame.size.width = 0
         loadingShow()
@@ -316,10 +322,17 @@ class Examinee_ExamDetailVC: UIViewController {
         DispatchQueue.global(qos: .background).async {
             do
             {
-                let data = try Data(contentsOf: urlPath!)
+                let data = (dataSaved != nil) ? dataSaved! : try Data(contentsOf: urlPath!)
+
                 do {
                     self.currentAudioPlayer = try AVAudioPlayer(data: data)
-                    print("DATA", data)
+                    switch part {
+                    case 1: self.part1Data = data
+                    case 2: self.part2Data = data
+                    case 3: self.part3Data = data
+                    default: self.part4Data = data
+                    }
+                    
                     DispatchQueue.main.async(execute: {
                         button.isHidden = true
                         label.isHidden = false

@@ -201,6 +201,8 @@ class Assessor_Part2VC: UIViewController {
     }
     
     @IBAction func nextBtnTap(_ sender: Any) {
+        self.view.endEditing(true)
+        
         if currentPlayer != nil
         {
             self.pause()

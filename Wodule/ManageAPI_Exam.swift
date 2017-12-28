@@ -255,9 +255,7 @@ struct ExamRecord
                 print(response.result.error?.localizedDescription as Any)
                 
             }
-            
-        }
-        
+        }        
     }
     
     static func examExpired(token: String, id: Int64, completion: @escaping (Bool, NSDictionary?)  -> () )

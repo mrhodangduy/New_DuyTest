@@ -1042,12 +1042,22 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hvz-Ci-K35">
                                         <rect key="frame" x="125.5" y="0.5" width="125" height="70"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zgn-cA-84c">
-                                                <rect key="frame" x="5" y="18.5" width="116" height="33"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zgn-cA-84c" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                                <rect key="frame" x="5" y="17.5" width="116" height="35"/>
+                                                <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="35" id="Ri3-q8-r8r"/>
+                                                    <constraint firstAttribute="width" constant="116" id="zRW-z7-IlR"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                                <state key="normal" title="SCORE" backgroundImage="btn_green2">
+                                                <state key="normal" title="SCORE">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="10"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="scoreTap:" destination="SI8-8D-Jge" eventType="touchUpInside" id="G3A-fN-IHb"/>
                                                 </connections>
@@ -1836,38 +1846,48 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PvX-Hd-mpb">
                                 <rect key="frame" x="0.0" y="630" width="320" height="70"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wz6-q3-L44">
-                                        <rect key="frame" x="184" y="18.5" width="116" height="33"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wz6-q3-L44" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                        <rect key="frame" x="180" y="17.5" width="120" height="35"/>
+                                        <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="3T2-Vl-THU"/>
+                                            <constraint firstAttribute="width" constant="120" id="fuf-xp-xRi"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                        <state key="normal" title="SUBMIT" backgroundImage="btn_green2">
+                                        <state key="normal" title="SUBMIT">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="submitTap:" destination="WvS-w8-L3N" eventType="touchUpInside" id="rh2-7p-Tpg"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exam ID:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z3I-Is-9fL">
-                                        <rect key="frame" x="20" y="10" width="53" height="16"/>
+                                        <rect key="frame" x="20" y="14.5" width="53" height="16"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1536-AF-4581" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p2e-5N-36i">
-                                        <rect key="frame" x="20" y="34.5" width="120.5" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <rect key="frame" x="20" y="35.5" width="114" height="19.5"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="z3I-Is-9fL" firstAttribute="top" secondItem="PvX-Hd-mpb" secondAttribute="top" constant="10" id="FGk-mI-8bg"/>
                                     <constraint firstAttribute="bottom" secondItem="p2e-5N-36i" secondAttribute="bottom" constant="15" id="Gld-hR-0IG"/>
                                     <constraint firstItem="wz6-q3-L44" firstAttribute="centerY" secondItem="PvX-Hd-mpb" secondAttribute="centerY" id="VJc-zi-d58"/>
                                     <constraint firstItem="z3I-Is-9fL" firstAttribute="leading" secondItem="PvX-Hd-mpb" secondAttribute="leading" constant="20" id="Xpa-TA-ZJC"/>
                                     <constraint firstAttribute="trailing" secondItem="wz6-q3-L44" secondAttribute="trailing" constant="20" id="kAa-wQ-KLO"/>
                                     <constraint firstAttribute="height" constant="70" id="lCe-Ot-p0M"/>
                                     <constraint firstItem="p2e-5N-36i" firstAttribute="leading" secondItem="z3I-Is-9fL" secondAttribute="leading" id="wkG-GC-nVH"/>
+                                    <constraint firstItem="p2e-5N-36i" firstAttribute="top" secondItem="z3I-Is-9fL" secondAttribute="bottom" constant="5" id="zaE-F7-e6c"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -2818,12 +2838,22 @@
                                             <constraint firstItem="zSG-W3-oAd" firstAttribute="centerX" secondItem="hBd-YM-6S3" secondAttribute="centerX" id="fxy-4d-keM"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dkL-4p-6lR">
-                                        <rect key="frame" x="129.5" y="19" width="116" height="33"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dkL-4p-6lR" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                        <rect key="frame" x="129.5" y="18" width="116" height="35"/>
+                                        <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="116" id="5kj-2R-Fbt"/>
+                                            <constraint firstAttribute="height" constant="35" id="7ci-Ob-Sgr"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                        <state key="normal" title="SCORE" backgroundImage="btn_green2">
+                                        <state key="normal" title="SCORE">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="scoreTap:" destination="skT-Bt-yaD" eventType="touchUpInside" id="H2n-WL-2tQ"/>
                                         </connections>
@@ -3273,12 +3303,22 @@
                                             <constraint firstItem="O1b-9R-jsR" firstAttribute="centerY" secondItem="1ga-es-PQv" secondAttribute="centerY" id="vVa-vZ-U86"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="drV-bi-ByP">
-                                        <rect key="frame" x="129.5" y="19" width="116" height="33"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="drV-bi-ByP" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                        <rect key="frame" x="129.5" y="18" width="116" height="35"/>
+                                        <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="4sl-Ue-ymM"/>
+                                            <constraint firstAttribute="width" constant="116" id="aeq-zJ-MdH"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                        <state key="normal" title="SCORE" backgroundImage="btn_green2">
+                                        <state key="normal" title="SCORE">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="scoreTap:" destination="yea-if-oow" eventType="touchUpInside" id="hRH-Km-PHl"/>
                                         </connections>
@@ -3730,12 +3770,22 @@
                                             <constraint firstItem="ecD-IO-237" firstAttribute="centerX" secondItem="OUX-fX-VYK" secondAttribute="centerX" id="sJZ-xC-fgm"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ukK-XZ-aZ8">
-                                        <rect key="frame" x="129.5" y="19" width="116" height="33"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ukK-XZ-aZ8" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                        <rect key="frame" x="129.5" y="18" width="116" height="35"/>
+                                        <color key="backgroundColor" red="0.069389946760000001" green="0.234616518" blue="0.1176470588" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="116" id="Egt-44-Wnw"/>
+                                            <constraint firstAttribute="height" constant="35" id="ym9-Rd-iL5"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                        <state key="normal" title="SCORE" backgroundImage="btn_green2">
+                                        <state key="normal" title="SCORE">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="scoreTap:" destination="Idh-fe-AqS" eventType="touchUpInside" id="ySw-uG-sOl"/>
                                         </connections>
@@ -4125,7 +4175,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GOv-3z-rzi" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="110" width="375" height="497"/>
+                                <rect key="frame" x="0.0" y="110" width="375" height="487"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dNZ-k1-NK9">
                                         <rect key="frame" x="0.0" y="10" width="375" height="50"/>
@@ -4220,7 +4270,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G8M-M2-aVR" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="375" height="447"/>
+                                        <rect key="frame" x="0.0" y="50" width="375" height="437"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mve-n8-esT">
                                                 <rect key="frame" x="0.0" y="10" width="375" height="40"/>
@@ -4253,7 +4303,7 @@
                                                 </constraints>
                                             </view>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="z3h-JO-KGL">
-                                                <rect key="frame" x="0.0" y="50" width="375" height="387"/>
+                                                <rect key="frame" x="0.0" y="50" width="375" height="377"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="44" id="Gvg-cW-s3R" customClass="Examinee_HistoryCell" customModule="Wodule" customModuleProvider="target">
@@ -4298,7 +4348,7 @@
                                                 </prototypes>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No History Found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YvF-PS-HjB">
-                                                <rect key="frame" x="117.5" y="213" width="141.5" height="21.5"/>
+                                                <rect key="frame" x="117.5" y="208" width="141.5" height="21.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -4322,27 +4372,27 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5KK-rR-Ojp" userLabel="Today View" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="375" height="447"/>
+                                        <rect key="frame" x="0.0" y="50" width="375" height="437"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dio-eI-wPQ">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EXAM ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nKb-rE-sbl">
-                                                        <rect key="frame" x="78" y="21.5" width="59" height="18"/>
-                                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
+                                                        <rect key="frame" x="67" y="16.5" width="61.5" height="18"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstItem="nKb-rE-sbl" firstAttribute="centerX" secondItem="Dio-eI-wPQ" secondAttribute="centerX" constant="-80" id="J2C-8l-ebi"/>
+                                                    <constraint firstItem="nKb-rE-sbl" firstAttribute="centerX" secondItem="Dio-eI-wPQ" secondAttribute="centerX" constant="-90" id="J2C-8l-ebi"/>
                                                     <constraint firstItem="nKb-rE-sbl" firstAttribute="centerY" secondItem="Dio-eI-wPQ" secondAttribute="centerY" id="TqA-5q-tJ6"/>
-                                                    <constraint firstAttribute="height" constant="60" id="hoj-Ps-BUg"/>
+                                                    <constraint firstAttribute="height" constant="50" id="hoj-Ps-BUg"/>
                                                 </constraints>
                                             </view>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Wfm-AV-cUr">
-                                                <rect key="frame" x="0.0" y="60" width="375" height="387"/>
+                                                <rect key="frame" x="0.0" y="50" width="375" height="387"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="nia-Uf-FPm">
@@ -4410,10 +4460,20 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_logo_small" translatesAutoresizingMaskIntoConstraints="NO" id="DdP-ZX-Kiv">
                                 <rect key="frame" x="20" y="33" width="99" height="27"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VMe-21-aW5">
-                                <rect key="frame" x="239" y="615.5" width="116" height="33"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VMe-21-aW5" customClass="UIButtonX" customModule="Wodule" customModuleProvider="target">
+                                <rect key="frame" x="235" y="612" width="120" height="40"/>
+                                <color key="backgroundColor" red="0.069389946758747101" green="0.23461651802062988" blue="0.11764705882352941" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="75d-Ib-TDw"/>
+                                    <constraint firstAttribute="height" constant="40" id="VFY-eB-5KB"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                                <state key="normal" title="REFRESH" backgroundImage="btn_green2"/>
+                                <state key="normal" title="REFRESH"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onClickRefresh:" destination="Se4-mQ-c5N" eventType="touchUpInside" id="RhQ-em-lpv"/>
                                 </connections>
@@ -4423,7 +4483,7 @@
                         <constraints>
                             <constraint firstItem="xtU-YC-lLQ" firstAttribute="top" secondItem="DdP-ZX-Kiv" secondAttribute="bottom" constant="10" id="19I-PH-OwU"/>
                             <constraint firstItem="xtU-YC-lLQ" firstAttribute="leading" secondItem="d2u-Bs-0ZE" secondAttribute="leading" id="3xx-nX-oK9"/>
-                            <constraint firstItem="ZDp-pZ-F1m" firstAttribute="top" secondItem="GOv-3z-rzi" secondAttribute="bottom" id="8Gn-wU-jdF"/>
+                            <constraint firstItem="ZDp-pZ-F1m" firstAttribute="top" secondItem="GOv-3z-rzi" secondAttribute="bottom" constant="10" id="8Gn-wU-jdF"/>
                             <constraint firstItem="xtU-YC-lLQ" firstAttribute="top" secondItem="f8E-z6-N7Z" secondAttribute="bottom" constant="50" id="HOa-Li-bss"/>
                             <constraint firstItem="ZDp-pZ-F1m" firstAttribute="leading" secondItem="d2u-Bs-0ZE" secondAttribute="leading" constant="10" id="IXp-Pl-q4x"/>
                             <constraint firstItem="HfL-ku-GH5" firstAttribute="top" secondItem="ZDp-pZ-F1m" secondAttribute="bottom" constant="10" id="MvQ-qa-iHl"/>
@@ -4442,6 +4502,7 @@
                         <outlet property="historyView" destination="G8M-M2-aVR" id="avj-AD-YIN"/>
                         <outlet property="noHistoryLabel" destination="YvF-PS-HjB" id="2mf-rR-UHN"/>
                         <outlet property="recordsTableView" destination="Wfm-AV-cUr" id="3he-ci-aV4"/>
+                        <outlet property="refreshButton" destination="VMe-21-aW5" id="ZTX-wy-Nnp"/>
                         <outlet property="todayLabel" destination="8mJ-aO-SQB" id="Jcc-pu-E07"/>
                         <outlet property="todayView" destination="5KK-rR-Ojp" id="EJK-Fz-MjB"/>
                     </connections>
@@ -4454,7 +4515,6 @@
     <resources>
         <image name="btn_back" width="50" height="50"/>
         <image name="btn_back_calendar" width="41" height="41"/>
-        <image name="btn_green2" width="116" height="33"/>
         <image name="btn_keyup" width="59" height="20"/>
         <image name="btn_next" width="50" height="50"/>
         <image name="btn_next_calendar" width="41" height="41"/>

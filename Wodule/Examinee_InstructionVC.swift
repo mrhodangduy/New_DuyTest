@@ -43,11 +43,13 @@ class Examinee_InstructionVC: UIViewController {
                 }
                 else
                 {
-                    self.loadingHide()
-                    self.alertMissingText(mess: "Something went wrong", textField: nil)
-                    print(results as Any)
+                    let error = ((results?["error"] as? String) != nil) ? results?["error"] as! String : "Can not load exam."
+                    DispatchQueue.main.async(execute: {
+                        print(results as Any)
+                        self.loadingHide()
+                        self.alertBackToHomeWithError(mess: error)
+                    })
                 }
-                
             }
         }
         else

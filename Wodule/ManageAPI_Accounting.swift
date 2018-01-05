@@ -13,12 +13,21 @@ import Alamofire
 struct ManageAPI_Accounting
 {
     
-    static func getAccounting(witkToken token: String,type: String, completion: @escaping (Bool,Int?,NSDictionary?) -> ())
+    static let shared = ManageAPI_Accounting()
+    
+    private let sessionManager: SessionManager = {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 10
+        let sessionManager = Alamofire.SessionManager(configuration: configuration)
+        return sessionManager
+    }()
+    
+    func getAccounting(witkToken token: String,type: String, completion: @escaping (Bool,Int?,NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.baseURL + "/\(type)")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
-        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+        sessionManager.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
             if response.result.isSuccess
             {
@@ -45,12 +54,21 @@ struct ManageAPI_Accounting
 
 struct ManageAPI_Calendar
 {
-    static func getCalendar(token: String, completion: @escaping (_ status: Bool,_ code: Int, _ results: NSDictionary?) -> ())
+    static let shared = ManageAPI_Calendar()
+    
+    private let sessionManager: SessionManager = {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 10
+        let sessionManager = Alamofire.SessionManager(configuration: configuration)
+        return sessionManager
+    }()
+    
+    func getCalendar(token: String, completion: @escaping (_ status: Bool,_ code: Int, _ results: NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.calendarURL)
         let header: HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
-        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
+        sessionManager.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
             
             if response.result.isSuccess
             {

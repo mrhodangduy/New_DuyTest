@@ -338,7 +338,18 @@ class Offline_OverviewVC: UIViewController {
             
             if Connectivity.isConnectedToInternet == false || !ReachabilityManager.shared.reachability.isReachableViaWiFi
             {
-                let update = DatabaseManagement.shared.updateGradeExam(examinerid: Exam.examinerId, identifier: Exam.identifier, grade1: "\(score_Part1!)", comment1: comment_Part1!, grade2:"\(score_Part2!)" , comment2: comment_Part2!, grade3: "\(String(describing: score_Part3))" , comment3: comment_Part3, grade4: "\(String(describing: score_Part4))", comment4: comment_Part4, status: "graded")
+                let grade3 : String?
+                let grade4 : String?
+                if score_Part3 == nil
+                {
+                    grade3 = nil
+                    grade4 = nil
+                } else {
+                    grade3 = "\(score_Part3!)"
+                    grade4 = "\(score_Part4!)"
+                }
+                
+                let update = DatabaseManagement.shared.updateGradeExam(examinerid: Exam.examinerId, identifier: Exam.identifier, grade1: "\(score_Part1!)", comment1: comment_Part1!, grade2:"\(score_Part2!)" , comment2: comment_Part2!, grade3: grade3, comment3: comment_Part3, grade4: grade4, comment4: comment_Part4, status: "graded")
                 if update == true {
                     
                     let expired_at = Exam.expired_at
@@ -348,12 +359,10 @@ class Offline_OverviewVC: UIViewController {
                         self.onHandleSaveSuccessful(mess: INFORM_MESSAGE.SAVETOLOCALDATA + time + " hours.")
                     })
                     
-                    
                 } else  {
                     DispatchQueue.main.async(execute: {
                         self.onHandleBackToHome(mess: INFORM_MESSAGE.CORRUPTDATA)
                     })
-                    
                 }
             }
             else {
@@ -368,14 +377,14 @@ class Offline_OverviewVC: UIViewController {
         let token = userDefault.object(forKey: TOKEN_STRING) as? String
         let identifier = Exam.identifier
         
-        ExamRecord.postGrade(withToken: token!, identifier: Int(identifier), grade1: grade1, comment1: comment1, grade2: grade2, comment2: comment2, grade3: grade3, comment3: comment3, grade4: grade4, comment4: comment4, completion: { (status:Bool?, code:Int?, result:NSDictionary?) in
+        ExamRecord.shared.postGrade(withToken: token!, identifier: Int(identifier), grade1: grade1, comment1: comment1, grade2: grade2, comment2: comment2, grade3: grade3, comment3: comment3, grade4: grade4, comment4: comment4, completion: { (status:Bool?, code:Int?, result:NSDictionary?) in
             
             print(status as Any, code as Any , result as Any)
             
             if status!
             {
                 DispatchQueue.main.async(execute: { 
-                    print("grade susscessful")
+                    print("grade done")
                     self.loadingHide()
                     let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
                     self.navigationController?.pushViewController(accountingVC, animated: true)
@@ -384,7 +393,6 @@ class Offline_OverviewVC: UIViewController {
                     if delete
                     {
                         self.deleteAudioFile(fileName: "\(identifier)", examninerID: self.Exam.examinerId)
-                        
                     }
                 })
             }                
@@ -436,7 +444,6 @@ class Offline_OverviewVC: UIViewController {
             self.contentImageView.alpha = 0
         }, completion: { (true) in
             self.perform(#selector(self.removeView), with: self, afterDelay: 0)
-            
         })
     }
     
@@ -449,7 +456,6 @@ class Offline_OverviewVC: UIViewController {
         self.dataTableView.transform = .identity
         self.contentTextView.transform = .identity
         self.contentImageView.transform = .identity
-
     }
     
     func configView()

@@ -49,7 +49,7 @@ class MessagesVC: UIViewController {
     {
         self.messagesList.removeAll()
         self.loadingShow()
-        UserInfoAPI.getMessage(completion: { (status:Bool, code:Int, results: NSDictionary?, totalPage:Int?) in
+        UserInfoAPI.shared.getMessage(completion: { (status:Bool, code:Int, results: NSDictionary?, totalPage:Int?) in
             if status
             {
                 if let data = results?["data"] as? [NSDictionary]
@@ -149,7 +149,7 @@ extension MessagesVC : UITableViewDataSource, UITableViewDelegate
             {
                 self.loadingShow()
                 DispatchQueue.global(qos: .default).async {
-                    UserInfoAPI.readMessage(withToken: self.token!, identifier: self.messagesList[indexPath.row]["identifier"] as! Int) { (status:Bool, code:Int, results: NSDictionary?) in
+                    UserInfoAPI.shared.readMessage(withToken: self.token!, identifier: self.messagesList[indexPath.row]["identifier"] as! Int) { (status:Bool, code:Int, results: NSDictionary?) in
                         
                         print(status,code,results as Any)
                         
@@ -161,6 +161,13 @@ extension MessagesVC : UITableViewDataSource, UITableViewDelegate
                             DispatchQueue.main.async(execute: {
                                 self.loadingHide()
                                 
+                            })
+                            
+                        } else if code == 429
+                        {
+                            DispatchQueue.main.async(execute: {
+                                self.loadingHide()
+                                self.alertMissingText(mess: "Too Many Attempts\n(ErrorCode:\(429))", textField: nil)
                             })
                             
                         }
@@ -185,25 +192,20 @@ extension MessagesVC : UITableViewDataSource, UITableViewDelegate
                                 
                             })
                         }
-                        
                     }
                 }
-                
             }
             else
             {
                 let messagedetailVC = UIStoryboard(name: PROFILE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "messagedetailVC") as! MessageDetailsVC
                 messagedetailVC.messageDetail = item
                 self.navigationController?.pushViewController(messagedetailVC, animated: true)
-                
             }
-
         }
         else
         {
             self.displayAlertNetWorkNotAvailable()
         }
-        
         
     }
     

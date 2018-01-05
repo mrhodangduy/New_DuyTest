@@ -80,7 +80,7 @@ class CalendarVC: UIViewController {
         self.loadingShow()
         DispatchQueue.global(qos: .background).async {
             
-            ManageAPI_Calendar.getCalendar(token: self.token!, completion: { (status:Bool, code: Int, results: NSDictionary?) in
+            ManageAPI_Calendar.shared.getCalendar(token: self.token!, completion: { (status:Bool, code: Int, results: NSDictionary?) in
                 
                 if status
                 {
@@ -95,8 +95,8 @@ class CalendarVC: UIViewController {
                             self.dateWithEventDetails.updateValue(details!, forKey: day!)
                             self.dateWithEvent.updateValue(time, forKey: day!)
                         }
-                        self.eventTableHeight.constant = self.cellHeight * CGFloat(self.calendarList.count)
                         DispatchQueue.main.async(execute: {
+                            self.eventTableHeight.constant = self.cellHeight * CGFloat(self.calendarList.count)
                             self.loadingHide()
                             self.eventTableView.reloadData()
                             self.calendarView.reloadData()
@@ -104,6 +104,13 @@ class CalendarVC: UIViewController {
                             
                         })
                     }
+                } else if code == 429
+                {
+                    DispatchQueue.main.async(execute: {
+                        self.loadingHide()
+                        self.alertMissingText(mess: "Too Many Attempts\n(ErrorCode:\(429))", textField: nil)
+                    })
+                    
                 }
                 else if code == 401
                 {

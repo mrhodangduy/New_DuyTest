@@ -26,7 +26,7 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
             userDefault.synchronize()
 
             
-            LoginWithSocial.LoginUserWithSocial(username: username, password: password, completion: { (first, status) in
+            LoginWithSocial.shared.LoginUserWithSocial(username: username, password: password, completion: { (first, status) in
                 
                 
                 if status!
@@ -37,7 +37,7 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                     userDefault.set(password, forKey: PASSWORDLOGIN)
                     userDefault.synchronize()
                     
-                    LoginWithSocial.getUserInfoSocial(withToken: token!, completion: { (result) in
+                    LoginWithSocial.shared.getUserInfoSocial(withToken: token!, completion: { (result) in
                         
                         print(result!)
                         
@@ -158,7 +158,7 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                                 
                                 print("PARA:--->", para)
                                 
-                                LoginWithSocial.updateUserInfoSocial(userID: userID, para: para, completion: { (status:Bool?, code:Int?, data:NSDictionary?) in
+                                LoginWithSocial.shared.updateUserInfoSocial(userID: userID, para: para, completion: { (status:Bool?, code:Int?, data:NSDictionary?) in
                                     
                                     if status == true
                                     {
@@ -167,7 +167,7 @@ extension LoginVC : GIDSignInDelegate, GIDSignInUIDelegate
                                         userDefault.set(password, forKey: PASSWORDLOGIN)
                                         userDefault.synchronize()
                                         
-                                        LoginWithSocial.getUserInfoSocial(withToken: token, completion: { (result) in
+                                        LoginWithSocial.shared.getUserInfoSocial(withToken: token, completion: { (result) in
                                             
                                             if result!["type"] as? String == UserType.assessor.rawValue
                                             {

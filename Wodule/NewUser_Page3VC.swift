@@ -246,7 +246,7 @@ class NewUser_Page3VC: UIViewController {
                 
                 self.loadingShow()
                 DispatchQueue.global().async {
-                    UserInfoAPI.RegisterUser(para: self.para, completion: { (status) in
+                    UserInfoAPI.shared.RegisterUser(para: self.para, completion: { (status) in
                         
                         if status
                         {
@@ -256,7 +256,7 @@ class NewUser_Page3VC: UIViewController {
                             userDefault.set(self.password, forKey: PASSWORDLOGIN)
                             userDefault.synchronize()
                             
-                            UserInfoAPI.getUserInfo(withToken: token!, completion: { (userInfo) in
+                            UserInfoAPI.shared.getUserInfo(withToken: token!, completion: { (userInfo) in
                                 
                                 if userInfo?["type"] as? String == UserType.assessor.rawValue
                                 {

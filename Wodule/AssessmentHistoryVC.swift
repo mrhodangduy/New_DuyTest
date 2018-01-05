@@ -43,7 +43,7 @@ class AssessmentHistoryVC: UIViewController {
     {
         currentpage = 1
         loadingShow()
-        AssesmentHistory.getUserHistory(type: type!, withToken: token!, userID: userID, page: currentpage) { (status,code,mess, results, totalpage) in
+        AssesmentHistory.shared.getUserHistory(type: type!, withToken: token!, userID: userID, page: currentpage) { (status,code,mess, results, totalpage) in
             
             if status!
             {
@@ -73,6 +73,13 @@ class AssessmentHistoryVC: UIViewController {
                 }
                 
                 
+            } else if code == 429
+            {
+                DispatchQueue.main.async(execute: {
+                    self.loadingHide()
+                    self.alertMissingText(mess: "Too Many Attempts\n(ErrorCode:\(429))", textField: nil)
+                })
+                
             }
             else if code == 401
             {
@@ -80,8 +87,11 @@ class AssessmentHistoryVC: UIViewController {
                 {
                     if error.contains("Token")
                     {
-                        self.loadingHide()
-                        self.onHandleTokenInvalidAlert()
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            self.onHandleTokenInvalidAlert()
+                            
+                        })
                     }
                 }
                 
@@ -174,7 +184,7 @@ extension AssessmentHistoryVC: UITableViewDataSource,UITableViewDelegate
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         let lastItem = History.count - 2
-        if indexPath.row == lastItem && currentpage < totalPage + 1
+        if indexPath.row == lastItem && currentpage < totalPage
         {
             currentpage = currentpage + 1
             loadmore(page: currentpage)
@@ -186,7 +196,7 @@ extension AssessmentHistoryVC: UITableViewDataSource,UITableViewDelegate
     
     func loadmore(page:Int)
     {
-        AssesmentHistory.getUserHistory(type: type!, withToken: token!, userID: userID, page: page) { (status,code, data, results, totolPage) in
+        AssesmentHistory.shared.getUserHistory(type: type!, withToken: token!, userID: userID, page: page) { (status,code, mess, results, totolPage) in
             
             if results != nil
             {
@@ -197,7 +207,41 @@ extension AssessmentHistoryVC: UITableViewDataSource,UITableViewDelegate
                         self.dataTableView.reloadData()
                     })
                 }
+            } else if code == 429
+            {
+                DispatchQueue.main.async(execute: {
+                    self.loadingHide()
+                    self.alertMissingText(mess: "Too Many Attempts\n(ErrorCode:\(429))", textField: nil)
+                })
+                
             }
+            else if code == 401
+            {
+                if let error = mess?["error"] as? String
+                {
+                    if error.contains("Token")
+                    {
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            self.onHandleTokenInvalidAlert()
+                            
+                        })
+                        
+                    }
+                }
+                
+            }
+            else
+            {
+                print("\nERROR:---->",mess as Any)
+                DispatchQueue.main.async(execute: {
+                    self.loadingHide()
+                    self.dataTableView.reloadData()
+                    
+                })
+                
+            }
+
             
         }
     }

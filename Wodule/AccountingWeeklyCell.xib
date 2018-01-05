@@ -5,7 +5,6 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,7 +12,7 @@
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="AccountingWeeklyCell" customModule="Wodule" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -28,25 +27,25 @@
                         <rect key="frame" x="120" y="10" width="235" height="39.5"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HCr-aa-z90" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="23.5" height="39.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="135" height="39.5"/>
                                 <color key="backgroundColor" red="0.13321214910000001" green="0.38329678769999997" blue="0.20670846100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="5"/>
+                                        <real key="value" value="3"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="HCr-aa-z90" firstAttribute="leading" secondItem="NAJ-w7-d2F" secondAttribute="leading" id="Aa7-yT-AvQ"/>
-                            <constraint firstItem="HCr-aa-z90" firstAttribute="width" secondItem="NAJ-w7-d2F" secondAttribute="width" multiplier="1/10" id="HAh-RC-G4D"/>
-                            <constraint firstItem="HCr-aa-z90" firstAttribute="top" secondItem="NAJ-w7-d2F" secondAttribute="top" id="aXm-sX-Hb5"/>
-                            <constraint firstAttribute="bottom" secondItem="HCr-aa-z90" secondAttribute="bottom" id="p1A-7Q-ufA"/>
+                            <constraint firstItem="HCr-aa-z90" firstAttribute="top" secondItem="NAJ-w7-d2F" secondAttribute="top" id="fRw-zh-WJj"/>
+                            <constraint firstAttribute="trailing" secondItem="HCr-aa-z90" secondAttribute="trailing" constant="100" id="mzg-DL-ejs"/>
+                            <constraint firstAttribute="bottom" secondItem="HCr-aa-z90" secondAttribute="bottom" id="t9G-eT-flr"/>
+                            <constraint firstItem="HCr-aa-z90" firstAttribute="leading" secondItem="NAJ-w7-d2F" secondAttribute="leading" id="vDb-ON-isP"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                <real key="value" value="5"/>
+                                <real key="value" value="3"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
@@ -63,11 +62,11 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="moneyLabel" destination="cLm-YW-IJr" id="k2n-d9-B4D"/>
-                <outlet property="percentView" destination="NAJ-w7-d2F" id="izo-vR-h8c"/>
-                <outlet property="ratioWithTotalView" destination="HAh-RC-G4D" id="BGx-0o-c8m"/>
+                <outlet property="percentView" destination="HCr-aa-z90" id="VJz-0w-5sm"/>
+                <outlet property="ratioWithTotalView" destination="mzg-DL-ejs" id="ewC-eu-iZW"/>
                 <outlet property="totalView" destination="NAJ-w7-d2F" id="G4A-Sr-BPu"/>
             </connections>
-            <point key="canvasLocation" x="49" y="53"/>
+            <point key="canvasLocation" x="-74" y="209"/>
         </tableViewCell>
     </objects>
 </document>

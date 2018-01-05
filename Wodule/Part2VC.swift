@@ -208,7 +208,7 @@ class Part2VC: UIViewController {
         {
             self.loadingShowwithStatus(status: "Uploading...")
             DispatchQueue.global(qos: .default).async {
-                ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2:audio2data, audiofile3: nil, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
+                ExamRecord.shared.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2:audio2data, audiofile3: nil, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
                     
                     let message = result?["message"] as? String
                     
@@ -255,7 +255,7 @@ class Part2VC: UIViewController {
     {
         self.loadingShowwithStatus(status: "Uploading your Exam.")
         DispatchQueue.global(qos: .default).async {
-            ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2:self.audio2_Data, audiofile3: nil, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
+            ExamRecord.shared.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2:self.audio2_Data, audiofile3: nil, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
                 
                 let message = result?["message"] as? String
                 

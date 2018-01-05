@@ -68,7 +68,6 @@ class Assessor_AssessmentRecordVC: UIViewController {
                 self.loadingHide()
             })
         }
-        
     }
     
     @IBAction func onClickToday(_ sender: Any) {
@@ -99,7 +98,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
     
     @IBAction func onClickRefresh(_ sender: Any) {
         
-        if recordList.count == 10
+        if recordList.count > 10
         {
             self.alertMissingText(mess: "You reach to limit record to download.", textField: nil)
             return
@@ -127,7 +126,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
         print("List exam expired", idExpired)
         if !idExpired.isEmpty {
             for id in idExpired {
-                ExamRecord.examExpired(token: self.token!, id: id, completion: { (status, results) in
+                ExamRecord.shared.examExpired(token: self.token!, id: id, completion: { (status, results) in
                     
                     if status {
                         let delete = DatabaseManagement.shared.deleteExam(id: id)
@@ -142,9 +141,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
                 })
             }
         }
-        
     }
-    
 
     func downloadExam()
     {
@@ -152,7 +149,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
         {
             self.loadingShow()
             currentpage = 1
-            ExamRecord.downloadRecord(token: self.token!, page: self.currentpage, completion: { (status, code, result, total_Page) in
+            ExamRecord.shared.downloadRecord(token: self.token!, page: self.currentpage, completion: { (status, code, result, total_Page) in
                 
                 if status == true {
                     
@@ -168,7 +165,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
                             if time < 0
                             {
                                 let id = item["identifier"] as! Int64
-                                ExamRecord.examExpired(token: self.token!, id: id, completion: { (status, result) in
+                                ExamRecord.shared.examExpired(token: self.token!, id: id, completion: { (status, result) in
                                     print("Remove out of list", status)
                                 })
                             }
@@ -181,26 +178,13 @@ class Assessor_AssessmentRecordVC: UIViewController {
                         }
                         
                         self.totalPage = total_Page
-                        if dataAvailable.count > 10
-                        {
-                            let data: [NSDictionary] = Array(dataAvailable.prefix(upTo: 10))
-                            self.onHandleSaveDataToLocal(data: data, examinerId: self.assessorID)
+                        self.onHandleSaveDataToLocal(data: dataAvailable, examinerId: self.assessorID)
+                        DispatchQueue.main.async(execute: {
                             self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
-                            DispatchQueue.main.async(execute: {
-                                self.recordsTableView.reloadData()
-                                self.loadingHide()
-                            })
-                        }
-                        else
-                        {
-                            self.onHandleSaveDataToLocal(data: dataAvailable, examinerId: self.assessorID)
-                            self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
-                            DispatchQueue.main.async(execute: {
-                                self.recordsTableView.reloadData()
-                                self.loadingHide()
-                            })
+                            self.recordsTableView.reloadData()
+                            self.loadingHide()
+                        })
 
-                        }
                     } else if result!.isEmpty
                     {
                         DispatchQueue.main.async(execute: {
@@ -218,8 +202,8 @@ class Assessor_AssessmentRecordVC: UIViewController {
                     
                 } else if code == 429
                 {
-                    self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
                     DispatchQueue.main.async(execute: {
+                        self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
                         self.loadingHide()
                         self.alertMissingText(mess: "Too Many Attempts\n(ErrorCode:\(429))", textField: nil)
                         self.recordsTableView.reloadData()
@@ -233,8 +217,8 @@ class Assessor_AssessmentRecordVC: UIViewController {
                     })
                 }
                 else {
-                    self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
                     DispatchQueue.main.async(execute: {
+                        self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
                         self.loadingHide()
                         self.alertMissingText(mess: "Server error. Try again later.", textField: nil)
                         self.recordsTableView.reloadData()
@@ -250,8 +234,8 @@ class Assessor_AssessmentRecordVC: UIViewController {
     
     func onHandleLoadLocalData()
     {
-        self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
         DispatchQueue.main.async {
+            self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
             self.recordsTableView.reloadData()
         }
     }
@@ -283,7 +267,6 @@ class Assessor_AssessmentRecordVC: UIViewController {
                         print("Status", status, "Urlstring:", urlString)
                     })
                 }
-                
             }
         }
     }
@@ -320,8 +303,6 @@ class Assessor_AssessmentRecordVC: UIViewController {
             
             return FileManager.default.fileExists(atPath: photo.path)
         }
-        
-        
     }
     
     func onHandleSaveDataToLocal(data: [NSDictionary], examinerId: Int64)
@@ -329,14 +310,18 @@ class Assessor_AssessmentRecordVC: UIViewController {
         if !data.isEmpty
         {
             for i in 0..<data.count {
+                if self.recordList.count == 10 {
+                    return
+                }
                 let examItem = data[i]
+                let identifier = examItem["identifier"] as! Int64
                 let status = examItem["status"] as! String
                 if status == "graded"
                 {
+                    print("\(identifier) --> graded")
                     continue
                 }
                 
-                let identifier = examItem["identifier"] as! Int64
                 let examName = examItem["exam"] as! String
                 let examQuestionaireOne = examItem["examQuestionaireOne"] as? String
                 let examQuestionaireTwo = examItem["examQuestionaireTwo"] as? String
@@ -365,7 +350,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
                 
                 if ids.contains(identifier)
                 {
-                    print("Already exist")
+                    print("\(identifier) --> Already exist")
                     let idsList = DatabaseManagement.shared.queryIdentifiersNotDownloadAudio(of: examinerId)
                     print(idsList)
                     let existFile = self.onHandleCheckFileAvailable(examiner: examinerId, id: identifier, savename: nil)
@@ -426,7 +411,6 @@ class Assessor_AssessmentRecordVC: UIViewController {
                             }, completion: { (status, urlString) in
                                 
                             })
-                            
                             
                         } else {
                             
@@ -688,7 +672,7 @@ class Assessor_AssessmentRecordVC: UIViewController {
     {
         currentpageHistory = 1
         self.loadingShow()
-        AssesmentHistory.getUserHistory(type: "grades", withToken: self.token!, userID: Int(self.assessorID), page: self.currentpageHistory) { (status,code,mess, results, totalpage) in
+        AssesmentHistory.shared.getUserHistory(type: "grades", withToken: self.token!, userID: Int(self.assessorID), page: self.currentpageHistory) { (status,code,mess, results, totalpage) in
             
             if status!
             {
@@ -713,8 +697,6 @@ class Assessor_AssessmentRecordVC: UIViewController {
                         self.noHistoryLabel.isHidden = false
                     })
                 }
-                
-                
             }
             else if code == 401
             {
@@ -766,7 +748,7 @@ extension Assessor_AssessmentRecordVC: UITableViewDataSource, UITableViewDelegat
             cell.delegate = self
             cell.indexPath = indexPath
             cell.examIDLabel.text = recordList[indexPath.row].examName
-            cell.downloadingLabel.text = "\(recordList[indexPath.row].progressDownload) %"
+            cell.downloadingLabel.text = "\(recordList[indexPath.row].progressDownload)" + "%"
            
             if recordList[indexPath.row].isDownloaded == true
             {
@@ -811,7 +793,7 @@ extension Assessor_AssessmentRecordVC: UITableViewDataSource, UITableViewDelegat
 
             } else {
                 let lastItem = historyList.count - 2
-                if indexPath.row == lastItem && currentpageHistory < totalPageHistory + 1
+                if indexPath.row == lastItem && currentpageHistory < totalPageHistory
                 {
                     currentpageHistory = currentpageHistory + 1
                     loadmoreHitory(page: currentpageHistory)
@@ -848,24 +830,10 @@ extension Assessor_AssessmentRecordVC: UITableViewDataSource, UITableViewDelegat
         return 30
     }
     
-    func loadmore(page:Int)
-    {
-        ExamRecord.downloadRecord(token: self.token!, page: page) { (status, code, results, totalpage) in
-            
-            if results != nil
-            {
-                self.onHandleSaveDataToLocal(data: results!, examinerId: self.assessorID)
-                self.recordList = DatabaseManagement.shared.queryAllExam(withID: self.assessorID, status: "pending")
-                DispatchQueue.main.async {
-                    self.recordsTableView.reloadData()
-                }
-            }
-            
-        }
-    }
+    
     func loadmoreHitory(page:Int)
     {
-        AssesmentHistory.getUserHistory(type: "grades", withToken: token!, userID: Int(self.assessorID), page: page) { (status,code, data, results, totolPage) in
+        AssesmentHistory.shared.getUserHistory(type: "grades", withToken: token!, userID: Int(self.assessorID), page: page) { (status,code, data, results, totolPage) in
             
             if results != nil
             {
@@ -888,7 +856,6 @@ extension Assessor_AssessmentRecordVC: OfflineRecordDelegate
         let part1 = UIStoryboard(name: "Offline", bundle: nil).instantiateViewController(withIdentifier: "part1") as! Offline_Part1
         part1.Exam = recordList[indexPath.row]
         self.navigationController?.pushViewController(part1, animated: true)
-
     }
 }
 

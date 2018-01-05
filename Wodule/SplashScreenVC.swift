@@ -23,7 +23,7 @@ class SplashScreenVC: UIViewController {
         let userInfoData = userDefault.object(forKey: USERINFO_STRING) as? Data
         print(userInfoData as Any)
         if token != nil {
-            UserInfoAPI.invalidToken(token: token!, completion: { (status, result) in
+            UserInfoAPI.shared.invalidToken(token: token!, completion: { (status, result) in
                 print("Clean token")
             })
         }
@@ -112,13 +112,13 @@ class SplashScreenVC: UIViewController {
     func onHandleLogin()
     {
         DispatchQueue.global(qos: .default).async(execute: {
-            UserInfoAPI.LoginUser(username: self.username!, password: self.password!, completion: { (status) in
+            UserInfoAPI.shared.LoginUser(username: self.username!, password: self.password!, completion: { (status) in
                 
                 if status != nil && status!
                 {
                     let token = userDefault.object(forKey: TOKEN_STRING) as? String
                     
-                    UserInfoAPI.getUserInfo(withToken: token!, completion: { (userinfo) in
+                    UserInfoAPI.shared.getUserInfo(withToken: token!, completion: { (userinfo) in
                         
                         if userinfo!["type"] as? String == UserType.assessor.rawValue
                         {

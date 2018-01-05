@@ -208,7 +208,7 @@
                         if self.Exam?["question_4"] as? String == nil && self.Exam?["image_4"] as? String == nil
                         {
                             self.loadingShowwithStatus(status: "Uploading your Exam.")
-                            ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: self.audio3_Data, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
+                            ExamRecord.shared.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: self.audio3_Data, audiofile4: nil, completion: { (status:Bool?, result:NSDictionary?) in
                                 if status!
                                 {
                                     DispatchQueue.main.async(execute: {

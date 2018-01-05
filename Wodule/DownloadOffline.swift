@@ -13,6 +13,13 @@ class DataOffline
 {
     static let shared = DataOffline()
     
+    private let sessionManager: SessionManager = {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 15
+        let sessionManager = Alamofire.SessionManager(configuration: configuration)
+        return sessionManager
+    }()
+    
     func download(url: String, folder: String, id: String, saveName: String, completionProgress: @escaping (_ percent: Double) -> (), completion: @escaping (_ status: Bool,_ urlString: String) -> ())
     {
         let downloadUrl = URL(string: url)
@@ -24,7 +31,7 @@ class DataOffline
             return (file, [.createIntermediateDirectories])
         }
         
-        Alamofire.download(downloadUrl!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil, to: destination)
+        sessionManager.download(downloadUrl!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil, to: destination)
             .downloadProgress { (progress) in
             let qosUtility = DispatchQoS.QoSClass.utility
             DispatchQueue.global(qos: qosUtility).async {

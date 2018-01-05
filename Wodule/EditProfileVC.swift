@@ -483,7 +483,7 @@ class EditProfileVC: UIViewController {
             createPara_Header()
             loadingShow()
             DispatchQueue.global(qos: .default).async {
-                UserInfoAPI.updateUserProfile(para: self.para, header: self.header, picture: self.imgData, completion: { (status:Bool, code: Int?, result:NSDictionary?) in
+                UserInfoAPI.shared.updateUserProfile(para: self.para, header: self.header, picture: self.imgData, completion: { (status:Bool, code: Int?, result:NSDictionary?) in
                     
                     print(code!)
                     

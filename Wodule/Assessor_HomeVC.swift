@@ -24,13 +24,6 @@ class Assessor_HomeVC: UIViewController {
     @IBOutlet weak var img_Avatar: UIImageViewX!
     @IBOutlet weak var unreadLabel: UILabelX!
     
-    fileprivate let convertdateformatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        return formatter
-    }()
-    
-    var imageData:Data!
     var userInfomation:NSDictionary!
     var socialAvatar: URL!
     var socialIdentifier: String!
@@ -58,9 +51,8 @@ class Assessor_HomeVC: UIViewController {
         {
             socialIdentifier = NORMALLOGIN
         }
-        asignDataInView()
-        self.upLoadGraded()
         
+        asignDataInView()
         NotificationCenter.default.addObserver(self, selector: #selector(self.upLoadGraded), name: NSNotification.Name.available, object: nil)
     }
     
@@ -80,7 +72,7 @@ class Assessor_HomeVC: UIViewController {
         print("List exam expired", idExpired)
         if !idExpired.isEmpty {
             for id in idExpired {
-                ExamRecord.examExpired(token: self.token!, id: id, completion: { (status, results) in
+                ExamRecord.shared.examExpired(token: self.token!, id: id, completion: { (status, results) in
                     
                     if status {
                         let delete = DatabaseManagement.shared.deleteExam(id: id)
@@ -95,7 +87,7 @@ class Assessor_HomeVC: UIViewController {
                 })
             }
         }
-
+        self.upLoadGraded()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -107,7 +99,7 @@ class Assessor_HomeVC: UIViewController {
         if Connectivity.isConnectedToInternet
         {
             DispatchQueue.global(qos: .background).async {
-                UserInfoAPI.getMessage(completion: { (status:Bool, code:Int, results: NSDictionary?, totalPage:Int?) in
+                UserInfoAPI.shared.getMessage(completion: { (status:Bool, code:Int, results: NSDictionary?, totalPage:Int?) in
                     if status
                     {
                         if let data = results?["data"] as? [NSDictionary]
@@ -130,7 +122,9 @@ class Assessor_HomeVC: UIViewController {
                     }
                     else if code == 401
                     {
-                        self.onHandleTokenInvalidAlert()
+                        DispatchQueue.main.async {
+                            self.onHandleTokenInvalidAlert()
+                        }
                     }
                     else
                     {
@@ -170,7 +164,7 @@ class Assessor_HomeVC: UIViewController {
                         grade4 = Int64(exam.score_4!)
                     }
                     
-                    ExamRecord.postGrade(withToken: self.token!, identifier: Int(exam.identifier), grade1: Int64(exam.score_1!)!, comment1: exam.comment_1!, grade2: Int64(exam.score_2!)!, comment2: exam.comment_2!, grade3: grade3, comment3: exam.comment_3, grade4: grade4, comment4: exam.comment_4, completion: { (status, code, result) in
+                    ExamRecord.shared.postGrade(withToken: self.token!, identifier: Int(exam.identifier), grade1: Int64(exam.score_1!)!, comment1: exam.comment_1!, grade2: Int64(exam.score_2!)!, comment2: exam.comment_2!, grade3: grade3, comment3: exam.comment_3, grade4: grade4, comment4: exam.comment_4, completion: { (status, code, result) in
                         
                         if status == true
                         {
@@ -196,9 +190,12 @@ class Assessor_HomeVC: UIViewController {
         {
             let examinerID = userInfomation["id"] as! Int64
             let listExamGraded = DatabaseManagement.shared.queryIdentifierListHasGraded(of: examinerID)
-            if !listExamGraded.isEmpty
+            if !listExamGraded.isEmpty && listExamGraded.count > 1
             {
-                self.alertMissingText(mess: "You have \(listExamGraded.count) exam(s) which has/(have) been graded and need to send to server via WIFI.", textField: nil)
+                self.alertMissingText(mess: "You have \(listExamGraded.count) exams which have been graded and need to send to server via WIFI.", textField: nil)
+            } else if listExamGraded.count == 1
+            {
+                self.alertMissingText(mess: "You have 1 exam which has been graded and need to send to server via WIFI.", textField: nil)
             }
 
         }
@@ -263,7 +260,7 @@ class Assessor_HomeVC: UIViewController {
         if Connectivity.isConnectedToInternet
         {
             DispatchQueue.global(qos: .default).async {
-                UserInfoAPI.getUserInfo(withToken: self.token!, completion: { (users) in
+                UserInfoAPI.shared.getUserInfo(withToken: self.token!, completion: { (users) in
                     
                     self.userInfomation = users!
                     DispatchQueue.main.async(execute: {
@@ -314,7 +311,7 @@ class Assessor_HomeVC: UIViewController {
         if Connectivity.isConnectedToInternet
         {
             self.loadingShow()
-            ExamRecord.getAllRecord(completion: { (records: [NSDictionary]?, code: Int?, error: NSDictionary?) in
+            ExamRecord.shared.getAllRecord(completion: { (records: [NSDictionary]?, code: Int?, error: NSDictionary?) in
                 if let exams = records
                 {
                     let exam = exams[0]
@@ -404,8 +401,8 @@ class Assessor_HomeVC: UIViewController {
     }
     @IBAction func onClickLogOut(_ sender: Any) {
         
-        let alert = UIAlertController(title: "Wodule", message: "Do you want to log out?", preferredStyle: .alert)
-        let okBtn = UIAlertAction(title: "OK", style: .default) { (action) in
+        let alert = UIAlertController(title: "Wodule", message: "Do you want to Log Out?", preferredStyle: .alert)
+        let okBtn = UIAlertAction(title: "Yes", style: .destructive) { (action) in
             
             self.onHandleLogOut()
         }
@@ -433,8 +430,8 @@ class Assessor_HomeVC: UIViewController {
             print("LogOut Normal")
         }
         
-        UserInfoAPI.invalidToken(token: self.token!) { (status, result) in
-            print(status, result)
+        UserInfoAPI.shared.invalidToken(token: self.token!) { (status, result) in
+            print(status, result as Any)
         }
         
         let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC
@@ -445,14 +442,20 @@ class Assessor_HomeVC: UIViewController {
         window.makeKeyAndVisible()
         
         UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+        AppDelegate.share.removeAllValueObject()
+        self.removeValue()
+        userDefault.synchronize()
+    }
+    
+    func removeValue()
+    {
         userDefault.removeObject(forKey: TOKEN_STRING)
         userDefault.removeObject(forKey: USERINFO_STRING)
         userDefault.removeObject(forKey: SOCIALKEY)
         userDefault.removeObject(forKey: SOCIALAVATAR)
         userDefault.removeObject(forKey: USERNAMELOGIN)
         userDefault.removeObject(forKey: PASSWORDLOGIN)
-        AppDelegate.share.removeAllValueObject()
-        userDefault.synchronize()
+
     }
 }
 

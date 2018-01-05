@@ -197,7 +197,7 @@ class Part4VC: UIViewController {
     {
         self.loadingShowwithStatus(status: "Uploading...")
         DispatchQueue.global(qos: .default).async {
-            ExamRecord.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: self.audio3_Data, audiofile4: self.audio4_Data, completion: { (status:Bool?, result:NSDictionary?) in
+            ExamRecord.shared.uploadExam(withToken: self.token!, idExam: self.examID, audiofile1: self.audio1_Data, audiofile2: self.audio2_Data, audiofile3: self.audio3_Data, audiofile4: self.audio4_Data, completion: { (status:Bool?, result:NSDictionary?) in
                 
                 let message = result?["message"] as? String
                 

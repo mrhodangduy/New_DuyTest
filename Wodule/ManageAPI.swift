@@ -101,15 +101,22 @@ struct CodeType
 
 struct LoginWithSocial
 {
+    static let shared = LoginWithSocial()
     
+    private let sessionManager: SessionManager = {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 10
+        let sessionManager = Alamofire.SessionManager(configuration: configuration)
+        return sessionManager
+    }()
 
-    static func LoginUserWithSocial(username: String, password: String, completion: @escaping (Bool?,Bool?) -> ())
+    func LoginUserWithSocial(username: String, password: String, completion: @escaping (Bool?,Bool?) -> ())
     {
         let url = URL(string: APIURL.loginURL)
         let parameter:Parameters = ["user_name": username, "password": password,"social": "true"]
         let httpHeader: HTTPHeaders = ["Content-Type":"application/x-www-form-urlencoded"]
         
-        Alamofire.request(url!, method: HTTPMethod.post, parameters: parameter, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON(completionHandler: { (response) in
+        sessionManager.request(url!, method: HTTPMethod.post, parameters: parameter, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON(completionHandler: { (response) in
             
             print("\nSTATUS CODE, RESULT", response.response?.statusCode as Any, response.result)
             
@@ -139,12 +146,12 @@ struct LoginWithSocial
     }
     
     
-    static func getUserInfoSocial(withToken token: String, completion: @escaping (NSDictionary?) -> ())
+    func getUserInfoSocial(withToken token: String, completion: @escaping (NSDictionary?) -> ())
     {
         let url  = URL(string: APIURL.getProfileURL)
         let httpHeader: HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
-        Alamofire.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON(completionHandler: { (response) in
+        sessionManager.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON(completionHandler: { (response) in
             
             var result: NSDictionary?
             
@@ -173,11 +180,11 @@ struct LoginWithSocial
         
     }
     
-    static func updateUserInfoSocial(userID: Int, para: Parameters, completion: @escaping (Bool?, Int?, NSDictionary?) -> ())
+    func updateUserInfoSocial(userID: Int, para: Parameters, completion: @escaping (Bool?, Int?, NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.updateSocialInfoURL + "/\(userID)")
         
-        Alamofire.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
+        sessionManager.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
             
             let json = response.result.value as? NSDictionary
             
@@ -206,12 +213,21 @@ struct LoginWithSocial
 struct UserInfoAPI
 {
     
-    static func getUserInfo(withToken token: String,completion: @escaping (NSDictionary?) -> ())
+    static let shared = UserInfoAPI()
+    
+    private let sessionManager: SessionManager = {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 15
+        let sessionManager = Alamofire.SessionManager(configuration: configuration)
+        return sessionManager
+    }()
+    
+    func getUserInfo(withToken token: String,completion: @escaping (NSDictionary?) -> ())
     {
         let url  = URL(string: APIURL.getProfileURL)
         let httpHeader: HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
-        Alamofire.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON(completionHandler: { (response) in
+        sessionManager.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON(completionHandler: { (response) in
             
             var result: NSDictionary?
             
@@ -235,13 +251,13 @@ struct UserInfoAPI
         
     }
     
-    static func LoginUser(username: String, password: String, completion: @escaping (Bool?) -> ())
+    func LoginUser(username: String, password: String, completion: @escaping (Bool?) -> ())
     {
         let url = URL(string: APIURL.loginURL)
         let parameter:Parameters = ["user_name": username, "password": password]
         let httpHeader: HTTPHeaders = ["Content-Type":"application/x-www-form-urlencoded"]
         
-        Alamofire.request(url!, method: HTTPMethod.post, parameters: parameter, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON(completionHandler: { (response) in
+        sessionManager.request(url!, method: HTTPMethod.post, parameters: parameter, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON(completionHandler: { (response) in
             
             var status:Bool?
             
@@ -270,11 +286,11 @@ struct UserInfoAPI
         
     }
     
-    static func RegisterUser(para: Parameters,  completion: @escaping (Bool) -> ())
+    func RegisterUser(para: Parameters,  completion: @escaping (Bool) -> ())
     {
         let url = URL(string: APIURL.registerURL)
         
-        Alamofire.upload(multipartFormData: { (data) in
+        sessionManager.upload(multipartFormData: { (data) in
             
             for (key, value) in para {
                 data.append((value as! String).data(using: String.Encoding.utf8)!, withName: key)
@@ -349,11 +365,11 @@ struct UserInfoAPI
     }
     
     
-    static func updateUserProfile(para: Parameters,header: HTTPHeaders,picture: Data?, completion: @escaping (Bool,Int?,NSDictionary?) -> ())
+    func updateUserProfile(para: Parameters,header: HTTPHeaders,picture: Data?, completion: @escaping (Bool,Int?,NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.updateProfileURL)
         
-        Alamofire.upload(multipartFormData: { (data) in
+        sessionManager.upload(multipartFormData: { (data) in
             
             
             let dateformat = DateFormatter()
@@ -413,14 +429,14 @@ struct UserInfoAPI
         }
     }
     
-    static func ResetPassword(email: String, completion: @escaping (Bool?, NSDictionary?)->())
+    func ResetPassword(email: String, completion: @escaping (Bool?, NSDictionary?)->())
     {
         let url = URL(string: "http://wodule.io/api/password/email")
         
         let para:Parameters = ["email": email]
         let header: HTTPHeaders = ["Accept": "application/json"]
         
-        Alamofire.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
+        sessionManager.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
             
             let json = response.result.value as? NSDictionary
             let code = response.response?.statusCode
@@ -444,12 +460,12 @@ struct UserInfoAPI
     }
     
     
-    static func invalidToken(token: String, completion: @escaping (_ status: Bool, _ result: NSDictionary?)->())
+    func invalidToken(token: String, completion: @escaping (_ status: Bool, _ result: NSDictionary?)->())
     {
         let url = URL(string: APIURL.invalidTokenURL)
         let httpHeader: HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
-        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+        sessionManager.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
             if response.result.isSuccess && response.response?.statusCode == 200 {
                 completion(true, response.result.value as? NSDictionary)
@@ -459,14 +475,14 @@ struct UserInfoAPI
         }
     }
     
-    static func getMessage(completion: @escaping (_ status: Bool,_ code: Int,_ results:NSDictionary?,_ otalPage:Int?) -> ())
+    func getMessage(completion: @escaping (_ status: Bool,_ code: Int,_ results:NSDictionary?,_ otalPage:Int?) -> ())
     {
         let url = URL(string: APIURL.messageURL)
         let token = userDefault.object(forKey: TOKEN_STRING) as! String
         let httpHeader: HTTPHeaders = ["Authorization":"Bearer \(token)"]
         print(token)
         
-        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+        sessionManager.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
             if response.result.isSuccess
             {
@@ -501,12 +517,12 @@ struct UserInfoAPI
 
     }
     
-    static func readMessage(withToken token: String, identifier: Int, completion: @escaping (Bool, Int, NSDictionary?) -> ())
+    func readMessage(withToken token: String, identifier: Int, completion: @escaping (Bool, Int, NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.messageURL + "/\(identifier)")
         let httpHeader: HTTPHeaders = ["Authorization":"Bearer \(token)"]
 
-        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+        sessionManager.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
             if response.result.isSuccess
             {
@@ -531,41 +547,20 @@ struct UserInfoAPI
 
 struct Categories
 {
-    let identifier:Int
-    let status: String
-    let subject: String
-    let details: String
-    let creationDate: String
-    let lastChange: String
+    static let shared = Categories()
     
-    enum error:Error {
-        case missing(String)
-    }
+    private let sessionManager: SessionManager = {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 15
+        let sessionManager = Alamofire.SessionManager(configuration: configuration)
+        return sessionManager
+    }()
     
-    init(json: [String: AnyObject]) throws {
-        
-        guard let identifier = json["identifier"] as? Int else { throw error.missing("missing value") }
-        guard let details = json["details"] as? String else { throw error.missing("missing value") }
-        guard let status = json["status"] as? String else { throw error.missing("missing value") }
-        guard let subject = json["subject"] as? String else { throw error.missing("missing value") }
-        guard let creationDate = json["creationDate"] as? String else { throw error.missing("missing value") }
-        guard let lastChange = json["lastChange"] as? String else { throw error.missing("missing value") }
-        
-        self.identifier = identifier
-        self.details = details
-        self.status = status
-        self.subject = subject
-        self.creationDate = creationDate
-        self.lastChange = lastChange
-        
-    }
-    
-    
-    static func getCategory(completion: @escaping (Bool,NSDictionary?) -> ())
+    func getCategory(completion: @escaping (Bool,NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.categoriesURL)
         
-        Alamofire.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).responseJSON { (response) in
+        sessionManager.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).responseJSON { (response) in
             
             print("RESPONSE:---->\n",response.description)
             print("RESPONSE:---->\n",(response.response?.statusCode)!)
@@ -634,7 +629,11 @@ struct CategoriesExam
     {
         let url = URL(string: "http://wodule.io/api/category/\(categoryID)/exams")
         
-        Alamofire.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 15
+        let sessionManager = Alamofire.SessionManager(configuration: configuration)
+
+        sessionManager.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
             
             var result = [CategoriesExam]()
             
@@ -680,12 +679,20 @@ struct CategoriesExam
 struct AssesmentHistory
 {
     
-    static func getUserHistory(type: String, withToken token: String, userID: Int,page: Int, completion: @escaping (Bool?,_ code:Int?,AnyObject?,[NSDictionary]?,Int) -> ())
+    static let shared = AssesmentHistory()
+    
+    private let sessionManager: SessionManager = {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 10
+        let sessionManager = Alamofire.SessionManager(configuration: configuration)
+        return sessionManager
+    }()
+    func getUserHistory(type: String, withToken token: String, userID: Int,page: Int, completion: @escaping (Bool?,_ code:Int?,AnyObject?,[NSDictionary]?,Int) -> ())
     {
         let url = URL(string: "http://wodule.io/api/users/\(userID)/\(type)?page=\(page)")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
-        Alamofire.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON { (response) in
+        sessionManager.request(url!, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.httpBody, headers: httpHeader).responseJSON { (response) in
             
             if response.response?.statusCode == 200
             {
@@ -721,7 +728,6 @@ struct AssesmentHistory
         }
         
     }
-    
     
 }
 

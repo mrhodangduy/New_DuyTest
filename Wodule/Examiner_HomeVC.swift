@@ -64,7 +64,7 @@ class Examiner_HomeVC: UIViewController {
         if Connectivity.isConnectedToInternet
         {
             DispatchQueue.global(qos: .default).async {
-                UserInfoAPI.getMessage(completion: { (status:Bool, code:Int, results: NSDictionary?, totalPage:Int?) in
+                UserInfoAPI.shared.getMessage(completion: { (status:Bool, code:Int, results: NSDictionary?, totalPage:Int?) in
                     if status
                     {
                         if let data = results?["data"] as? [NSDictionary]
@@ -156,7 +156,7 @@ class Examiner_HomeVC: UIViewController {
         if Connectivity.isConnectedToInternet
         {
             DispatchQueue.global(qos: .default).async {
-                UserInfoAPI.getUserInfo(withToken: self.token!, completion: { (users) in                    
+                UserInfoAPI.shared.getUserInfo(withToken: self.token!, completion: { (users) in
                     self.userInfomation = users!
                     DispatchQueue.main.async(execute: {
                         self.asignDataInView()
@@ -286,8 +286,8 @@ class Examiner_HomeVC: UIViewController {
             print("LogOut")
         }
         
-        UserInfoAPI.invalidToken(token: self.token!) { (status, result) in
-            print(status, result)
+        UserInfoAPI.shared.invalidToken(token: self.token!) { (status, result) in
+            print(status, result as Any)
         }
         
         let loginVC = UIStoryboard(name: MAIN_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "loginVC") as! LoginVC

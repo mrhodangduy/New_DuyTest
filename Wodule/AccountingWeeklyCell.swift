@@ -15,7 +15,7 @@ class AccountingWeeklyCell: UITableViewCell {
     @IBOutlet weak var percentView: UIViewX!
     @IBOutlet weak var ratioWithTotalView: NSLayoutConstraint!
     override func awakeFromNib() {
-        super.awakeFromNib()
+        super.awakeFromNib()      
         
     }
 

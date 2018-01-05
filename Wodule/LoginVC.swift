@@ -83,13 +83,13 @@ class LoginVC: UIViewController {
                     userDefault.synchronize()
                     
                     
-                    LoginWithSocial.LoginUserWithSocial(username: username, password: password, completion: { (first, status) in
+                    LoginWithSocial.shared.LoginUserWithSocial(username: username, password: password, completion: { (first, status) in
                         
                         if status!
                         {
                             let token = userDefault.object(forKey: TOKEN_STRING) as? String
                             
-                            LoginWithSocial.getUserInfoSocial(withToken: token!, completion: { (result) in
+                            LoginWithSocial.shared.getUserInfoSocial(withToken: token!, completion: { (result) in
                                 
                                 print(result!)
                                 
@@ -195,11 +195,11 @@ class LoginVC: UIViewController {
                             
                             print("PARA:--->", para)
                             
-                            LoginWithSocial.updateUserInfoSocial(userID: userID, para: para, completion: { (status:Bool?, code:Int?, data:NSDictionary?) in
+                            LoginWithSocial.shared.updateUserInfoSocial(userID: userID, para: para, completion: { (status:Bool?, code:Int?, data:NSDictionary?) in
                                 
                                 if status == true
                                 {
-                                    LoginWithSocial.getUserInfoSocial(withToken: token, completion: { (result) in
+                                    LoginWithSocial.shared.getUserInfoSocial(withToken: token, completion: { (result) in
                                         
                                         userDefault.set(username, forKey: USERNAMELOGIN)
                                         userDefault.set(password, forKey: PASSWORDLOGIN)
@@ -310,12 +310,12 @@ class LoginVC: UIViewController {
                         
                         self.loadingShow()
                         
-                        LoginWithSocial.LoginUserWithSocial(username: username, password: password, completion: { (first, status) in
+                        LoginWithSocial.shared.LoginUserWithSocial(username: username, password: password, completion: { (first, status) in
                             
                             if status!
                             {
                                 let token = userDefault.object(forKey: TOKEN_STRING) as? String
-                                LoginWithSocial.getUserInfoSocial(withToken: token!, completion: { (result) in
+                                LoginWithSocial.shared.getUserInfoSocial(withToken: token!, completion: { (result) in
                                     
                                     print(result as Any)
                                     if result != nil
@@ -452,11 +452,11 @@ class LoginVC: UIViewController {
                                 
                                 print("PARA:--->", para)
                                 
-                                LoginWithSocial.updateUserInfoSocial(userID: userID, para: para, completion: { (status:Bool?, code:Int?, data:NSDictionary?) in
+                                LoginWithSocial.shared.updateUserInfoSocial(userID: userID, para: para, completion: { (status:Bool?, code:Int?, data:NSDictionary?) in
                                     
                                     if status == true
                                     {
-                                        LoginWithSocial.getUserInfoSocial(withToken: token, completion: { (result) in
+                                        LoginWithSocial.shared.getUserInfoSocial(withToken: token, completion: { (result) in
                                             
                                             userDefault.set(username, forKey: USERNAMELOGIN)
                                             userDefault.set(password, forKey: PASSWORDLOGIN)
@@ -593,13 +593,13 @@ class LoginVC: UIViewController {
                     loadingShow()
                     
                     DispatchQueue.global(qos: .default).async(execute: {
-                        UserInfoAPI.LoginUser(username: self.tf_Username.text!, password: self.tf_Password.text!, completion: { (status) in
+                        UserInfoAPI.shared.LoginUser(username: self.tf_Username.text!, password: self.tf_Password.text!, completion: { (status) in
                             
                             if status != nil && status!
                             {
                                 let token = userDefault.object(forKey: TOKEN_STRING) as? String
                                 
-                                UserInfoAPI.getUserInfo(withToken: token!, completion: { (userinfo) in
+                                UserInfoAPI.shared.getUserInfo(withToken: token!, completion: { (userinfo) in
                                     
                                     userDefault.set(self.tf_Username.text, forKey: USERNAMELOGIN)
                                     userDefault.set(self.tf_Password.text, forKey: PASSWORDLOGIN)

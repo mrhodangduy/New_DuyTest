@@ -46,7 +46,7 @@ class ForgotPasswordVC: UIViewController {
                     self.loadingShow()
                     DispatchQueue.global(qos: .default).async(execute: {
                         
-                        UserInfoAPI.ResetPassword(email: self.tf_Username.text!, completion: { (status:Bool?, result:NSDictionary?) in
+                        UserInfoAPI.shared.ResetPassword(email: self.tf_Username.text!, completion: { (status:Bool?, result:NSDictionary?) in
                             
                             if status!
                             {

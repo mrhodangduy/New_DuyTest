@@ -27,7 +27,7 @@ class Examinee_InstructionVC: UIViewController {
         if Connectivity.isConnectedToInternet
         {
             loadingShow()
-            Categories.getCategory { (status:Bool, results:NSDictionary?) in
+            Categories.shared.getCategory { (status:Bool, results:NSDictionary?) in
                 
                 if status
                 {
@@ -63,10 +63,7 @@ class Examinee_InstructionVC: UIViewController {
         let part1VC = UIStoryboard(name: EXAMINEE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part1VC") as! Part1VC
         
         part1VC.Exam = self.Exam
-        
         self.navigationController?.pushViewController(part1VC, animated: true)
-
-        
     }
 
     @IBAction func onClickIncrease(_ sender: Any) {

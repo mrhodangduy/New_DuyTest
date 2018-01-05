@@ -49,7 +49,7 @@ class Assessor_AccountingVC: UIViewController {
     func onHandleInitData()
     {
         self.loadingShow()
-        ManageAPI_Accounting.getAccounting(witkToken: token!, type: "daily") { (status: Bool,code:Int?, result:NSDictionary?) in
+        ManageAPI_Accounting.shared.getAccounting(witkToken: token!, type: "daily") { (status: Bool,code:Int?, result:NSDictionary?) in
             
             print(result as Any)
             
@@ -61,6 +61,13 @@ class Assessor_AccountingVC: UIViewController {
                     self.setupPieChart()
 
                 })
+            } else if code == 429
+            {
+                DispatchQueue.main.async(execute: {
+                    self.loadingHide()
+                    self.alertMissingText(mess: "Too Many Attempts\n(ErrorCode:\(429))", textField: nil)
+                })
+                
             }
                 
             else if code == 401
@@ -137,7 +144,7 @@ class Assessor_AccountingVC: UIViewController {
         pieChartView.chartDescription = nil
         pieChartView.drawHoleEnabled = false
         pieChartView.animate(xAxisDuration: 0.2)
-        
+        pieChartView.rotationEnabled = false
         
         // Color
         dataSet.colors = [#colorLiteral(red: 0.1332121491, green: 0.3832967877, blue: 0.206708461, alpha: 1),#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1),#colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)]

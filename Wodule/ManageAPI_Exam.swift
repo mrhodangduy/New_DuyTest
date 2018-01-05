@@ -13,7 +13,17 @@ import Alamofire
 struct ExamRecord
 {
 
-    static func downloadAudioFile(audioUrl: String, saveUrl: String, completion: @escaping (Bool, NSDictionary?) -> ())
+    static let shared = ExamRecord()
+    
+    private let sessionManager: SessionManager = {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 10
+        let sessionManager = Alamofire.SessionManager(configuration: configuration)
+        return sessionManager
+    }()
+
+    
+    func downloadAudioFile(audioUrl: String, saveUrl: String, completion: @escaping (Bool, NSDictionary?) -> ())
     {
         let destination: DownloadRequest.DownloadFileDestination = {_, _ in
             
@@ -24,7 +34,7 @@ struct ExamRecord
         
         let url = URL(string: audioUrl)
         
-        Alamofire.download(url!, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil, to: destination).responseJSON { (response) in
+        sessionManager.download(url!, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil, to: destination).responseJSON { (response) in
             
             print("audioURL", audioUrl)
             
@@ -37,14 +47,14 @@ struct ExamRecord
     }
     
     
-    static func uploadExam(withToken token:String, idExam: Int, audiofile1: Data?,audiofile2: Data?,audiofile3: Data?,audiofile4: Data?, completion: @escaping (Bool?, NSDictionary?) -> ())
+    func uploadExam(withToken token:String, idExam: Int, audiofile1: Data?,audiofile2: Data?,audiofile3: Data?,audiofile4: Data?, completion: @escaping (Bool?, NSDictionary?) -> ())
     {
         let url = URL(string: "http://wodule.io/api/exams/\(idExam)/records")
         print(url as Any)
         
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
-        Alamofire.upload(multipartFormData: { (data) in
+        sessionManager.upload(multipartFormData: { (data) in
             
             if let audioURL1 = audiofile1
             {
@@ -120,11 +130,11 @@ struct ExamRecord
         
     }
     
-    static func getAllRecord(completion: @escaping (_ records: [NSDictionary]?, _ code: Int? ,NSDictionary?) -> ())
+    func getAllRecord(completion: @escaping (_ records: [NSDictionary]?, _ code: Int? ,NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.getAllrecordURL)
         
-        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
+        sessionManager.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
             
             let json = response.result.value as? NSDictionary
             let code = response.response?.statusCode
@@ -166,12 +176,12 @@ struct ExamRecord
     }
     
     
-    static func getUniqueRecord(token: String, id: Int, completion: @escaping (_ status: Bool) -> ())
+    func getUniqueRecord(token: String, id: Int, completion: @escaping (_ status: Bool) -> ())
     {
         let url = URL(string: APIURL.getAllrecordURL + "/\(id)")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
-        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+        sessionManager.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             print("@@@@@@@@@@@ Result")
             print(response.result.value as Any)
             completion(true)
@@ -179,12 +189,12 @@ struct ExamRecord
     
     }
 
-    static func downloadRecord(token: String, page: Int, completion: @escaping (_ status: Bool,_ code: Int, _ result: [NSDictionary]?, _ totalPage: Int) -> ())
+    func downloadRecord(token: String, page: Int, completion: @escaping (_ status: Bool,_ code: Int, _ result: [NSDictionary]?, _ totalPage: Int) -> ())
     {
         let url = URL(string: APIURL.downloadURL + "\(page)")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
         
-        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+        sessionManager.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
             let code = response.response!.statusCode
             if response.result.isSuccess {
@@ -214,7 +224,7 @@ struct ExamRecord
         }
     }
     
-    static func postGrade(withToken token: String, identifier:Int, grade1: Int64, comment1:String, grade2: Int64, comment2:String, grade3: Int64?, comment3:String?, grade4: Int64?, comment4:String?, completion: @escaping (Bool?, Int?, NSDictionary?) -> ())
+    func postGrade(withToken token: String, identifier:Int, grade1: Int64, comment1:String, grade2: Int64, comment2:String, grade3: Int64?, comment3:String?, grade4: Int64?, comment4:String?, completion: @escaping (Bool?, Int?, NSDictionary?) -> ())
     {
         let url = URL(string: APIURL.baseURL + "/records/" + "\(identifier)" + "/grades")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)", "Content-Type": "application/x-www-form-urlencoded"]
@@ -232,7 +242,7 @@ struct ExamRecord
             para.updateValue(comment4!, forKey: "comment_4")
         }
         
-        Alamofire.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+        sessionManager.request(url!, method: .post, parameters: para, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
             let json = response.result.value as? NSDictionary
             let code = response.response!.statusCode
@@ -258,12 +268,12 @@ struct ExamRecord
         }        
     }
     
-    static func examExpired(token: String, id: Int64, completion: @escaping (Bool, NSDictionary?)  -> () )
+    func examExpired(token: String, id: Int64, completion: @escaping (Bool, NSDictionary?)  -> () )
     {
         let url = URL(string: APIURL.expiredExamURL + "\(id)")
         let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
 
-        Alamofire.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
+        sessionManager.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
             
             if response.result.isSuccess && response.response?.statusCode == 200 {
                 completion(true, response.result.value as? NSDictionary)

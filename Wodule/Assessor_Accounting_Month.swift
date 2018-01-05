@@ -27,7 +27,6 @@ class Assessor_Accounting_Month: UIViewController {
         detailsWeekTable.separatorStyle = .none
         detailsWeekTable.layer.cornerRadius = 10
     }
-
     
     func setupChart()
     {
@@ -45,6 +44,7 @@ class Assessor_Accounting_Month: UIViewController {
         pieChartView.data = data
         pieChartView.chartDescription = nil
         pieChartView.drawHoleEnabled = false
+        pieChartView.rotationEnabled = false
         
         // Color
         dataSet.colors = [#colorLiteral(red: 0.1332121491, green: 0.3832967877, blue: 0.206708461, alpha: 1),#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1),#colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1),#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)]
@@ -75,16 +75,27 @@ extension Assessor_Accounting_Month: UITableViewDataSource, UITableViewDelegate
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountingWeeklyCell", for: indexPath) as! AccountingWeeklyCell
+        
         if indexPath.section == 1
         {
             cell.ratioWithTotalView.constant = cell.totalView.frame.width * 2/3
+
         }
         if indexPath.section == 2
         {
             cell.ratioWithTotalView.constant = cell.totalView.frame.width * 1/3
         }
         
+        if indexPath.section == 3
+        {
+            cell.ratioWithTotalView.constant = 50
+        }
+        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

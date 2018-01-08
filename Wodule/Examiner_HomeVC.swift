@@ -78,7 +78,6 @@ class Examiner_HomeVC: UIViewController {
                                 {
                                     self.unreadLabel.isHidden = false
                                 }
-                                print(self.messagesList)
                                 
                             })
                         }
@@ -256,13 +255,13 @@ class Examiner_HomeVC: UIViewController {
     
     @IBAction func onClickLogOut(_ sender: Any) {
         
-        let alert = UIAlertController(title: "Wodule", message: "Do you want to log out?", preferredStyle: .alert)
-        let okBtn = UIAlertAction(title: "OK", style: .default) { (action) in
+        let alert = UIAlertController(title: "Wodule", message: "Do you want to Sign Out?", preferredStyle: .alert)
+        let okBtn = UIAlertAction(title: "Yes", style: .destructive) { (action) in
             
             self.onHandleLogOut()
         }
         
-        let cancelBtn = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelBtn = UIAlertAction(title: "Cancel", style: .default, handler: nil)
         
         alert.addAction(okBtn)
         alert.addAction(cancelBtn)

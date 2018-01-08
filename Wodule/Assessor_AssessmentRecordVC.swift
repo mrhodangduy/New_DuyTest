@@ -32,7 +32,6 @@ class Assessor_AssessmentRecordVC: UIViewController {
     var currentpage:Int!
     var totalPage:Int!
     
-    
     fileprivate let convertdateformatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -45,7 +44,6 @@ class Assessor_AssessmentRecordVC: UIViewController {
         isHitoryTapped = false
         historyView.isHidden = true
         noHistoryLabel.isHidden = true
-        
         
         recordsTableView.dataSource = self
         recordsTableView.delegate = self
@@ -98,13 +96,12 @@ class Assessor_AssessmentRecordVC: UIViewController {
     
     @IBAction func onClickRefresh(_ sender: Any) {
         
-        if recordList.count > 10
+        if recordList.count >= 10
         {
             self.alertMissingText(mess: "You reach to limit record to download.", textField: nil)
             return
         }
         onHandleCallAPI()
-            
     }
 
     @IBAction func onClickBack(_ sender: Any) {
@@ -657,15 +654,12 @@ class Assessor_AssessmentRecordVC: UIViewController {
                         }
                     }
                 }
-                
-                
             })
         }
         else
         {
             self.displayAlertNetWorkNotAvailable()
         }
-
     }
     
     func onHandleInitDataOfHistory()
@@ -833,7 +827,7 @@ extension Assessor_AssessmentRecordVC: UITableViewDataSource, UITableViewDelegat
     
     func loadmoreHitory(page:Int)
     {
-        AssesmentHistory.shared.getUserHistory(type: "grades", withToken: token!, userID: Int(self.assessorID), page: page) { (status,code, data, results, totolPage) in
+        AssesmentHistory.shared.getUserHistory(type: "grades", withToken: token!, userID: Int(self.assessorID), page: page) { (status,code, mess, results, totolPage) in
             
             if results != nil
             {
@@ -844,8 +838,39 @@ extension Assessor_AssessmentRecordVC: UITableViewDataSource, UITableViewDelegat
                         self.historyTableView.reloadData()
                     })
                 }
+            } else if code == 429
+            {
+                DispatchQueue.main.async(execute: {
+                    self.loadingHide()
+                    self.alertMissingText(mess: "Too Many Attempts\n(ErrorCode:\(429))", textField: nil)
+                })
             }
-            
+            else if code == 401
+            {
+                if let error = mess?["error"] as? String
+                {
+                    if error.contains("Token")
+                    {
+                        DispatchQueue.main.async(execute: {
+                            self.loadingHide()
+                            self.onHandleTokenInvalidAlert()
+                            
+                        })
+                    }
+                }
+            }
+            else
+            {
+                print("\nERROR:---->",mess as Any)
+                DispatchQueue.main.async(execute: {
+                    let error = mess?["error"] as? String ?? "Server error"
+                    self.alert_PromtQuestion(title: "Error", mess: error)
+                    self.loadingHide()
+                    self.historyTableView.reloadData()
+                    
+                })
+                
+            }
         }
     }
 }
@@ -853,7 +878,7 @@ extension Assessor_AssessmentRecordVC: UITableViewDataSource, UITableViewDelegat
 extension Assessor_AssessmentRecordVC: OfflineRecordDelegate
 {
     func onClickStart(indexPath: IndexPath) {
-        let part1 = UIStoryboard(name: "Offline", bundle: nil).instantiateViewController(withIdentifier: "part1") as! Offline_Part1
+        let part1 = UIStoryboard(name: OFFLINE_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "part1") as! Offline_Part1
         part1.Exam = recordList[indexPath.row]
         self.navigationController?.pushViewController(part1, animated: true)
     }

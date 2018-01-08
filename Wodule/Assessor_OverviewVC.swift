@@ -351,10 +351,7 @@ class Assessor_OverviewVC: UIViewController {
                         DispatchQueue.main.async(execute: {
                             print("grade susscessful")
                             self.loadingHide()
-                            let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
-                            self.navigationController?.pushViewController(accountingVC, animated: true)
-                            self.removeScoreObject()
-                            
+                            self.onHandleGradeSuccessful(mess: "Grade successfully.")
                         })
                     }
                         
@@ -501,7 +498,18 @@ class Assessor_OverviewVC: UIViewController {
         userDefault.synchronize()
     }
     
-    
+    func onHandleGradeSuccessful(mess: String?)
+    {
+        let alert = UIAlertController(title: "Wodule", message: mess, preferredStyle: .alert)
+        let btnOK = UIAlertAction(title: "OK", style: .default) { (action) in
+            print("OK")
+            let accountingVC = UIStoryboard(name: ASSESSOR_STORYBOARD, bundle: nil).instantiateViewController(withIdentifier: "accountingVC") as! Assessor_AccountingVC
+            self.navigationController?.pushViewController(accountingVC, animated: true)
+            self.removeScoreObject()
+        }
+        alert.addAction(btnOK)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension Assessor_OverviewVC:UITableViewDataSource, UITableViewDelegate

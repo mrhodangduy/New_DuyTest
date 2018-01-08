@@ -66,17 +66,14 @@ class Examinee_InstructionVC: UIViewController {
         self.navigationController?.pushViewController(part1VC, animated: true)
     }
 
-    @IBAction func onClickIncrease(_ sender: Any) {
+    @IBAction func onClickIncrease(_ sender: Any) {        
         
-        instroductionTextView.font = UIFont.systemFont(ofSize: (instroductionTextView.font?.pointSize)! + 1)
+        instroductionTextView.increaseFontSize()
         
     }
     
     @IBAction func onClickDecrease(_ sender: Any) {
         
-        if Int((instroductionTextView.font?.pointSize)!) > 10
-        {
-            instroductionTextView.font = UIFont.systemFont(ofSize: (instroductionTextView.font?.pointSize)! - 1)
-        }
+        instroductionTextView.decreaseFontSize()
     }
 }

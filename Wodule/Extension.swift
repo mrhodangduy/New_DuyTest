@@ -35,14 +35,13 @@ extension UITextView {
     }
 }
 
-
 extension UIViewController
 {
     
     func alertBackToHomeWithError(mess: String?)
     {
         let alert = UIAlertController(title: "Wodule", message: mess, preferredStyle: .alert)
-        let exitBtn = UIAlertAction(title: "Back to Home", style: .cancel) { (exit) in
+        let exitBtn = UIAlertAction(title: "Back to Home", style: .default) { (exit) in
             
             self.navigationController?.popToRootViewController(animated: true)
             

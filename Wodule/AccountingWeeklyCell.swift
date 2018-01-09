@@ -14,15 +14,12 @@ class AccountingWeeklyCell: UITableViewCell {
     @IBOutlet weak var totalView: UIViewX!
     @IBOutlet weak var percentView: UIViewX!
     @IBOutlet weak var ratioWithTotalView: NSLayoutConstraint!
+    
     override func awakeFromNib() {
         super.awakeFromNib()      
+    
         
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+  
     
 }

@@ -70,27 +70,35 @@ extension Assessor_Accounting_Month: UITableViewDataSource, UITableViewDelegate
     func numberOfSections(in tableView: UITableView) -> Int {
         return 4
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountingWeeklyCell", for: indexPath) as! AccountingWeeklyCell
         
+        if indexPath.section == 0
+        {
+            cell.ratioWithTotalView.constant = cell.totalView.frame.width * 1/4
+        }
+        
         if indexPath.section == 1
         {
-            cell.ratioWithTotalView.constant = cell.totalView.frame.width * 2/3
+            cell.ratioWithTotalView.constant = cell.totalView.frame.width * 1/3
 
         }
+        
         if indexPath.section == 2
         {
-            cell.ratioWithTotalView.constant = cell.totalView.frame.width * 1/3
+            cell.ratioWithTotalView.constant = cell.totalView.frame.width * 1/2
         }
         
         if indexPath.section == 3
         {
-            cell.ratioWithTotalView.constant = 50
+            cell.ratioWithTotalView.constant = cell.totalView.frame.width * 1/5
         }
-        
+                
         return cell
     }
     

@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -27,7 +28,7 @@
                         <rect key="frame" x="120" y="10" width="235" height="39.5"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HCr-aa-z90" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="135" height="39.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="39.5"/>
                                 <color key="backgroundColor" red="0.13321214910000001" green="0.38329678769999997" blue="0.20670846100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -38,10 +39,10 @@
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="HCr-aa-z90" firstAttribute="top" secondItem="NAJ-w7-d2F" secondAttribute="top" id="fRw-zh-WJj"/>
-                            <constraint firstAttribute="trailing" secondItem="HCr-aa-z90" secondAttribute="trailing" constant="100" id="mzg-DL-ejs"/>
-                            <constraint firstAttribute="bottom" secondItem="HCr-aa-z90" secondAttribute="bottom" id="t9G-eT-flr"/>
-                            <constraint firstItem="HCr-aa-z90" firstAttribute="leading" secondItem="NAJ-w7-d2F" secondAttribute="leading" id="vDb-ON-isP"/>
+                            <constraint firstItem="HCr-aa-z90" firstAttribute="width" secondItem="NAJ-w7-d2F" secondAttribute="width" multiplier="0.0001" id="3tI-L4-Nee"/>
+                            <constraint firstItem="HCr-aa-z90" firstAttribute="leading" secondItem="NAJ-w7-d2F" secondAttribute="leading" id="TYg-sp-xJP"/>
+                            <constraint firstAttribute="bottom" secondItem="HCr-aa-z90" secondAttribute="bottom" id="bEZ-4X-PEl"/>
+                            <constraint firstItem="HCr-aa-z90" firstAttribute="top" secondItem="NAJ-w7-d2F" secondAttribute="top" id="loq-lZ-VtM"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -63,7 +64,7 @@
             <connections>
                 <outlet property="moneyLabel" destination="cLm-YW-IJr" id="k2n-d9-B4D"/>
                 <outlet property="percentView" destination="HCr-aa-z90" id="VJz-0w-5sm"/>
-                <outlet property="ratioWithTotalView" destination="mzg-DL-ejs" id="ewC-eu-iZW"/>
+                <outlet property="ratioWithTotalView" destination="3tI-L4-Nee" id="QUs-EB-EYI"/>
                 <outlet property="totalView" destination="NAJ-w7-d2F" id="G4A-Sr-BPu"/>
             </connections>
             <point key="canvasLocation" x="-74" y="209"/>

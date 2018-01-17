@@ -22,33 +22,77 @@ struct ManageAPI_Accounting
         return sessionManager
     }()
     
-    func getAccounting(witkToken token: String,type: String, completion: @escaping (Bool,Int?,NSDictionary?) -> ())
-    {
-        let url = URL(string: APIURL.baseURL + "/\(type)")
-        let httpHeader:HTTPHeaders = ["Authorization":"Bearer \(token)"]
+    func getTodayPayment(_ token: String, onSucces: @escaping (NSDictionary?)->(), onError: @escaping (_ code: Int,_ error: NSDictionary?)->()) {
         
-        sessionManager.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: httpHeader).responseJSON { (response) in
-            
-            if response.result.isSuccess
-            {
-                if response.response?.statusCode == 200
-                {
+        let url = URL(string: APIURL.todayURL)
+        let header: HTTPHeaders = ["Authorization":"Bearer \(token)"]
+        
+        sessionManager.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
+            print("Today: ", response.result.value as Any)
+            switch response.result {
+            case .success(_):
+                
+                if response.response?.statusCode == 200 {
                     let json = response.result.value as? NSDictionary
-                    completion(true,response.response?.statusCode, json?["data"] as? NSDictionary)
+                    onSucces(json)
+                } else {
+                    onError(response.response!.statusCode, response.result.value as? NSDictionary)
                 }
-                else
-                {
-                    completion(false,response.response?.statusCode, response.result.value as? NSDictionary)
-                }
+   
+            case .failure(_):
+                
+                onError(response.response!.statusCode, response.result.value as? NSDictionary)
             }
-            else
-            {
-                completion(false,response.response?.statusCode, response.result.value as? NSDictionary)
-            }
-                        
         }
-        
     }
+    
+    func getWeeksPayment(_ token: String, onSucces: @escaping (NSDictionary?)->(), onError: @escaping (_ code: Int,_ error: NSDictionary?)->()) {
+        
+        let url = URL(string: APIURL.weeksURL)
+        let header: HTTPHeaders = ["Authorization":"Bearer \(token)"]
+        
+        sessionManager.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
+            print("Weeks: ",response.result.value as Any)
+            switch response.result {
+            case .success(_):
+                
+                if response.response?.statusCode == 200 {
+                    let json = response.result.value as? NSDictionary
+                    onSucces(json)
+                } else {
+                    onError(response.response!.statusCode, response.result.value as? NSDictionary)
+                }
+                
+            case .failure(_):
+                
+                onError(response.response!.statusCode, response.result.value as? NSDictionary)
+            }
+        }
+    }
+    
+    func getMonthPayment(_ token: String, onSucces: @escaping (NSDictionary?)->(), onError: @escaping (_ code: Int,_ error: NSDictionary?)->()) {
+        
+        let url = URL(string: APIURL.monthURL)
+        let header: HTTPHeaders = ["Authorization":"Bearer \(token)"]
+        
+        sessionManager.request(url!, method: .get, parameters: nil, encoding: URLEncoding.default, headers: header).responseJSON { (response) in
+            print("Month: ", response.result.value as Any)
+            switch response.result {
+            case .success(_):
+                
+                if response.response?.statusCode == 200 {
+                    let json = response.result.value as? NSDictionary
+                    onSucces(json)
+                } else {
+                    onError(response.response!.statusCode, response.result.value as? NSDictionary)
+                }
+                
+            case .failure(_):                
+                onError(response.response!.statusCode, response.result.value as? NSDictionary)
+            }
+        }
+    }
+    
     
 }
 

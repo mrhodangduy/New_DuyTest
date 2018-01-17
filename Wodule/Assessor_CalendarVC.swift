@@ -24,22 +24,16 @@ class Assessor_CalendarVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
-
     @IBAction func backBtnTap(_ sender: Any) {
-        
         self.navigationController?.popViewController(animated: true)
-        
     }
     
     @IBAction func backMonthTap(_ sender: Any) {
         if  let prePage = self.gregorian.date(byAdding: .month, value: -1, to: calendarView.currentPage, options: .init(rawValue: 0)) {
             calendarView.setCurrentPage(prePage, animated: true)
-            
         }
-        
     }
     
     @IBAction func nextMonthTap(_ sender: Any) {
@@ -49,8 +43,6 @@ class Assessor_CalendarVC: UIViewController {
             
         }
     }
-    
-
 }
 
 extension Assessor_CalendarVC: FSCalendarDelegate

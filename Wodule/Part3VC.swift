@@ -71,26 +71,21 @@
             }
             else
             {
+                tv_Data.isScrollEnabled = false
                 lbl_Title.text = TITLESTRING
                 controlTextView.isHidden = false
                 controlImageView.isHidden = true
                 tv_Data.isHidden = false
-                tv_Data.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
+                tv_Data.textContainerInset = UIEdgeInsetsMake(15, 20, 32, 10)
                 tv_Data.text = Exam?["question_3"] as! String
                 circleTime.start(withSeconds: timeInitial)
-                
             }
             
         }
         
         override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
-            tv_Data.isScrollEnabled = false
-        }
-        override func viewDidAppear(_ animated: Bool) {
-            super.viewDidAppear(animated)
             tv_Data.isScrollEnabled = true
-            
         }
         
         @IBAction func decreaseSizeTap(_ sender: Any) {
@@ -127,7 +122,7 @@
                 default:
                     return
                 }
-
+                
             }
             
         }
@@ -171,7 +166,7 @@
                     self.navigationController?.pushViewController(part4_tempVC, animated: true)
                 }
                 
-            
+                
             }
             else
             {
@@ -227,7 +222,7 @@
                         
                     }
                     
-
+                    
                 }
             })
         }

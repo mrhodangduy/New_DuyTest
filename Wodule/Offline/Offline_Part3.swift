@@ -108,15 +108,21 @@ class Offline_Part3: UIViewController {
         }
         else
         {
+            tv_Content.isScrollEnabled = false
             img_Question.isHidden = true
             titleQuestion.text = TITLESTRING
             controlFontSizeView.isHidden = false
             controlImageView.isHidden = true
             tv_Content.isHidden = false
-            tv_Content.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
+            tv_Content.textContainerInset = UIEdgeInsetsMake(15, 20, 32, 10)
             tv_Content.text = Exam.examQuestionaireThree!
         }
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tv_Content.isScrollEnabled = true
     }
     
     @IBAction func onClickPromtQuestion(_ sender: Any) {

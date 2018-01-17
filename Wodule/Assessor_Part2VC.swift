@@ -117,17 +117,23 @@ class Assessor_Part2VC: UIViewController {
         }
         else
         {
+            tv_Content.isScrollEnabled = false
             titleQuestion.text = TITLESTRING
             img_Question.isHidden = true
             controlFontSizeView.isHidden = false
             controlImageView.isHidden = true
             tv_Content.isHidden = false
-            tv_Content.textContainerInset = UIEdgeInsetsMake(20, 20, 10, 10)
+            tv_Content.textContainerInset = UIEdgeInsetsMake(15, 20, 32, 10)
             tv_Content.text = Exam?["examQuestionaireTwo"] as! String
         }
                 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tv_Content.isScrollEnabled = true
+    }
+        
     @IBAction func onClickPromtQuestion(_ sender: Any) {
         
     }

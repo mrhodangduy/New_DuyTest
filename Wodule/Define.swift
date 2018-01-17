@@ -21,13 +21,26 @@ class APIURL{
     static let getCodeInfoURL = "http://wodule.io/api/code"
     static let updateSocialInfoURL = "http://wodule.io/api/socialite"
     static let getAllrecordURL = "http://wodule.io/api/records"
-    static let accountingURL = "http://wodule.io/api/accounting"
+    static let todayURL = "http://wodule.io/api/today"
+    static let weeksURL = "http://wodule.io/api/weeks"
+    static let monthURL = "http://wodule.io/api/month"
     static let messageURL = "http://wodule.io/api/message"
     static let calendarURL = "http://wodule.io/api/calendars"
     static let downloadURL = "http://wodule.io/api/downloads?page="
     static let invalidTokenURL = "http://wodule.io/api/user_login/invalidate"
     static let expiredExamURL = "http://wodule.io/api/expired/"
 
+}
+
+struct WEEKS {
+    
+    static let Weeks_1 = "1-7"
+    static let Weeks_2 = "8-14"
+    static let Weeks_3 = "15-21"
+    static let Weeks_4 = "22-28"
+    static let Weeks_5_0 = "29"
+    static let Weeks_5_1 = "29-30"
+    static let Weeks_5_2 = "29-31"
 }
 
 struct ERROR_MESSAGE {

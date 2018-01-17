@@ -16,28 +16,54 @@ class Assessor_Accounting_Month: UIViewController {
     @IBOutlet weak var pieChartView: PieChartView!
     @IBOutlet weak var detailsWeekTable: UITableView!
     @IBOutlet weak var tableHeight: NSLayoutConstraint!
+    
+    var monthlyData: NSDictionary?
+    var paymenValue: [Double] = []
+    var totalPayment: Double = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupChart()
+        
+        monthLabel.text = convertAccountingMonthPayment(date: Date())
+        
         detailsWeekTable.register(UINib(nibName: "AccountingWeeklyCell", bundle: nil), forCellReuseIdentifier: "AccountingWeeklyCell")
         detailsWeekTable.register(UINib(nibName: "HeaderCell", bundle: nil), forCellReuseIdentifier: "HeaderCell")
-        tableHeight.constant = 4 * 90 + 20
         detailsWeekTable.isScrollEnabled = false
         detailsWeekTable.separatorStyle = .none
         detailsWeekTable.layer.cornerRadius = 10
+        
+        let monthly = monthlyData?["monthly"] as? NSDictionary
+        if let month = monthly {
+            monthMoneyLabel.text = "$\(month["payment"] as! String)"
+        } else {
+            monthMoneyLabel.text = "$0"
+        }
+        
+        let data = monthlyData?["data"] as? [NSDictionary]
+        if let weeks = data {
+            for week in weeks {
+                let value = Double(week["payment"] as! String)
+                self.paymenValue.insert(value!, at: 0)
+                self.totalPayment += value!
+            }
+            setupChart(paymenValue)
+            self.detailsWeekTable.reloadData()
+        }
+        
+        tableHeight.constant = CGFloat(paymenValue.count * 90 + 20)
+
     }
     
-    func setupChart()
+    func setupChart(_ data: [Double])
     {
         
-        let entry1 = PieChartDataEntry(value: Double(350), label: "")
-        let entry2 = PieChartDataEntry(value: Double(480), label: "")
-        let entry3 = PieChartDataEntry(value: Double(250), label: "")
-        let entry4 = PieChartDataEntry(value: Double(300), label: "")
-
-
-        let dataSet = PieChartDataSet(values: [entry1, entry2, entry3, entry4], label: nil)
+        var values = [PieChartDataEntry]()
+        
+        for week in data {
+            let entry = PieChartDataEntry(value: week, label: "")
+            values.append(entry)
+        }
+        let dataSet = PieChartDataSet(values: values, label: nil)
         let data = PieChartData(dataSet: dataSet)
         data.setDrawValues(false)
         
@@ -68,7 +94,7 @@ class Assessor_Accounting_Month: UIViewController {
 extension Assessor_Accounting_Month: UITableViewDataSource, UITableViewDelegate
 {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
+        return paymenValue.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -78,27 +104,9 @@ extension Assessor_Accounting_Month: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountingWeeklyCell", for: indexPath) as! AccountingWeeklyCell
         
-        if indexPath.section == 0
-        {
-            cell.ratioWithTotalView.constant = cell.totalView.frame.width * 1/4
-        }
+        let value = paymenValue[indexPath.section]
+        cell.setupCell(value, total: totalPayment)
         
-        if indexPath.section == 1
-        {
-            cell.ratioWithTotalView.constant = cell.totalView.frame.width * 1/3
-
-        }
-        
-        if indexPath.section == 2
-        {
-            cell.ratioWithTotalView.constant = cell.totalView.frame.width * 1/2
-        }
-        
-        if indexPath.section == 3
-        {
-            cell.ratioWithTotalView.constant = cell.totalView.frame.width * 1/5
-        }
-                
         return cell
     }
     
@@ -110,7 +118,8 @@ extension Assessor_Accounting_Month: UITableViewDataSource, UITableViewDelegate
         let header = tableView.dequeueReusableCell(withIdentifier: "HeaderCell") as! HeaderCell
         
         header.frame.size.width = UIScreen.main.bounds.width - 40
-        
+        header.weekLabel.text = "Week \(section + 1)"
+        header.daysLabel.text = nil
         return header
 
     }

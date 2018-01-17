@@ -19,6 +19,52 @@ extension Notification.Name
     
 }
 
+extension Date {
+    
+    func getDaysInMonth() -> Int{
+        let calendar = Calendar.current
+        
+        let dateComponents = DateComponents(year: calendar.component(.year, from: self), month: calendar.component(.month, from: self))
+        let date = calendar.date(from: dateComponents)!
+        
+        let range = calendar.range(of: .day, in: .month, for: date)!
+        let numDays = range.count
+        
+        return numDays
+    }
+    
+    var startOfWeek: Date {
+        let date = Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self))!
+        let dslTimeOffset = NSTimeZone.local.daylightSavingTimeOffset(for: date)
+        return date.addingTimeInterval(dslTimeOffset)
+    }
+    
+    var endOfWeek: Date {
+        return Calendar.current.date(byAdding: .second, value: 604799, to: self.startOfWeek)!
+    }
+    
+    func getMonth() -> String {
+        let formater = DateFormatter()
+        formater.dateFormat = "MMMM"
+        return formater.string(from: self)
+    }
+    
+    func getAllDaysOfLastWeeks() -> String
+    {
+        let calendar = Calendar.current
+        
+        let startWeekDay = self.startOfWeek
+        let endOfweekDay = self.endOfWeek
+        
+        let startDay = calendar.component(.day, from: startWeekDay)
+        let endDay = calendar.component(.day, from: endOfweekDay)
+        let year = calendar.component(.year, from: self)
+        
+        return " \(startDay - 6)-\(endDay - 6), \(year)"
+    }
+    
+}
+
 extension UITextView {
     func increaseFontSize () {
         self.font =  UIFont(name: (self.font?.fontName)!, size: (self.font?.pointSize)!+1)!
@@ -29,9 +75,7 @@ extension UITextView {
         {
             return
         }
-        
         self.font =  UIFont(name: (self.font?.fontName)!, size: (self.font?.pointSize)!-1)!
-        
     }
 }
 
@@ -261,6 +305,13 @@ extension UIViewController
         }
     }
     
+    func convertToDate(_ date: String) -> Date {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return dateFormatter.date(from: date)!
+    }
+    
     func convertDayHistory(DateString: String) -> String
     {
         let dateFormatter = DateFormatter()
@@ -295,6 +346,23 @@ extension UIViewController
         dateFormatter.dateFormat = "HH:mm"
         return dateFormatter.string(from: date!)
     }
+    
+    func convertAccountingTodayPayment(date: Date) -> String {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd, yyyy h:mm a"
+        return dateFormatter.string(from:date)
+    }
+    
+    
+    func convertAccountingMonthPayment(date: Date) -> String {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM yyyy"
+        return dateFormatter.string(from:date)        
+    }
+    
+    
     
     func alert_PromtQuestion(title: String?,mess: String?)
         

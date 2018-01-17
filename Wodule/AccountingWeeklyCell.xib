@@ -5,7 +5,6 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,21 +14,27 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$250" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cLm-YW-IJr">
-                        <rect key="frame" x="30" y="12" width="70" height="36"/>
-                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$0.25" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cLm-YW-IJr">
+                        <rect key="frame" x="25" y="16.5" width="63" height="27.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="63" id="HmG-Ap-Pdu"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="23"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NAJ-w7-d2F" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                        <rect key="frame" x="120" y="10" width="235" height="39.5"/>
+                        <rect key="frame" x="103" y="10" width="200" height="40"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HCr-aa-z90" customClass="UIViewX" customModule="Wodule" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="39.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="40"/>
                                 <color key="backgroundColor" red="0.13321214910000001" green="0.38329678769999997" blue="0.20670846100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" id="iAE-6s-NLO"/>
+                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                         <real key="value" value="3"/>
@@ -39,10 +44,11 @@
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="HCr-aa-z90" firstAttribute="width" secondItem="NAJ-w7-d2F" secondAttribute="width" multiplier="0.0001" id="3tI-L4-Nee"/>
-                            <constraint firstItem="HCr-aa-z90" firstAttribute="leading" secondItem="NAJ-w7-d2F" secondAttribute="leading" id="TYg-sp-xJP"/>
-                            <constraint firstAttribute="bottom" secondItem="HCr-aa-z90" secondAttribute="bottom" id="bEZ-4X-PEl"/>
-                            <constraint firstItem="HCr-aa-z90" firstAttribute="top" secondItem="NAJ-w7-d2F" secondAttribute="top" id="loq-lZ-VtM"/>
+                            <constraint firstItem="HCr-aa-z90" firstAttribute="leading" secondItem="NAJ-w7-d2F" secondAttribute="leading" id="1Wj-D0-58Z"/>
+                            <constraint firstItem="HCr-aa-z90" firstAttribute="top" secondItem="NAJ-w7-d2F" secondAttribute="top" id="28G-de-ybO"/>
+                            <constraint firstAttribute="bottom" secondItem="HCr-aa-z90" secondAttribute="bottom" id="GrO-6j-J2Q"/>
+                            <constraint firstAttribute="height" constant="40" id="qJU-XL-1w0"/>
+                            <constraint firstAttribute="width" constant="200" id="qsa-LN-Fem"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -52,22 +58,21 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="cLm-YW-IJr" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="1Z3-Uq-pxd"/>
-                    <constraint firstAttribute="trailing" secondItem="NAJ-w7-d2F" secondAttribute="trailing" constant="20" id="4YR-iT-vY6"/>
-                    <constraint firstItem="cLm-YW-IJr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="30" id="HNb-WB-LCF"/>
-                    <constraint firstItem="NAJ-w7-d2F" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="ksV-fM-nzi"/>
-                    <constraint firstItem="NAJ-w7-d2F" firstAttribute="leading" secondItem="cLm-YW-IJr" secondAttribute="trailing" constant="20" id="mji-3C-7CX"/>
-                    <constraint firstAttribute="bottom" secondItem="NAJ-w7-d2F" secondAttribute="bottom" constant="10" id="s9o-vy-zeL"/>
+                    <constraint firstItem="NAJ-w7-d2F" firstAttribute="leading" secondItem="cLm-YW-IJr" secondAttribute="trailing" constant="15" id="3fN-8r-sA0"/>
+                    <constraint firstItem="NAJ-w7-d2F" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="9tx-Yj-ecv"/>
+                    <constraint firstItem="cLm-YW-IJr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="mcY-s8-eZG"/>
+                    <constraint firstItem="cLm-YW-IJr" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="rG6-Hg-E4u"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="moneyLabel" destination="cLm-YW-IJr" id="k2n-d9-B4D"/>
+                <outlet property="pecentWidth" destination="iAE-6s-NLO" id="5MW-4C-G6P"/>
                 <outlet property="percentView" destination="HCr-aa-z90" id="VJz-0w-5sm"/>
-                <outlet property="ratioWithTotalView" destination="3tI-L4-Nee" id="QUs-EB-EYI"/>
                 <outlet property="totalView" destination="NAJ-w7-d2F" id="G4A-Sr-BPu"/>
+                <outlet property="totalWidth" destination="qsa-LN-Fem" id="VKb-3E-Mty"/>
             </connections>
-            <point key="canvasLocation" x="-74" y="209"/>
+            <point key="canvasLocation" x="-82.5" y="216"/>
         </tableViewCell>
     </objects>
 </document>

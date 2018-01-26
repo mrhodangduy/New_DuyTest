@@ -357,6 +357,7 @@ class Assessor_OverviewVC: UIViewController {
                         
                     else if let err = result?["error"] as? String
                     {
+                        print(err)
                         DispatchQueue.main.async(execute: {
                             self.loadingHide()
                             self.alertBackToHomeWithError(mess: err)

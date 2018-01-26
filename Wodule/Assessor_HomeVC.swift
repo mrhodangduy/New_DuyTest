@@ -53,7 +53,7 @@ class Assessor_HomeVC: UIViewController {
         }
         
         asignDataInView()
-        NotificationCenter.default.addObserver(self, selector: #selector(self.upLoadGraded), name: NSNotification.Name.available, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onHandleCheckExpiredExam), name: NSNotification.Name.available, object: nil)
     }
     
     func onHandleCheckExpiredExam()
@@ -67,7 +67,6 @@ class Assessor_HomeVC: UIViewController {
                 let _ = DatabaseManagement.shared.updateExpiredExam(id: id)
             }
         }
-        
         let idExpired = DatabaseManagement.shared.queryIdentifierListExpiredToDeleted(of: examinerID)
         print("List exam expired", idExpired)
         if !idExpired.isEmpty {
@@ -87,7 +86,10 @@ class Assessor_HomeVC: UIViewController {
                 })
             }
         }
-        self.upLoadGraded()
+        DispatchQueue.main.async {
+            self.upLoadGraded()
+
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
